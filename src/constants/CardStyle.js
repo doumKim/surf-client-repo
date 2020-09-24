@@ -1,5 +1,19 @@
 import styled from "@emotion/styled";
-import { deviceSize } from "./DiviceSize";
+import { deviceSize, size } from "./DiviceSize";
+
+export const CardList = styled.div`
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, 330px);
+  @media only screen and (max-width: ${size.laptop}) {
+    grid-template-columns: repeat(auto-fit, 300px);
+  }
+  @media only screen and (max-width: ${size.tablet}) {
+    grid-template-columns: 1fr;
+  }
+  grid-gap: 15px;
+  justify-content: center;
+`;
 
 // Basic Card
 export const CardWrap = styled.div`
@@ -33,8 +47,8 @@ export const CardWrap = styled.div`
   }
 
   @media ${deviceSize.tablet} {
-    width: 220px;
-    height: 300px;
+    width: 300px;
+    height: 340px;
     border-radius: 5px;
   }
   @media ${deviceSize.laptop} {
@@ -72,7 +86,7 @@ export const Title = styled.h2`
   margin-top: 5px;
   margin-bottom: 10px;
   font-size: 24px;
-  fontweight: 700;
+  font-weight: 700;
   color: #495057;
   @media ${deviceSize.tablet} {
     font-size: 18px;

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { HeartTwoTone } from "@ant-design/icons";
 import {
+  CardList,
   CardWrap,
   CardBody,
   CardHead,
@@ -35,10 +36,12 @@ function Card({ postData }) {
   );
 }
 
-export default function CardList({ postDatas }) {
-  <div>
-    {postDatas.map(data => (
-      <Card key={data.postId} postData={data} />
-    ))}
-  </div>;
+export default function ({ postDatas }) {
+  return (
+    <CardList>
+      {postDatas.map(data => (
+        <Card key={data.postId} postData={data} />
+      ))}
+    </CardList>
+  );
 }
