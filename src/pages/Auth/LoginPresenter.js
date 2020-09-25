@@ -117,8 +117,8 @@ const SocialButton = styled.button`
   display: block;
   // color-set
   background-color: ${props => {
-    const socials = ["kakao", "google", "facebook", "submit"];
-    const socialColors = ["#fcc419", "#fa5252", "#4A68Ad", "#ced4da"];
+    const socials = ["kakao", "google", "naver", "submit"];
+    const socialColors = ["#fcc419", "#fa5252", "#51cf66", "#ced4da"];
     return socialColors[socials.indexOf(props.social)];
   }};
   color: white;
@@ -264,7 +264,7 @@ export default function Login({ close, LoginUp, SocialLoginUp, changeForm }) {
             Kakao
           </SocialButton>
           <SocialButton social="google">Google</SocialButton>
-          <SocialButton social="facebook">Facebook</SocialButton>
+          <SocialButton social="naver">Naver</SocialButton>
         </SocialWrap>
         <GotoJoin>
           계정이 없으신가요? <span onClick={changeForm}>회원가입</span> 하러가기
