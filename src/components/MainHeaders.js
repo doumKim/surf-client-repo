@@ -19,19 +19,29 @@ const MainHeader = styled.div`
 `;
 
 const MainCategoryScroll = styled.ul`
-  display: ${props => (props.open ? "block" : "none")};
+  opacity: ${props => (props.open ? 1 : 0)};
+  pointer-events: ${props => (props.open ? "none" : "auto")};
   position: absolute;
   margin-top: 14px;
-  padding: 40px 50px;
+  padding: 27px 42px;
   height: auto;
-  min-width: 400px;
-  max-height: 600px;
+  width: 310px;
+  height: 468px;
   overflow-y: scroll;
   background: #fff;
   box-shadow: 0 6px 35px rgba(23, 25, 29, 0.2);
   z-index: 2;
   color: #515151;
   cursor: default;
+
+  transition: opacity 0.2s ease-out, transform 0.3s ease-out,
+    -webkit-transform 0.3s ease-out;
+  transform: ${props => (props.open ? "translateY(0px)" : "translateY(15px)")};
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const MainCategoryItem = styled.div`
