@@ -1,47 +1,42 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { HeartTwoTone } from "@ant-design/icons";
-import {
-  CardList,
-  CardWrap,
-  CardBody,
-  CardHead,
-  CardBottom,
-  CardUser,
-  Synopsis,
-  Title,
-} from "../constants/CardStyle";
+import styled from "@emotion/styled";
+import { deviceSize } from "../constants/DiviceSize";
+import Card from "./Card";
+import MainHeaders from "./MainHeaders";
 
-function Card({ postData }) {
-  return (
-    <Link to={`posts/:${postData.postId}/`}>
-      <CardWrap>
-        <CardHead imageUrl={postData.imageUrl} />
-        <CardBody>
-          <Title>{postData.title}</Title>
-          <Synopsis>{postData.synopsis}</Synopsis>
-        </CardBody>
-        <CardBottom>
-          <CardUser>{postData.username}</CardUser>
-          <CardUser style={{ color: "#eb2f96" }}>
-            <HeartTwoTone
-              style={{ marginRight: "5px" }}
-              twoToneColor="#eb2f96"
-            />{" "}
-            {postData.likes}
-          </CardUser>
-        </CardBottom>
-      </CardWrap>
-    </Link>
-  );
-}
+const CardListContainer = styled.div`
+  display: grid;
+  margin: 0 auto;
+  padding: 0 20px;
+  align-items: flex-end;
 
-export default function ({ postDatas }) {
+  grid-template-columns: repeat(auto-fit, 330px);
+  @media ${deviceSize.tablet} {
+    grid-template-columns: 1fr;
+  }
+  grid-gap: 15px;
+  justify-content: ${props => (props.length === 0 ? "flex-start" : "center")};
+`;
+
+export default ({ postDatas, categories }) => {
   return (
-    <CardList>
-      {postDatas.map(data => (
-        <Card key={data.postId} postData={data} />
-      ))}
-    </CardList>
+    <CardListContainer length={postDatas.length}>
+      {postDatas.length === 0 ? (
+        <MainHeaders categories={categories} />
+      ) : (
+        postDatas.map((data, index) => {
+          if (index > 0) {
+            return <Card key={data.postId} postData={data} />;
+          } else {
+            return (
+              <div key={data.postId}>
+                <MainHeaders categories={categories} />
+                <Card key={data.postId} postData={data} />
+              </div>
+            );
+          }
+        })
+      )}
+    </CardListContainer>
   );
-}
+};
