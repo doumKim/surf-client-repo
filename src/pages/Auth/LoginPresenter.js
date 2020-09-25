@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { isEmail, isPassword } from "../../constants/AuthCheck";
 import { size } from "../../constants/DiviceSize";
 import { CloseOutlined } from "@ant-design/icons";
 import { keyframes } from "@emotion/core";
+
+import Wave from "../../components/WaveContainer";
 
 const slideUp = keyframes`
   from {
@@ -14,6 +16,7 @@ const slideUp = keyframes`
   }
 `;
 const LoginBox = styled.div`
+  position: relative;
   margin: 0 auto;
   background-color: #f8f9fa;
   border: none;
@@ -27,7 +30,6 @@ const LoginBox = styled.div`
   animation-name: ${slideUp};
   animation-fill-mode: forwards;
 
-  // 반응형때 조절 해야 하는 부분
   @media (max-width: ${size.tablet}) {
     width: 100%;
     height: 100%;
@@ -115,7 +117,6 @@ const SubmitButton = styled.button`
 const SocialButton = styled.button`
   cursor: pointer;
   display: block;
-  // color-set
   background-color: ${props => {
     const socials = ["kakao", "google", "facebook", "submit"];
     const socialColors = ["#fcc419", "#fa5252", "#4A68Ad", "#ced4da"];
@@ -123,13 +124,11 @@ const SocialButton = styled.button`
   }};
   color: white;
 
-  // outline
   border: none;
   border-radius: 6px;
   box-shadow: #ced4da 0 1px 4px;
   margin-top: 2.5rem;
 
-  // responsive
   width: 31%;
   height: 60px;
   font-size: 1.2rem;
@@ -160,12 +159,29 @@ const GotoJoin = styled.p`
 `;
 
 export default function Login({ close, LoginUp, SocialLoginUp, changeForm }) {
+  const [screenData, setScreenData] = useState({
+    width: 0,
+    height: 0,
+  });
+
   const [authData, setAuthData] = useState({
+    width: 0,
+    height: 0,
     email: "",
     password: "",
     isValidEmail: false,
     isValidPW: false,
   });
+
+  const loginRef = useRef(null);
+
+  useEffect(() => {
+    if (loginRef.current) {
+      const height = loginRef.current.offsetHeight;
+      const width = loginRef.current.offsetWidth;
+      setScreenData({ height, width });
+    }
+  }, [loginRef]);
 
   const changeEmail = e => {
     if (isEmail(e.target.value)) {
@@ -219,7 +235,7 @@ export default function Login({ close, LoginUp, SocialLoginUp, changeForm }) {
   };
 
   return (
-    <LoginBox>
+    <LoginBox ref={loginRef}>
       <LoginTitle>로그인</LoginTitle>
       <CloseOutlined
         style={{ display: "inline", float: "right", fontSize: "2rem" }}
@@ -270,6 +286,9 @@ export default function Login({ close, LoginUp, SocialLoginUp, changeForm }) {
           계정이 없으신가요? <span onClick={changeForm}>회원가입</span> 하러가기
         </GotoJoin>
       </form>
+      {screenData.width === 0 ? null : (
+        <Wave width={screenData.width} height={screenData.height} />
+      )}
     </LoginBox>
   );
 }

@@ -5,6 +5,8 @@ import { size } from "../../constants/DiviceSize";
 import { CloseOutlined } from "@ant-design/icons";
 import { keyframes } from "@emotion/core";
 
+import Wave from "../../components/WaveContainer";
+
 const slideUp = keyframes`
   from {
     transform: translateY(200px);
@@ -14,6 +16,7 @@ const slideUp = keyframes`
   }
 `;
 const JoinBox = styled.div`
+  position: relative;
   margin: 0 auto;
   background-color: #f8f9fa;
   border: none;
@@ -89,7 +92,7 @@ const SubmitButton = styled.button`
   display: block;
   color: #fff;
   background-color: #51cf66;
-  
+
   border-radius: 6px;
   border: none;
   margin-top: 1.5rem;
@@ -99,7 +102,7 @@ const SubmitButton = styled.button`
   font-weight: 500;
 
   @media (max-width: ${size.tablet}) {
-    width: 80px
+    width: 80px;
     margin-top: 2rem;
   }
 `;

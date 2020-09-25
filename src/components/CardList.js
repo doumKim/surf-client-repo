@@ -31,7 +31,7 @@ export default ({ postDatas, categories }) => {
             return (
               <div key={data.postId}>
                 <MainHeaders categories={categories} />
-                <Card key={data.postId} postData={data} />
+                <Card postData={data} />
               </div>
             );
           }
