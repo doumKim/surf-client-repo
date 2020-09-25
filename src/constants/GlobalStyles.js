@@ -15,7 +15,7 @@ const globalStyles = css`
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     font-size: 12px;
-    background-color: rgba(255, 255, 255, 1);
+    background-color: #f4f4f4;
     color: black;
   }
 `;
