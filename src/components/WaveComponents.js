@@ -1,10 +1,23 @@
-import Point from "./Point";
+class Point {
+  constructor(index, x, y) {
+    this.x = x;
+    this.y = y;
+    this.fixedY = y;
+    this.speed = 0.03;
+    this.cur = index;
+    this.max = y;
+  }
 
-export default class Wave {
-  constructor(index, totalPoints, color) {
+  update() {
+    this.cur += this.speed;
+    this.y = this.fixedY + Math.sin(this.cur) * this.max;
+  }
+}
+
+class Wave {
+  constructor(index, totalPoints) {
     this.index = index;
     this.totalPoints = totalPoints;
-    this.color = color;
     this.points = [];
   }
 
@@ -21,8 +34,6 @@ export default class Wave {
   }
 
   init() {
-    this.point = new Point(this.centerX, this.centerY);
-
     for (let i = 0; i < this.totalPoints; i++) {
       const point = new Point(this.index + i, this.pointGap * i, this.centerY);
       this.points[i] = point;
@@ -31,7 +42,7 @@ export default class Wave {
 
   draw(ctx) {
     ctx.beginPath();
-    ctx.fillStyle = "#ff0000";
+    ctx.fillStyle = "#4bcffa";
 
     let prevX = this.points[0].x;
     let prevY = this.points[0].y;
@@ -57,5 +68,23 @@ export default class Wave {
     ctx.lineTo(this.points[0].x, this.stageHeight);
     ctx.fill();
     ctx.closePath();
+  }
+}
+
+export default class WaveGroup {
+  constructor(stageWidth, stageHeight) {
+    this.totalWaves = 1;
+    this.totalPoints = 4;
+    this.wave = new Wave(0, this.totalPoints, stageWidth, stageHeight);
+  }
+
+  resize(stageWidth, stageHeight) {
+    const wave = this.wave;
+    wave.resize(stageWidth, stageHeight);
+  }
+
+  draw(ctx) {
+    const wave = this.wave;
+    wave.draw(ctx);
   }
 }

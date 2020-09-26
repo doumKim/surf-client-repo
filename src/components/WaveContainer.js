@@ -1,19 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 
-import WaveGroup from "./WaveGroup";
+import Wave from "./WaveComponents";
 
 const Canvas = styled.canvas`
   position: absolute;
   bottom: 0;
   left: 0;
+  width: 100%;
+  height: 50%;
+  pointer-events: none;
+  z-index: 3;
 `;
 
 export default ({ width, height }) => {
   const [state, setState] = useState({
     canvas: null,
     ctx: null,
-    waveGroup: null,
+    wave: null,
   });
 
   const canvas = useRef(null);
@@ -21,18 +25,14 @@ export default ({ width, height }) => {
   useEffect(() => {
     if (canvas.current) {
       const ctx = canvas.current.getContext("2d");
-      const waveGroup = new WaveGroup();
-      window.addEventListener("resize", resize, false);
+      const wave = new Wave(width, height / 2);
 
       setState({
         canvas: canvas.current,
         ctx,
-        waveGroup,
+        wave,
       });
     }
-    return () => {
-      window.removeEventListener("resize", resize, false);
-    };
   }, [canvas]);
 
   useEffect(() => {
@@ -46,25 +46,25 @@ export default ({ width, height }) => {
     };
   }, [state]);
 
+  useEffect(() => {
+    resize();
+  }, [width, height]);
+
   const resize = () => {
-    console.log(state.waveGroup);
     const stageWidth = width;
-    const stageHeight = height;
-
-    // state.canvas.width = stageWidth * 2;
-    // state.canvas.height = stageHeight * 2;
-    // state.ctx.scale(2, 2);
-
-    state.waveGroup.resize(stageWidth, stageHeight);
+    const stageHeight = height / 2;
+    if (state.wave !== null) {
+      state.wave.resize(stageWidth, stageHeight);
+    }
   };
 
   const animate = t => {
     const stageWidth = width;
-    const stageHeight = height;
+    const stageHeight = height / 2;
 
     state.ctx.clearRect(0, 0, stageWidth, stageHeight);
 
-    state.waveGroup.draw(state.ctx);
+    state.wave.draw(state.ctx);
     requestAnimationFrame(animate);
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import styled from "@emotion/styled";
 import Login from "./LoginPresenter";
 import Join from "./JoinPresenter";
@@ -19,10 +19,11 @@ const DarkBack = styled.div`
   top: 0;
   width: 100%;
   height: 100%;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #343a40;
+  background: rgba(0, 0, 0, 0.7);
 
   animation-duration: 0.25s;
   animation-timing-function: linear;
@@ -30,10 +31,8 @@ const DarkBack = styled.div`
   animation-fill-mode: forwards;
 `;
 
-export default function Modal({ appear, disappear }) {
-  // 초기값은 login
-  const [linkLogin, setLogin] = useState(true);
-  const [linkJoin, setJoin] = useState(false);
+export default function Modal({ appear, disappear, modalState }) {
+  let ref = useRef(null);
 
   const handleLoginSubmit = data => {
     // login api here
@@ -44,38 +43,34 @@ export default function Modal({ appear, disappear }) {
     e.preventDefault();
     console.log("social!");
   };
-  const changeJoin = () => {
-    setJoin(true);
-    setLogin(false);
-  };
-  const changeLogin = () => {
-    setJoin(false);
-    setLogin(true);
-  };
-  const close = () => {
-    disappear();
+
+  const handleModalPress = e => {
+    if (ref.current === e.target) {
+      disappear();
+    }
   };
 
-  if (!appear) {
+  if (!modalState.isVisible) {
     return null;
   } else {
-    if (linkLogin) {
+    if (modalState.loginPressed) {
       return (
-        <DarkBack>
+        <DarkBack ref={ref} onClick={handleModalPress}>
           <Login
-            close={close}
-            changeForm={changeJoin}
+            onClick={null}
+            close={disappear}
+            changeForm={() => appear(false)}
             LoginUp={handleLoginSubmit}
             SocialLoginUp={handleSocial}
           />
         </DarkBack>
       );
-    } else if (linkJoin) {
+    } else {
       return (
-        <DarkBack>
+        <DarkBack ref={ref} onClick={handleModalPress}>
           <Join
-            close={close}
-            changeForm={changeLogin}
+            close={disappear}
+            changeForm={() => appear(true)}
             JoinUp={handleLoginSubmit}
             SocialJoinUp={handleSocial}
           />
