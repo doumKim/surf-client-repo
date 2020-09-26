@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { isEmail, isPassword } from "../../constants/AuthCheck";
 import { size } from "../../constants/DiviceSize";
 import { CloseOutlined } from "@ant-design/icons";
 import { keyframes } from "@emotion/core";
+import { withResizeDetector } from "react-resize-detector";
 
 import Wave from "../../components/WaveContainer";
 
@@ -15,7 +16,8 @@ const slideUp = keyframes`
     transform: translateY(0px);
   }
 `;
-const LoginBox = styled.div`
+
+const Loginwrapper = styled.div`
   position: relative;
   margin: 0 auto;
   background-color: #f8f9fa;
@@ -24,7 +26,6 @@ const LoginBox = styled.div`
   width: 480px;
   height: 640px;
   padding: 4rem;
-
   animation-duration: 0.25s;
   animation-timing-function: ease-out;
   animation-name: ${slideUp};
@@ -36,6 +37,17 @@ const LoginBox = styled.div`
     padding: 8rem 1rem 0 2rem;
   }
 `;
+
+const LoginBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+`;
+
 const LoginTitle = styled.div`
   display: inline-block;
   color: #343a40;
@@ -150,7 +162,7 @@ const GotoJoin = styled.p`
   margin-top: 32px;
   color: #343a40;
   span {
-    color: #20c997;
+    color: #2980b9;
     text-decoration: none;
   }
   @media (max-width: ${size.tablet}) {
@@ -158,30 +170,13 @@ const GotoJoin = styled.p`
   }
 `;
 
-export default function Login({ close, LoginUp, SocialLoginUp, changeForm }) {
-  const [screenData, setScreenData] = useState({
-    width: 0,
-    height: 0,
-  });
-
+function Login({ width, height, close, LoginUp, SocialLoginUp, changeForm }) {
   const [authData, setAuthData] = useState({
-    width: 0,
-    height: 0,
     email: "",
     password: "",
     isValidEmail: false,
     isValidPW: false,
   });
-
-  const loginRef = useRef(null);
-
-  useEffect(() => {
-    if (loginRef.current) {
-      const height = loginRef.current.offsetHeight;
-      const width = loginRef.current.offsetWidth;
-      setScreenData({ height, width });
-    }
-  }, [loginRef]);
 
   const changeEmail = e => {
     if (isEmail(e.target.value)) {
@@ -235,60 +230,71 @@ export default function Login({ close, LoginUp, SocialLoginUp, changeForm }) {
   };
 
   return (
-    <LoginBox ref={loginRef}>
-      <LoginTitle>로그인</LoginTitle>
-      <CloseOutlined
-        style={{ display: "inline", float: "right", fontSize: "2rem" }}
-        onClick={close}
-      />
+    <Loginwrapper>
+      {width ? <Wave width={width} height={height} /> : null}
+      <LoginBox>
+        <LoginTitle>로그인</LoginTitle>
+        <CloseOutlined
+          style={{
+            display: "inline",
+            float: "right",
+            fontSize: "2rem",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            margin: "20px",
+          }}
+          onClick={close}
+        />
 
-      <form onSubmit={loginSubmit}>
-        <LoginLabel>이메일</LoginLabel>
-        <LoginInput
-          onChange={changeEmail}
-          value={authData.email}
-          type="email"
-        />
-        {authData.email
-          ? !authData.isValidEmail && (
-              <div style={{ color: "#fa5252" }}>
-                이메일 양식을 확인해주세요.
-              </div>
-            )
-          : null}
-        <LoginLabel>
-          패스워드{" "}
-          <span style={{ fontSize: "14px" }}>(8~10자리 영어, 숫자 조합)</span>
-        </LoginLabel>
-        <LoginInput
-          onChange={changePW}
-          value={authData.password}
-          type="password"
-        />
-        {authData.password
-          ? !authData.isValidPW && (
-              <div style={{ color: "#fa5252" }}>
-                패스워드 양식을 확인해주세요.{" "}
-              </div>
-            )
-          : null}
-        <SubmitButton fill={authData.email ? (authData.password ? 1 : 2) : 2}>
-          로그인
-        </SubmitButton>
-        <SocialWrap>
-          <SocialButton onClick={SocialLoginUp} social="kakao">
-            Kakao
-          </SocialButton>
-          <SocialButton social="google">Google</SocialButton>
-          <SocialButton social="naver">Naver</SocialButton>
-        </SocialWrap>
-        <GotoJoin>
-          계정이 없으신가요? <span onClick={changeForm}>회원가입</span> 하러가기
-        </GotoJoin>
-      </form>
-      {screenData.width === 0 ? null : (
-        <Wave width={screenData.width} height={screenData.height} />
-      )}
-    </LoginBox>
+        <form onSubmit={loginSubmit} style={{ zIndex: 5 }}>
+          <LoginLabel>이메일</LoginLabel>
+          <LoginInput
+            onChange={changeEmail}
+            value={authData.email}
+            type="email"
+          />
+          {authData.email
+            ? !authData.isValidEmail && (
+                <div style={{ color: "#fa5252" }}>
+                  이메일 양식을 확인해주세요.
+                </div>
+              )
+            : null}
+          <LoginLabel>
+            패스워드{" "}
+            <span style={{ fontSize: "14px" }}>(8~10자리 영어, 숫자 조합)</span>
+          </LoginLabel>
+          <LoginInput
+            onChange={changePW}
+            value={authData.password}
+            type="password"
+          />
+          {authData.password
+            ? !authData.isValidPW && (
+                <div style={{ color: "#fa5252" }}>
+                  패스워드 양식을 확인해주세요.{" "}
+                </div>
+              )
+            : null}
+          <SubmitButton fill={authData.email ? (authData.password ? 1 : 2) : 2}>
+            로그인
+          </SubmitButton>
+          <SocialWrap>
+            <SocialButton onClick={SocialLoginUp} social="kakao">
+              Kakao
+            </SocialButton>
+            <SocialButton social="google">Google</SocialButton>
+            <SocialButton social="naver">Naver</SocialButton>
+          </SocialWrap>
+          <GotoJoin>
+            계정이 없으신가요? <span onClick={changeForm}>회원가입</span>{" "}
+            하러가기
+          </GotoJoin>
+        </form>
+      </LoginBox>
+    </Loginwrapper>
   );
 }
+
+export default withResizeDetector(Login);
