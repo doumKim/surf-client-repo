@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import data from "../../data";
 import MainPresenter from "./MainPresenter";
 
@@ -12,5 +12,6 @@ export default () => {
     "게임",
     "스포츠",
   ];
+
   return <MainPresenter categories={categories} dataArr={data} />;
 };

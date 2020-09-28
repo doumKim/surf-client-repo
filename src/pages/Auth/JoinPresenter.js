@@ -4,6 +4,9 @@ import { isEmail, isPassword } from "../../constants/AuthCheck";
 import { size } from "../../constants/DiviceSize";
 import { CloseOutlined } from "@ant-design/icons";
 import { keyframes } from "@emotion/core";
+import { withResizeDetector } from "react-resize-detector";
+
+import Wave from "../../components/WaveContainer";
 
 const slideUp = keyframes`
   from {
@@ -13,7 +16,9 @@ const slideUp = keyframes`
     transform: translateY(0px);
   }
 `;
-const JoinBox = styled.div`
+
+const JoinWrapper = styled.div`
+  position: relative;
   margin: 0 auto;
   background-color: #f8f9fa;
   border: none;
@@ -32,6 +37,16 @@ const JoinBox = styled.div`
     height: 100vh;
     padding: 5rem 1rem 0 2rem;
   }
+`;
+
+const JoinBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
 `;
 
 const JoinTitle = styled.div`
@@ -89,7 +104,6 @@ const SubmitButton = styled.button`
   display: block;
   color: #fff;
   background-color: #51cf66;
-  
   border-radius: 6px;
   border: none;
   margin-top: 1.5rem;
@@ -99,7 +113,7 @@ const SubmitButton = styled.button`
   font-weight: 500;
 
   @media (max-width: ${size.tablet}) {
-    width: 80px
+    width: 80px;
     margin-top: 2rem;
   }
 `;
@@ -142,8 +156,9 @@ const GotoLogin = styled.p`
   font-size: 1.2rem;
   margin-top: 32px;
   color: #343a40;
+
   span {
-    color: #20c997;
+    color: #2980b9;
     text-decoration: none;
   }
   @media (max-width: ${size.tablet}) {
@@ -151,7 +166,7 @@ const GotoLogin = styled.p`
   }
 `;
 
-export default function Join({ close, JoinUp, SocialJoinUp, changeForm }) {
+function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
   const [authData, setAuthData] = useState({
     username: "",
     email: "",
@@ -244,66 +259,83 @@ export default function Join({ close, JoinUp, SocialJoinUp, changeForm }) {
   };
 
   return (
-    <JoinBox>
-      <JoinTitle>Join</JoinTitle>
-      <CloseOutlined
-        style={{ display: "inline", float: "right", fontSize: "2rem" }}
-        onClick={close}
-      />
-      <form onSubmit={joinSubmit}>
-        <JoinLabel>닉네임(유저 이름)</JoinLabel>
-        <JoinInput onChange={changeUsername} value={username} type="text" />
-        <JoinLabel>이메일</JoinLabel>
-        <JoinInput onChange={changeEmail} value={email} type="email" />
-        {email ? (
-          isValidEmail ? (
-            <div style={{ color: "#a9e34b" }}>사용 가능한 이메일 입니다.</div>
-          ) : (
-            <div style={{ color: "#fa5252" }}>이메일 양식을 확인해주세요.</div>
-          )
-        ) : null}
-        <JoinLabel>
-          패스워드{" "}
-          <span style={{ fontSize: "14px" }}>(8~10자리 영어, 숫자 조합)</span>
-        </JoinLabel>
-        <JoinInput onChange={changePW} value={password} type="password" />
-        {password ? (
-          isValidPassword ? (
-            <div style={{ color: "#a9e34b" }}>사용 가능한 패스워드 입니다.</div>
-          ) : (
-            <div style={{ color: "#fa5252" }}>
-              패스워드 양식을 확인해주세요.
-            </div>
-          )
-        ) : null}
-        <JoinLabel>패스워드 확인</JoinLabel>
-        <JoinInput
-          onChange={changePW2}
-          value={authData.password2}
-          type="password"
+    <JoinWrapper>
+      {width ? <Wave width={width} height={height} /> : null}
+      <JoinBox>
+        <JoinTitle>Join</JoinTitle>
+        <CloseOutlined
+          style={{
+            display: "inline",
+            float: "right",
+            fontSize: "2rem",
+            position: "absolute",
+            top: 0,
+            right: 0,
+            margin: "20px",
+          }}
+          onClick={close}
         />
-        {password2 ? (
-          pwCheck() ? (
-            <div style={{ color: "#a9e34b" }}>패스워드가 일치합니다.</div>
-          ) : (
-            <div style={{ color: "#fa5252" }}>패스워드가 불일치 합니다.</div>
-          )
-        ) : null}
-        <SubmitButton type="submit" onSubmit={joinSubmit}>
-          회원가입
-        </SubmitButton>
-        <SocialWrap>
-          <SocialButton onClick={SocialJoinUp} social="kakao">
-            Kakao
-          </SocialButton>
-          <SocialButton social="google">Google</SocialButton>
-          <SocialButton social="naver">Naver</SocialButton>
-        </SocialWrap>
-        <GotoLogin>
-          이미 계정이 있으신가요? <span onClick={changeForm}>로그인</span>{" "}
-          하러가기
-        </GotoLogin>
-      </form>
-    </JoinBox>
+        <form onSubmit={joinSubmit} style={{ zIndex: 5 }}>
+          <JoinLabel>닉네임(유저 이름)</JoinLabel>
+          <JoinInput onChange={changeUsername} value={username} type="text" />
+          <JoinLabel>이메일</JoinLabel>
+          <JoinInput onChange={changeEmail} value={email} type="email" />
+          {email ? (
+            isValidEmail ? (
+              <div style={{ color: "#a9e34b" }}>사용 가능한 이메일 입니다.</div>
+            ) : (
+              <div style={{ color: "#fa5252" }}>
+                이메일 양식을 확인해주세요.
+              </div>
+            )
+          ) : null}
+          <JoinLabel>
+            패스워드{" "}
+            <span style={{ fontSize: "14px" }}>(8~10자리 영어, 숫자 조합)</span>
+          </JoinLabel>
+          <JoinInput onChange={changePW} value={password} type="password" />
+          {password ? (
+            isValidPassword ? (
+              <div style={{ color: "#a9e34b" }}>
+                사용 가능한 패스워드 입니다.
+              </div>
+            ) : (
+              <div style={{ color: "#fa5252" }}>
+                패스워드 양식을 확인해주세요.
+              </div>
+            )
+          ) : null}
+          <JoinLabel>패스워드 확인</JoinLabel>
+          <JoinInput
+            onChange={changePW2}
+            value={authData.password2}
+            type="password"
+          />
+          {password2 ? (
+            pwCheck() ? (
+              <div style={{ color: "#a9e34b" }}>패스워드가 일치합니다.</div>
+            ) : (
+              <div style={{ color: "#fa5252" }}>패스워드가 불일치 합니다.</div>
+            )
+          ) : null}
+          <SubmitButton type="submit" onSubmit={joinSubmit}>
+            회원가입
+          </SubmitButton>
+          <SocialWrap>
+            <SocialButton onClick={SocialJoinUp} social="kakao">
+              Kakao
+            </SocialButton>
+            <SocialButton social="google">Google</SocialButton>
+            <SocialButton social="naver">Naver</SocialButton>
+          </SocialWrap>
+          <GotoLogin>
+            이미 계정이 있으신가요? <span onClick={changeForm}>로그인</span>{" "}
+            하러가기
+          </GotoLogin>
+        </form>
+      </JoinBox>
+    </JoinWrapper>
   );
 }
+
+export default withResizeDetector(Join);
