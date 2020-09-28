@@ -1,0 +1,243 @@
+import React, { useState, useRef, useCallback } from "react";
+import styled from "@emotion/styled";
+import { size } from "../constants/DiviceSize";
+import { FiEdit2, FiCheck, FiCamera } from "react-icons/fi";
+import { lighten } from "polished";
+
+const UserInfoBox = styled.div`
+  padding: 3rem;
+  height: 640px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 3rem;
+  align-items: center;
+
+  img {
+    border-radius: 70%;
+    text-align: center;
+    width: 270px;
+    height: 270px;
+    margin-bottom: 5rem;
+
+    box-shadow: #ced4da 0 2px 8px;
+
+    @media (max-width: ${size.laptop}) {
+      margin-left: 0;
+      margin-bottom: 4rem;
+      width: 220px;
+      height: 220px;
+    }
+  }
+
+  @media (max-width: ${size.laptop}) {
+    padding: 2rem;
+    margin-left: 0;
+  }
+`;
+const UserDetail = styled.div`
+  display: flex;
+  position: relative;
+  margin-bottom: 2rem;
+  justify-content: start;
+  align-items: center;
+
+  div {
+    font-size: 1.5rem;
+    font-weight: 600;
+    width: 180px;
+    margin-right: 1rem;
+
+    @media (max-width: ${size.laptop}) {
+      font-size: 1.2rem;
+      margin-right: 12px;
+      width: 120px;
+    }
+  }
+
+  p {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0;
+    color: #495057;
+
+    @media (max-width: ${size.laptop}) {
+      font-size: 1.2rem;
+    }
+  }
+
+  input {
+    font-size: 1.3rem;
+    border: none;
+    width: 180px;
+    border-bottom: 2px solid ${lighten(0.15, "#4dabf7")};
+    // padding-bottom: 8px;
+    line-height: 1.5rem;
+    height: 20px;
+    background: none;
+    color: #4dabf7;
+
+    &:focus {
+      outline: none;
+    }
+
+    @media (max-width: ${size.laptop}) {
+      font-size: 1.2rem;
+      width: 150px;
+    }
+  }
+`;
+const AmendButton = styled.button`
+  margin-bottom: 2rem;
+  cursor: pointer;
+  display: block;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: 500;
+
+  &:hover {
+    box-shadow: #ced4da 0 1px 4px;
+  }
+  &:focus {
+    outline: none;
+  }
+
+  transition: box-shadow 0.3s linear;
+
+  color: ${props => {
+    if (props.fill === "blue") {
+      return "#fff";
+    } else {
+      return "#495057";
+    }
+  }};
+  background-color: ${props => {
+    if (props.fill === "blue") {
+      return "#4dabf7";
+    } else {
+      return "#e9ecef";
+    }
+  }};
+
+  @media (max-width: ${size.laptop}) {
+    font-size: 1rem;
+  }
+`;
+const CameraButton = styled.button`
+  position: relative;
+  bottom: 85px;
+  left: -60px;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  background: #f8f9fa;
+  box-shadow: #ced4da 0 1px 8px;
+  color: #adb5bd;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  svg {
+    font-size: 2rem;
+
+    @media (max-width: ${size.laptop}) {
+      font-size: 1rem;
+    }
+  }
+  @media (max-width: ${size.laptop}) {
+    bottom: 75px;
+    left: -45px;
+  }
+`;
+
+const UserInfo = ({ userData, changeImgApi }) => {
+  const [image, setImage] = useState(userData.avatar_url);
+  const [isModify, setModify] = useState(false);
+  const [username, setUsername] = useState(userData.username);
+
+  const uploadedImage = useRef(null);
+  const imageUploader = useRef(null);
+
+  const handleImageUpload = e => {
+    // e.preventDefault();
+    const [file] = e.target.files;
+    if (file) {
+      const reader = new FileReader();
+      const { current } = uploadedImage;
+      current.file = file;
+      reader.onload = e => {
+        current.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    setImage(e.target.files[0]);
+  };
+
+  const handleChangeMode = useCallback(() => {
+    const prevUserName = userData.username;
+    const prevImage = userData.avatar_url;
+    if (!isModify) {
+      setModify(true);
+    } else {
+      setModify(false);
+      if (prevImage !== image || prevUserName !== username) {
+        changeImgApi({ image, username });
+      }
+    }
+  }, [userData, username, image, isModify, changeImgApi]);
+
+  const handleChangeUsername = e => {
+    setUsername(e.target.value);
+  };
+
+  return (
+    <UserInfoBox>
+      <section>
+        <input
+          ref={imageUploader}
+          type="file"
+          accept="image/jpg,image/png,image/jpeg,image/gif"
+          onChange={handleImageUpload}
+          style={{ display: "none" }}
+        />
+        <img ref={uploadedImage} src={image} alt={userData.username} />
+        {isModify && (
+          <CameraButton onClick={() => imageUploader.current.click()}>
+            <FiCamera style={{ color: "#4dabf7" }} />
+          </CameraButton>
+        )}
+      </section>
+      <section>
+        <UserDetail>
+          <div>서퍼 이름</div>
+          {isModify ? (
+            <input value={username} onChange={handleChangeUsername} />
+          ) : (
+            <p>{username}</p>
+          )}
+        </UserDetail>
+        <UserDetail>
+          <div>이메일</div>
+          <p>{userData.email}</p>
+        </UserDetail>
+        {!isModify ? (
+          <AmendButton type="submit" onClick={handleChangeMode}>
+            유저 정보 수정{" "}
+            <FiEdit2 style={{ marginLeft: "12px", fontSize: "1rem" }} />
+          </AmendButton>
+        ) : (
+          <AmendButton type="submit" fill="blue" onClick={handleChangeMode}>
+            정보 저장{" "}
+            <FiCheck style={{ marginLeft: "12px", fontSize: "1rem" }} />
+          </AmendButton>
+        )}
+      </section>
+    </UserInfoBox>
+  );
+};
+
+export default UserInfo;
