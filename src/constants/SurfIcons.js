@@ -1,0 +1,24 @@
+export const myPageIconUrl = {
+  surfing_man:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/man-surfing-type-4_1f3c4-1f3fd-200d-2642-fe0f.png",
+  surfing:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/surfer_1f3c4.png",
+  wave:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/water-wave_1f30a.png",
+  umbrella:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/umbrella-on-ground_26f1.png",
+  medal1st:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/first-place-medal_1f947.png",
+  medal2nd:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/second-place-medal_1f948.png",
+  medal3rd:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/third-place-medal_1f949.png",
+  write:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/writing-hand_emoji-modifier-fitzpatrick-type-3_270d-1f3fc_1f3fc.png",
+  create_at:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/confetti-ball_1f38a.png",
+  category:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/bookmark_1f516.png",
+  like:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/heavy-black-heart_2764.png",
+};
