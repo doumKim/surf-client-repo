@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { isEmail, isPassword } from "../../constants/AuthCheck";
-import { size } from "../../constants/DiviceSize";
-import { CloseOutlined } from "@ant-design/icons";
-import { keyframes } from "@emotion/core";
 import { withResizeDetector } from "react-resize-detector";
 
-import Wave from "../../components/WaveContainer";
-
-const slideUp = keyframes`
-  from {
-    transform: translateY(200px);
-  }
-  to {
-    transform: translateY(0px);
-  }
-`;
+import { isEmail, isPassword } from "../../../constants/AuthCheck";
+import Wave from "../../Wave/WaveContainer";
 
 const Loginwrapper = styled.div`
   position: relative;
@@ -23,19 +11,9 @@ const Loginwrapper = styled.div`
   background-color: #f8f9fa;
   border: none;
   border-radius: 5px;
-  width: 480px;
-  height: 640px;
-  padding: 4rem;
-  animation-duration: 0.25s;
-  animation-timing-function: ease-out;
-  animation-name: ${slideUp};
-  animation-fill-mode: forwards;
-
-  @media (max-width: ${size.tablet}) {
-    width: 100%;
-    height: 100%;
-    padding: 8rem 1rem 0 2rem;
-  }
+  width: 100%;
+  height: 100%;
+  padding: 0px 30px;
 `;
 
 const LoginBox = styled.div`
@@ -52,11 +30,8 @@ const LoginTitle = styled.div`
   display: inline-block;
   color: #343a40;
   margin-bottom: 1.6rem;
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 700;
-  @media (max-width: ${size.tablet}) {
-    font-size: 3rem;
-  }
 `;
 const LoginLabel = styled.p`
   color: #343a40;
@@ -64,11 +39,6 @@ const LoginLabel = styled.p`
   margin-top: 15px;
   font-size: 1rem;
   font-weight: 400;
-
-  @media (max-width: ${size.tablet}) {
-    font-size: 1rem;
-    margint-bottom: 5px;
-  }
 `;
 const LoginInput = styled.input`
   width: 100%;
@@ -78,12 +48,6 @@ const LoginInput = styled.input`
   border-radius: 3px;
   font-size: 1rem;
   margin-bottom: 4px;
-  @media (max-width: ${size.tablet}) {
-    width: 90%;
-    height: 40px;
-    font-size: 1.2rem;
-    marignt-bottom: 4px;
-  }
 `;
 const SocialWrap = styled.div`
   display: flex;
@@ -91,9 +55,6 @@ const SocialWrap = styled.div`
   border-top: 1px solid #adb5bd;
   align-items: center;
   margin-top: 48px;
-  @media (max-width: ${size.tablet}) {
-    width: 90%;
-  }
 `;
 const SubmitButton = styled.button`
   cursor: pointer;
@@ -120,11 +81,6 @@ const SubmitButton = styled.button`
   font-size: 1.2rem;
   font-weight: 500;
   transition: background-color 0.5s ease;
-
-  @media (max-width: ${size.tablet}) {
-    width: 80px;
-    margin-top: 2rem;
-  }
 `;
 const SocialButton = styled.button`
   cursor: pointer;
@@ -142,35 +98,25 @@ const SocialButton = styled.button`
   margin-top: 2.5rem;
 
   width: 31%;
-  height: 60px;
-  font-size: 1.2rem;
+  height: 50px;
+  font-size: 1rem;
   font-weight: 600;
-
-  @media (max-width: ${size.tablet}) {
-    width: 28%;
-  }
-  @media (max-width: ${size.mobile}) {
-    font-size: 1rem;
-  }
 `;
 const GotoJoin = styled.p`
   cursor: pointer;
   position: relative;
   text-align: right;
 
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-top: 32px;
   color: #343a40;
   span {
     color: #2980b9;
     text-decoration: none;
   }
-  @media (max-width: ${size.tablet}) {
-    right: 10%;
-  }
 `;
 
-function Login({ width, height, close, LoginUp, SocialLoginUp, changeForm }) {
+const Login = ({ width, height, changeForm }) => {
   const [authData, setAuthData] = useState({
     email: "",
     password: "",
@@ -193,7 +139,8 @@ function Login({ width, height, close, LoginUp, SocialLoginUp, changeForm }) {
       });
     }
   };
-  const changePW = e => {
+
+  const changePassword = e => {
     if (isPassword(e.target.value)) {
       setAuthData({
         ...authData,
@@ -214,7 +161,7 @@ function Login({ width, height, close, LoginUp, SocialLoginUp, changeForm }) {
     e.preventDefault();
     if (email && password) {
       if (isValidEmail && isValidPW) {
-        LoginUp(authData); //-> api 처리
+        // 로그인 API 호출
         setAuthData({
           email: "",
           password: "",
@@ -229,25 +176,23 @@ function Login({ width, height, close, LoginUp, SocialLoginUp, changeForm }) {
     }
   };
 
+  const handleSocialLogin = service => {
+    console.log(service);
+  };
+
   return (
     <Loginwrapper>
       {width ? <Wave width={width} height={height} /> : null}
       <LoginBox>
         <LoginTitle>로그인</LoginTitle>
-        <CloseOutlined
-          style={{
-            display: "inline",
-            float: "right",
-            fontSize: "2rem",
-            position: "absolute",
-            top: 0,
-            right: 0,
-            margin: "20px",
-          }}
-          onClick={close}
-        />
 
-        <form onSubmit={loginSubmit} style={{ zIndex: 5 }}>
+        <form
+          onSubmit={loginSubmit}
+          style={{
+            zIndex: 5,
+            width: "100%",
+          }}
+        >
           <LoginLabel>이메일</LoginLabel>
           <LoginInput
             onChange={changeEmail}
@@ -266,7 +211,7 @@ function Login({ width, height, close, LoginUp, SocialLoginUp, changeForm }) {
             <span style={{ fontSize: "14px" }}>(8~10자리 영어, 숫자 조합)</span>
           </LoginLabel>
           <LoginInput
-            onChange={changePW}
+            onChange={changePassword}
             value={authData.password}
             type="password"
           />
@@ -281,11 +226,24 @@ function Login({ width, height, close, LoginUp, SocialLoginUp, changeForm }) {
             로그인
           </SubmitButton>
           <SocialWrap>
-            <SocialButton onClick={SocialLoginUp} social="kakao">
+            <SocialButton
+              onClick={() => handleSocialLogin("kakao")}
+              social="kakao"
+            >
               Kakao
             </SocialButton>
-            <SocialButton social="google">Google</SocialButton>
-            <SocialButton social="naver">Naver</SocialButton>
+            <SocialButton
+              onClick={() => handleSocialLogin("google")}
+              social="google"
+            >
+              Google
+            </SocialButton>
+            <SocialButton
+              onClick={() => handleSocialLogin("naver")}
+              social="naver"
+            >
+              Naver
+            </SocialButton>
           </SocialWrap>
           <GotoJoin>
             계정이 없으신가요? <span onClick={changeForm}>회원가입</span>{" "}
@@ -295,6 +253,6 @@ function Login({ width, height, close, LoginUp, SocialLoginUp, changeForm }) {
       </LoginBox>
     </Loginwrapper>
   );
-}
+};
 
 export default withResizeDetector(Login);

@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
-import { deviceSize } from "../constants/DiviceSize";
+import { Link } from "react-router-dom";
+import { deviceSize } from "../../constants/DiviceSize";
 
 const CardWrap = styled.div`
   display: block;
-  width: 672px;
-  height: 120px;
+  width: 100%;
+  height: 160px;
+  margin-top: 30px;
   overflow: hidden;
   background-color: #f1f3f5;
   box-shadow: rgba(23, 25, 29, 0.05) 0 4px 10px;
@@ -16,25 +17,8 @@ const CardWrap = styled.div`
     box-shadow: rgba(23, 25, 29, 0.15) 0 4px 10px;
     transform: translateY(-4px);
   }
-  @media ${deviceSize.mobileS} {
-    width: 100%;
-    height: 100px;
-    margin-bottom: 1rem;
-  }
-
-  @media ${deviceSize.tablet} {
-    width: 452px;
-    height: 100px;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-  }
-  @media ${deviceSize.laptop} {
-    width: 672px;
-    height: 120px;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-  }
 `;
+
 const CardContainer = styled.div`
   display: flex;
 
@@ -45,10 +29,16 @@ const CardContainer = styled.div`
     height: 120px;
   }
 `;
-const CardHead = styled.div`
-  background-image: url(${props => props.imageUrl});
-  background-size: cover;
+
+const CardHead = styled.img`
+  display: block;
   width: 50%;
+  height: 160px;
+  object-fit: cover;
+
+  @media ${deviceSize.tablet} {
+    height: 150px;
+  }
 `;
 const CardBody = styled.div`
   width: 50%;
@@ -60,19 +50,17 @@ const CardBody = styled.div`
   }
 `;
 const Title = styled.h2`
-  @media ${deviceSize.mobileS} {
-    margin-top: 2px;
-    margin-bottom: 5px;
-    font-size: 18px;
-    fontweight: 500;
-  }
-  @media ${deviceSize.laptop} {
-    margin-top: 5px;
-    margin-bottom: 8px;
-    font-size: 22px;
-    fontweight: 700;
+  margin-top: 5px;
+  margin-bottom: 8px;
+  font-size: 22px;
+  font-weight: 700;
+
+  @media ${deviceSize.tablet} {
+    font-size: 20px;
+    font-weight: 700;
   }
 `;
+
 const Synopsis = styled.div`
   padding-top: 4px;
   overflow: hidden;
@@ -86,16 +74,23 @@ const Synopsis = styled.div`
   color: #495057;
   @media ${deviceSize.mobileS} {
     font-size: 14px;
-    -webkit-line-clamp: 1;
   }
 `;
 
-function CardLogin({ postData }) {
+export default ({ postData }) => {
+  const handleImageLoadFailure = e => {
+    e.target.src = "/images/no_image_indicator.png";
+  };
+
   return (
     <Link style={{ textDecoration: "none" }} to={`posts/:${postData.id}`}>
       <CardWrap>
         <CardContainer>
-          <CardHead imageUrl={postData.imageUrl} />
+          <CardHead
+            src={postData.imageUrl}
+            alt={postData.title}
+            onError={handleImageLoadFailure}
+          />
           <CardBody>
             <Title>{postData.title}</Title>
             <Synopsis>{postData.synopsis}</Synopsis>
@@ -104,13 +99,4 @@ function CardLogin({ postData }) {
       </CardWrap>
     </Link>
   );
-}
-export default function CardLoginList({ postDatas }) {
-  return (
-    <div>
-      {postDatas.map(data => (
-        <CardLogin key={data.postId} postData={data} />
-      ))}
-    </div>
-  );
-}
+};

@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { size } from "../../constants/DiviceSize";
-import UserFeatures from "../../components/UserFeature";
-import UserInfo from "../../components/UserInfo";
+import UserFeatures from "../../components/User/UserFeature";
+import UserInfo from "../../components/User/UserInfo";
 
 const MypageWrap = styled.section`
   width: 1250px;
