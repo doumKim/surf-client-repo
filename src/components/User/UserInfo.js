@@ -1,7 +1,7 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef } from "react";
 import styled from "@emotion/styled";
 import { size } from "../../constants/DiviceSize";
-import { FiEdit2, FiCheck, FiCamera } from "react-icons/fi";
+import { FiCamera, FiUnlock } from "react-icons/fi";
 import { lighten } from "polished";
 
 const UserInfoBox = styled.div`
@@ -11,7 +11,6 @@ const UserInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 3rem;
   align-items: center;
 
   img {
@@ -40,14 +39,14 @@ const UserDetail = styled.div`
   display: flex;
   position: relative;
   margin-bottom: 2rem;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
 
   div {
     font-size: 1.5rem;
     font-weight: 600;
-    width: 180px;
-    margin-right: 1rem;
+    // width: 180px;
+    // margin-right: 1rem;
 
     @media (max-width: ${size.laptop}) {
       font-size: 1.2rem;
@@ -153,16 +152,15 @@ const CameraButton = styled.button`
   }
 `;
 
-const UserInfo = ({ userData, changeImgApi }) => {
+const UserInfo = ({ userData, changeImgApi, openModal }) => {
   const [image, setImage] = useState(userData.avatar_url);
-  const [isModify, setModify] = useState(false);
-  const [username, setUsername] = useState(userData.username);
 
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
 
   const handleImageUpload = e => {
     // e.preventDefault();
+    const prevImage = userData.avatar_url;
     const [file] = e.target.files;
     if (file) {
       const reader = new FileReader();
@@ -175,23 +173,9 @@ const UserInfo = ({ userData, changeImgApi }) => {
     }
 
     setImage(e.target.files[0]);
-  };
-
-  const handleChangeMode = useCallback(() => {
-    const prevUserName = userData.username;
-    const prevImage = userData.avatar_url;
-    if (!isModify) {
-      setModify(true);
-    } else {
-      setModify(false);
-      if (prevImage !== image || prevUserName !== username) {
-        changeImgApi({ image, username });
-      }
+    if (prevImage !== image) {
+      changeImgApi({ image });
     }
-  }, [userData, username, image, isModify, changeImgApi]);
-
-  const handleChangeUsername = e => {
-    setUsername(e.target.value);
   };
 
   return (
@@ -205,36 +189,29 @@ const UserInfo = ({ userData, changeImgApi }) => {
           style={{ display: "none" }}
         />
         <img ref={uploadedImage} src={image} alt={userData.username} />
-        {isModify && (
-          <CameraButton onClick={() => imageUploader.current.click()}>
-            <FiCamera style={{ color: "#4dabf7" }} />
-          </CameraButton>
-        )}
+
+        <CameraButton onClick={() => imageUploader.current.click()}>
+          <FiCamera style={{ color: "#4dabf7" }} />
+        </CameraButton>
       </section>
       <section>
         <UserDetail>
-          <div>서퍼 이름</div>
+          {/* <div>서퍼 이름</div>
           {isModify ? (
             <input value={username} onChange={handleChangeUsername} />
-          ) : (
-            <p>{username}</p>
-          )}
+          ) : ( */}
+          <div>{userData.username}</div>
+          {/* )} */}
         </UserDetail>
-        <UserDetail>
+        {/* <UserDetail>
           <div>이메일</div>
           <p>{userData.email}</p>
-        </UserDetail>
-        {!isModify ? (
-          <AmendButton type="submit" onClick={handleChangeMode}>
-            유저 정보 수정{" "}
-            <FiEdit2 style={{ marginLeft: "12px", fontSize: "1rem" }} />
-          </AmendButton>
-        ) : (
-          <AmendButton type="submit" fill="blue" onClick={handleChangeMode}>
-            정보 저장{" "}
-            <FiCheck style={{ marginLeft: "12px", fontSize: "1rem" }} />
-          </AmendButton>
-        )}
+        </UserDetail> */}
+
+        <AmendButton type="submit" onClick={() => openModal(true)}>
+          패스워드 수정{" "}
+          <FiUnlock style={{ marginLeft: "12px", fontSize: "1rem" }} />
+        </AmendButton>
       </section>
     </UserInfoBox>
   );
