@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { deviceSize } from "../constants/DiviceSize";
+import { deviceSize } from "../../constants/DiviceSize";
 import Card from "./Card";
-import MainHeaders from "./MainHeaders";
+import MainHeaders from "../MainHeaders";
 
 const CardListContainer = styled.div`
   display: grid;

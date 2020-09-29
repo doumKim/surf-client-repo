@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { DarkBack } from "../Auth/Modal";
-import ChangePassword from "./ChangePassword";
+import { ModalBackground } from "../../../constants/modalStyles";
+import ChangePwController from "./ChangePwController";
 
 export default function ChangePasswordModal({
   api,
@@ -20,9 +20,13 @@ export default function ChangePasswordModal({
     return null;
   } else {
     return (
-      <DarkBack ref={ref} onClick={handleWindowPress}>
-        <ChangePassword pwChangeApi={api} close={disappear} userData={data} />
-      </DarkBack>
+      <ModalBackground ref={ref} onClick={handleWindowPress}>
+        <ChangePwController
+          pwChangeApi={api}
+          close={disappear}
+          userData={data}
+        />
+      </ModalBackground>
     );
   }
 }

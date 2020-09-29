@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { FiLock } from "react-icons/fi";
 import {
-  JoinWrapper,
-  JoinBox,
-  JoinTitle,
-  JoinLabel,
-  JoinInput,
+  Wrapper,
+  Box,
+  Title,
+  Label,
+  Input,
   SubmitButton,
-} from "../Auth/JoinPresenter";
-import { isEmail, isPassword } from "../../constants/AuthCheck";
+} from "../../../constants/formStyles";
+import { isPassword } from "../../../constants/AuthCheck";
 
-export default function ChangePassword({ pwChangeApi, userData, close }) {
+export default function ChangePwController({ pwChangeApi, userData, close }) {
   const [authData, setAuthData] = useState({
     password: "",
     changePw: "",
@@ -41,9 +41,9 @@ export default function ChangePassword({ pwChangeApi, userData, close }) {
   };
 
   return (
-    <JoinWrapper style={{ width: "420px", height: "600px" }}>
-      <JoinBox>
-        <JoinTitle style={{ marginBottom: "2.5rem" }}>패스워드 변경</JoinTitle>
+    <Wrapper style={{ width: "420px", height: "600px" }}>
+      <Box>
+        <Title style={{ marginBottom: "2.5rem" }}>패스워드 변경</Title>
         <CloseOutlined
           style={{
             display: "inline",
@@ -58,8 +58,8 @@ export default function ChangePassword({ pwChangeApi, userData, close }) {
         />
 
         <form style={{ width: "100%", zIndex: 5 }}>
-          <JoinLabel>기존 패스워드</JoinLabel>
-          <JoinInput
+          <Label>기존 패스워드</Label>
+          <Input
             onChange={e =>
               setAuthData({ ...authData, password: e.target.value })
             }
@@ -76,11 +76,11 @@ export default function ChangePassword({ pwChangeApi, userData, close }) {
               </div>
             )
           ) : null}
-          <JoinLabel>
+          <Label>
             신규 패스워드{" "}
             <span style={{ fontSize: "14px" }}>(8~10자리 영어, 숫자 조합)</span>
-          </JoinLabel>
-          <JoinInput
+          </Label>
+          <Input
             onChange={e =>
               setAuthData({ ...authData, changePw: e.target.value })
             }
@@ -101,8 +101,8 @@ export default function ChangePassword({ pwChangeApi, userData, close }) {
               </div>
             )
           ) : null}
-          <JoinLabel>신규 패스워드 확인</JoinLabel>
-          <JoinInput
+          <Label>신규 패스워드 확인</Label>
+          <Input
             onChange={e =>
               setAuthData({ ...authData, changePw2: e.target.value })
             }
@@ -125,7 +125,7 @@ export default function ChangePassword({ pwChangeApi, userData, close }) {
             패스워드 변경하기 <FiLock />
           </SubmitButton>
         </form>
-      </JoinBox>
-    </JoinWrapper>
+      </Box>
+    </Wrapper>
   );
 }

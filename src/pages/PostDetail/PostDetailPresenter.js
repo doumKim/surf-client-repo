@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
-import PostDetailHeader from "../../components/PostDetailHeader";
-import PostDetailInfo from "../../components/PostDetailInfo";
-import PostArea from "../../components/PostArea";
-import { size } from "../../constants/DiviceSize";
+import PostDetailHeader from "../../components/Post/PostDetailHeader";
+import PostDetailInfo from "../../components/Post/PostDetailInfo";
+import PostArea from "../../components/Post/PostArea";
 
 const DetailWrap = styled.section`
   width: 1250px;

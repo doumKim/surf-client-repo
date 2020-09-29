@@ -1,45 +1,22 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { isEmail, isPassword } from "../../constants/AuthCheck";
-import { size } from "../../constants/DiviceSize";
-import { CloseOutlined } from "@ant-design/icons";
-import { keyframes } from "@emotion/core";
 import { withResizeDetector } from "react-resize-detector";
 
-import Wave from "../../components/WaveContainer";
+import { isEmail, isPassword } from "../../../constants/AuthCheck";
+import Wave from "../../Wave/WaveContainer";
 
-export const slideUp = keyframes`
-  from {
-    transform: translateY(200px);
-  }
-  to {
-    transform: translateY(0px);
-  }
-`;
-
-export const JoinWrapper = styled.div`
+const JoinWrapper = styled.div`
   position: relative;
   margin: 0 auto;
   background-color: #f8f9fa;
   border: none;
   border-radius: 5px;
-  animation-duration: 0.25s;
-  animation-timing-function: ease-out;
-  animation-name: ${slideUp};
-  animation-fill-mode: forwards;
-  width: 480px;
-  height: 780px;
-  padding: 3rem;
-
-  // 반응형때 조절 해야 하는 부분
-  @media (max-width: ${size.tablet}) {
-    width: 100%;
-    height: 100vh;
-    padding: 5rem 1rem 0 2rem;
-  }
+  width: 100%;
+  height: 100%;
+  padding: 0px 30px;
 `;
 
-export const JoinBox = styled.div`
+const JoinBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,30 +26,22 @@ export const JoinBox = styled.div`
   background-color: rgba(0, 0, 0, 0);
 `;
 
-export const JoinTitle = styled.div`
+const JoinTitle = styled.div`
   display: inline-block;
   color: #343a40;
   margin-bottom: 1.5rem;
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 700;
-  @media (max-width: ${size.tablet}) {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-  }
 `;
 
-export const JoinLabel = styled.p`
+const JoinLabel = styled.p`
   color: #343a40;
   margin-bottom: 5px;
   margin-top: 15px;
   font-size: 1rem;
   font-weight: 400;
-  @media (max-width: ${size.tablet}) {
-    font-size: 1rem;
-    margin-bottom: 5px;
-  }
 `;
-export const JoinInput = styled.input`
+const JoinInput = styled.input`
   width: 100%;
   height: 40px;
   background: #f1f3f5;
@@ -80,13 +49,6 @@ export const JoinInput = styled.input`
   border-radius: 3px;
   font-size: 1rem;
   margin-bottom: 4px;
-
-  @media (max-width: ${size.tablet}) {
-    width: 90%;
-    height: 40px;
-    font-size: 1.2rem;
-    margin-bottom: 4px;
-  }
 `;
 const SocialWrap = styled.div`
   display: flex;
@@ -94,12 +56,9 @@ const SocialWrap = styled.div`
   border-top: 1px solid #adb5bd;
   align-items: center;
   margin-top: 48px;
-  @media (max-width: ${size.tablet}) {
-    width: 90%;
-  }
 `;
 
-export const SubmitButton = styled.button`
+const SubmitButton = styled.button`
   cursor: pointer;
   display: block;
   color: #fff;
@@ -111,11 +70,6 @@ export const SubmitButton = styled.button`
   height: 40px;
   font-size: 1.2rem;
   font-weight: 500;
-
-  @media (max-width: ${size.tablet}) {
-    width: 80px;
-    margin-top: 2rem;
-  }
 `;
 
 const SocialButton = styled.button`
@@ -135,25 +89,17 @@ const SocialButton = styled.button`
   box-shadow: #ced4da 0 1px 4px;
   margin-top: 2.5rem;
 
-  // responsive
-  width: 120px;
-  height: 60px;
+  width: 31%;
+  height: 50px;
   font-size: 1.2rem;
   font-weight: 600;
-
-  @media (max-width: ${size.tablet}) {
-    width: 28%;
-  }
-  @media (max-width: ${size.mobileL}) {
-    font-size: 1.2rem;
-  }
 `;
 const GotoLogin = styled.p`
   cursor: pointer;
   position: relative;
   text-align: right;
 
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-top: 32px;
   color: #343a40;
 
@@ -161,12 +107,9 @@ const GotoLogin = styled.p`
     color: #2980b9;
     text-decoration: none;
   }
-  @media (max-width: ${size.tablet}) {
-    right: 10%;
-  }
 `;
 
-function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
+const Join = ({ width, height, changeForm }) => {
   const [authData, setAuthData] = useState({
     username: "",
     email: "",
@@ -175,17 +118,11 @@ function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
     isValidEmail: false,
     isValidPassword: false,
   });
-  const {
-    username,
-    email,
-    password,
-    password2,
-    isValidEmail,
-    isValidPassword,
-  } = authData;
-  const pwCheck = () => {
+
+  const checkPassword = () => {
     return authData.password === authData.password2;
   };
+
   const changeEmail = e => {
     if (isEmail(e.target.value)) {
       setAuthData({
@@ -201,7 +138,8 @@ function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
       });
     }
   };
-  const changePW = e => {
+
+  const changePassword = e => {
     if (isPassword(e.target.value)) {
       setAuthData({
         ...authData,
@@ -216,21 +154,24 @@ function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
       });
     }
   };
-  const changeUsername = e => {
-    setAuthData({
-      ...authData,
-      username: e.target.value,
-    });
-  };
-  const changePW2 = e => {
+
+  const changePassword2 = e => {
     setAuthData({
       ...authData,
       password2: e.target.value,
     });
   };
 
+  const changeUsername = e => {
+    setAuthData({
+      ...authData,
+      username: e.target.value,
+    });
+  };
+
   const joinSubmit = e => {
     e.preventDefault();
+
     const {
       email,
       password,
@@ -239,9 +180,10 @@ function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
       isValidEmail,
       isValidPassword,
     } = authData;
+
     if (email && password && username && password2) {
       if (isValidEmail && isValidPassword) {
-        JoinUp(authData);
+        // 서버에 회원가입 요청하는 API 호출
         setAuthData({
           username: "",
           email: "",
@@ -258,30 +200,37 @@ function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
     }
   };
 
+  const handleSocialJoin = service => {
+    // 서버에 소셜 회원가입 요청하는 API 호출
+    console.log(service);
+  };
+
   return (
     <JoinWrapper>
       {width ? <Wave width={width} height={height} /> : null}
       <JoinBox>
         <JoinTitle>Join</JoinTitle>
-        <CloseOutlined
+        <form
+          onSubmit={joinSubmit}
           style={{
-            display: "inline",
-            float: "right",
-            fontSize: "2rem",
-            position: "absolute",
-            top: 0,
-            right: 0,
-            margin: "20px",
+            zIndex: 5,
+            width: "100%",
           }}
-          onClick={close}
-        />
-        <form onSubmit={joinSubmit} style={{ zIndex: 5 }}>
+        >
           <JoinLabel>닉네임(유저 이름)</JoinLabel>
-          <JoinInput onChange={changeUsername} value={username} type="text" />
+          <JoinInput
+            onChange={changeUsername}
+            value={authData.username}
+            type="text"
+          />
           <JoinLabel>이메일</JoinLabel>
-          <JoinInput onChange={changeEmail} value={email} type="email" />
-          {email ? (
-            isValidEmail ? (
+          <JoinInput
+            onChange={changeEmail}
+            value={authData.email}
+            type="email"
+          />
+          {authData.email ? (
+            authData.isValidEmail ? (
               <div style={{ color: "#a9e34b" }}>사용 가능한 이메일 입니다.</div>
             ) : (
               <div style={{ color: "#fa5252" }}>
@@ -293,9 +242,13 @@ function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
             패스워드{" "}
             <span style={{ fontSize: "14px" }}>(8~10자리 영어, 숫자 조합)</span>
           </JoinLabel>
-          <JoinInput onChange={changePW} value={password} type="password" />
-          {password ? (
-            isValidPassword ? (
+          <JoinInput
+            onChange={changePassword}
+            value={authData.password}
+            type="password"
+          />
+          {authData.password ? (
+            authData.isValidPassword ? (
               <div style={{ color: "#a9e34b" }}>
                 사용 가능한 패스워드 입니다.
               </div>
@@ -307,26 +260,37 @@ function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
           ) : null}
           <JoinLabel>패스워드 확인</JoinLabel>
           <JoinInput
-            onChange={changePW2}
+            onChange={changePassword2}
             value={authData.password2}
             type="password"
           />
-          {password2 ? (
-            pwCheck() ? (
+          {authData.password2 ? (
+            checkPassword() ? (
               <div style={{ color: "#a9e34b" }}>패스워드가 일치합니다.</div>
             ) : (
               <div style={{ color: "#fa5252" }}>패스워드가 불일치 합니다.</div>
             )
           ) : null}
-          <SubmitButton type="submit" onSubmit={joinSubmit}>
-            회원가입
-          </SubmitButton>
+          <SubmitButton type="submit">회원가입</SubmitButton>
           <SocialWrap>
-            <SocialButton onClick={SocialJoinUp} social="kakao">
+            <SocialButton
+              onClick={() => handleSocialJoin("kakao")}
+              social="kakao"
+            >
               Kakao
             </SocialButton>
-            <SocialButton social="google">Google</SocialButton>
-            <SocialButton social="naver">Naver</SocialButton>
+            <SocialButton
+              onClick={() => handleSocialJoin("google")}
+              social="google"
+            >
+              Google
+            </SocialButton>
+            <SocialButton
+              onClick={() => handleSocialJoin("naver")}
+              social="naver"
+            >
+              Naver
+            </SocialButton>
           </SocialWrap>
           <GotoLogin>
             이미 계정이 있으신가요? <span onClick={changeForm}>로그인</span>{" "}
@@ -336,6 +300,6 @@ function Join({ width, height, close, JoinUp, SocialJoinUp, changeForm }) {
       </JoinBox>
     </JoinWrapper>
   );
-}
+};
 
 export default withResizeDetector(Join);

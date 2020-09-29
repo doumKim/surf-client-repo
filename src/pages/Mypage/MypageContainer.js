@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import MypagePresenter from "./MypagePresenter";
-import ChangePasswordModal from "./ChangePasswordModal";
+import ChangePasswordModal from "../../components/Modal/Auth/ChangePasswordModal";
 
 export default function MypageContainer() {
   const [modal, setModal] = useState({

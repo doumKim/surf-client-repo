@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "@emotion/styled";
-import { size } from "../constants/DiviceSize";
-import { FiUnlock, FiCamera } from "react-icons/fi";
+import { size } from "../../constants/DiviceSize";
+import { FiCamera, FiUnlock } from "react-icons/fi";
 import { lighten } from "polished";
 
 const UserInfoBox = styled.div`
