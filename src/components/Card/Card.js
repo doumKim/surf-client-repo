@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { HeartTwoTone } from "@ant-design/icons";
-import { deviceSize } from "../constants/DiviceSize";
+import { deviceSize } from "../../constants/DiviceSize";
 
 // Basic Card
 const CardWrap = styled.div`
@@ -89,6 +89,7 @@ export const Synopsis = styled.div`
     font-size: 14px;
   }
 `;
+
 export const CardBottom = styled.div`
   height: 40px;
   position: relative;
@@ -111,7 +112,7 @@ export const CardUser = styled.div`
   }
 `;
 
-export default function ({ postData }) {
+export default ({ postData }) => {
   const handleImageLoadFailure = e => {
     e.target.src = "/images/no_image_indicator.png";
   };
@@ -141,4 +142,4 @@ export default function ({ postData }) {
       </CardWrap>
     </Link>
   );
-}
+};

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
-import { size } from "../constants/DiviceSize";
+import { size } from "../../constants/DiviceSize";
 import { FiEdit2, FiCheck, FiCamera } from "react-icons/fi";
 import { lighten } from "polished";
 

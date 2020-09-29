@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import Arrow from "./Arrow";
+import Arrow from "./Wave/Arrow";
 
 const HeaderWrapper = styled.div``;
 
@@ -33,6 +33,7 @@ const MainCategoryScroll = styled.ul`
   z-index: 2;
   color: #515151;
   cursor: default;
+  pointer-events: ${props => (props.open ? "auto" : "none")};
 
   transition: opacity 0.2s ease-out, transform 0.3s ease-out,
     -webkit-transform 0.3s ease-out;
