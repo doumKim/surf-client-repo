@@ -8,7 +8,7 @@ import { withResizeDetector } from "react-resize-detector";
 
 import Wave from "../../components/WaveContainer";
 
-const slideUp = keyframes`
+export const slideUp = keyframes`
   from {
     transform: translateY(200px);
   }
@@ -17,7 +17,7 @@ const slideUp = keyframes`
   }
 `;
 
-const JoinWrapper = styled.div`
+export const JoinWrapper = styled.div`
   position: relative;
   margin: 0 auto;
   background-color: #f8f9fa;
@@ -39,7 +39,7 @@ const JoinWrapper = styled.div`
   }
 `;
 
-const JoinBox = styled.div`
+export const JoinBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,7 +49,7 @@ const JoinBox = styled.div`
   background-color: rgba(0, 0, 0, 0);
 `;
 
-const JoinTitle = styled.div`
+export const JoinTitle = styled.div`
   display: inline-block;
   color: #343a40;
   margin-bottom: 1.5rem;
@@ -61,7 +61,7 @@ const JoinTitle = styled.div`
   }
 `;
 
-const JoinLabel = styled.p`
+export const JoinLabel = styled.p`
   color: #343a40;
   margin-bottom: 5px;
   margin-top: 15px;
@@ -72,7 +72,7 @@ const JoinLabel = styled.p`
     margin-bottom: 5px;
   }
 `;
-const JoinInput = styled.input`
+export const JoinInput = styled.input`
   width: 100%;
   height: 40px;
   background: #f1f3f5;
@@ -99,7 +99,7 @@ const SocialWrap = styled.div`
   }
 `;
 
-const SubmitButton = styled.button`
+export const SubmitButton = styled.button`
   cursor: pointer;
   display: block;
   color: #fff;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { isEmail, isPassword } from "../../constants/AuthCheck";
 import { size } from "../../constants/DiviceSize";

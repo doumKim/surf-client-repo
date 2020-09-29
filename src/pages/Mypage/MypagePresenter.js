@@ -52,7 +52,7 @@ const UserInfoWrap = styled.section`
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: start;
+  justify-content: center;
 
   @media (max-width: 1300px) {
     flex-direction: column;
@@ -61,14 +61,20 @@ const UserInfoWrap = styled.section`
   }
 `;
 
-export default function MypagePresenter({ userData, changeImgApi }) {
+export default function MypagePresenter({ openModal, userData, changeImgApi }) {
   return (
-    <MypageWrap>
-      <MypageLabel>마이페이지</MypageLabel>
-      <UserInfoWrap>
-        <UserInfo userData={userData} changeImgApi={changeImgApi} />
-        <UserFeatures userData={userData} />
-      </UserInfoWrap>
-    </MypageWrap>
+    <>
+      <MypageWrap>
+        <MypageLabel>마이페이지</MypageLabel>
+        <UserInfoWrap>
+          <UserInfo
+            openModal={openModal}
+            userData={userData}
+            changeImgApi={changeImgApi}
+          />
+          <UserFeatures userData={userData} />
+        </UserInfoWrap>
+      </MypageWrap>
+    </>
   );
 }

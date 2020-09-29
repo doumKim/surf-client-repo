@@ -4,7 +4,7 @@ import Login from "./LoginPresenter";
 import Join from "./JoinPresenter";
 import { keyframes } from "@emotion/core";
 
-const fadeIn = keyframes`
+export const fadeIn = keyframes`
   from {
     opacity: 0;
   }
@@ -13,7 +13,7 @@ const fadeIn = keyframes`
   }
 `;
 
-const DarkBack = styled.div`
+export const DarkBack = styled.div`
   position: fixed;
   left: 0;
   top: 0;
