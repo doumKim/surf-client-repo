@@ -3,17 +3,20 @@ import styled from "@emotion/styled";
 import { FiHeart } from "react-icons/fi";
 
 const DetailImgWrap = styled.div`
+  position: relative;
   width: 100%;
-  height: 300px;
-  box-shadow: #495057 0 2px 4px;
+
+  box-shadow: #495057 0 2px 7px;
+  border: none;
   border-radius: 8px 8px 0 0;
+  background: none;
   @media (max-width: 1300px) {
     border-radius: 0;
   }
 `;
 const DetailImg = styled.img`
   width: 100%;
-  height: 100%;
+  height: auto;
   border-radius: 8px 8px 0 0;
   @media (max-width: 1300px) {
     border-radius: 0;
@@ -33,13 +36,15 @@ const LikeButton = styled.button`
 
   // position config
   z-index: 3;
-  position: relative;
-  bottom: 66px;
-  left: calc(${window.innerWidth}px * 0.8);
+  position: absolute;
+  top: 90%;
+  left: 94%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 
-  @media (max-width: 1300px) {
-    bottom: 66px;
-  }
+  // @media (max-width: 1300px) {
+  //   bottom: 66px;
+  // }
 
   &:focus {
     outline: none;
@@ -58,18 +63,24 @@ const LikeButton = styled.button`
   }
 `;
 
-export default function PostDetailHeader({ postData }) {
+export default function PostDetailHeader({ postData, sendLikeApi }) {
   const [like, setLike] = useState(false);
+  const handleClickLike = () => {
+    if (!like) {
+      setLike(true);
+      sendLikeApi(true);
+    }
+  };
 
   return (
     <DetailImgWrap>
       <DetailImg src={postData.postImage_url} alt={postData.postImage_url} />
       {like ? (
-        <LikeButton like="like" onClick={() => setLike(true)}>
+        <LikeButton like="like" onClick={handleClickLike}>
           <FiHeart />
         </LikeButton>
       ) : (
-        <LikeButton onClick={() => setLike(true)}>
+        <LikeButton onClick={handleClickLike}>
           <FiHeart />
         </LikeButton>
       )}

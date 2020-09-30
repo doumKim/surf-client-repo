@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { lighten } from "polished";
+import { deviceSize } from "../../constants/DiviceSize";
 
 const PostAreaWrap = styled.section`
   display: flex;
@@ -30,7 +31,6 @@ const PhaseTap = styled.li`
   font-size: 1.5rem;
   font-weight: 600;
   cursor: pointer;
-  // text-align: center;
   width: 100px;
   border: none;
   padding: 1rem 1rem 1rem 0;
@@ -58,6 +58,11 @@ const PhaseTap = styled.li`
     transform: scale(1.1);
     transition: transform 0.4s linear;
   }
+
+  @media ${deviceSize.tablet} {
+    font-size: 1.2rem;
+    width: 60px;
+  }
 `;
 const PhaseDetail = styled.section`
   display: flex;
@@ -65,7 +70,7 @@ const PhaseDetail = styled.section`
   justify-content: space-between;
   padding: 0.6rem 0 1rem 0;
   width: 100%;
-
+  margin-bottom: 1rem;
   h3 {
     display: inline;
     margin: 0;
@@ -93,6 +98,13 @@ const PhaseDetail = styled.section`
     &:focus {
       outline: none;
     }
+    @media ${deviceSize.tablet} {
+      margin-top: 1rem;
+    }
+  }
+  @media ${deviceSize.tablet} {
+    align-items: start;
+    flex-direction: column;
   }
 `;
 const PhasePostWrap = styled.article`
@@ -101,6 +113,7 @@ const PhasePostWrap = styled.article`
   background: none;
   border-radius: 3px;
   width: 100%;
+  margin-bottom: 1rem;
 
   font-size: 1.2rem;
   line-height: 1.5;
@@ -148,7 +161,18 @@ export default function PostArea({ data }) {
             {data.posts[tabIdx].writer}
           </h3>
         </div>
-        <button>파도 이어가기</button>
+        {data.max_phase !== data.last_phase && (
+          <button>
+            <a
+              href={`/post/${data.postId}/createPhaseWave/${
+                data.last_phase + 1
+              }`}
+              style={{ textDecoration: "none" }}
+            >
+              파도 이어가기
+            </a>
+          </button>
+        )}
       </PhaseDetail>
       <PhasePostWrap>
         {data.posts[tabIdx].post.split("\n").map((el, i) => (

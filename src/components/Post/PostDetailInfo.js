@@ -1,13 +1,20 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { myPageIconUrl } from "../../constants/SurfIcons";
+import { deviceSize } from "../../constants/DiviceSize";
 
 const PostDetaillWrap = styled.section`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: start;
   justify-content: space-around;
   padding: 2rem;
+
+  @media ${deviceSize.laptop} {
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 1.4rem;
+  }
 `;
 const PostInfoWrap = styled.div`
   display: flex;
@@ -16,8 +23,12 @@ const PostInfoWrap = styled.div`
   max-width: 48%;
 
   @media (max-width: 1300px) {
-    max-width: 44%;
+    max-width: 40%;
     margin-right: 4rem;
+  }
+  @media ${deviceSize.laptop} {
+    max-width: 100%;
+    margin: 0;
   }
 `;
 const PostTitle = styled.h2`
@@ -28,8 +39,11 @@ const PostTitle = styled.h2`
   margin: 0;
   margin-bottom: 1rem;
   width: fit-content;
-  padding-bottom: 1rem;
-  border-radius: 3px;
+
+  @media ${deviceSize.laptop} {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+  }
 `;
 const PostSynop = styled.article`
   font-size: 1.3rem;
@@ -45,8 +59,13 @@ const PostWriterWrap = styled.div`
   max-width: 48%;
 
   @media (max-width: 1300px) {
-    max-width: 44%;
-    margin-right: 4rem;
+    max-width: 50%;
+  }
+  @media ${deviceSize.laptop} {
+    max-width: 100%;
+    margin-top: 2.5rem;
+    align-items: start;
+    justify-content: start;
   }
 `;
 const PostFeature = styled.div`
@@ -56,10 +75,6 @@ const PostFeature = styled.div`
   border: none;
   border-radius: 6px;
   background: inherit;
-
-  @media (max-width: 1300px) {
-    width: 200px;
-  }
 
   display: flex;
   flex-direction: column;
@@ -78,14 +93,23 @@ const PostFeature = styled.div`
       width: 40px;
       height: 40px;
     }
+    @media ${deviceSize.mobile} {
+      width: 30px;
+      height: 30px;
+    }
   }
   h3 {
     margin: 0;
     margin-bottom: 8px;
     font-size: 1rem;
     font-weight: 400;
-    @media (max-width: 1300px) {
-      margin-bottom: 5px;
+    // @media (max-width: 1300px) {
+    //   margin-bottom: 5px;
+    //   font-size: 0.9rem;
+    // }
+    @media ${deviceSize.mobile} {
+      font-size: 0.8rem;
+      display: inline-block;
     }
   }
   p {
@@ -93,6 +117,14 @@ const PostFeature = styled.div`
     margin-bottom: 4px;
     font-size: 1.2rem;
     font-weight: 600;
+    // @media (max-width: 1300px) {
+    //   margin-bottom: 5px;
+    //   font-size: 1rem;
+    // }
+    @media ${deviceSize.mobile} {
+      font-size: 1rem;
+      display: inline-block;
+    }
   }
   // div {
   //   margin-top: 12px;
@@ -100,6 +132,16 @@ const PostFeature = styled.div`
   &:hover {
     box-shadow: #ced4da 0 2px 5px;
     transition: box-shadow 0.4s ease;
+  }
+  @media (max-width: 1300px) {
+    width: 200px;
+  }
+  @media ${deviceSize.tablet} {
+    width: 200px;
+    margin: 0;
+  }
+  @media ${deviceSize.mobile} {
+    width: 160px;
   }
 `;
 
@@ -134,8 +176,10 @@ export default function PostDetailInfo({ postData }) {
           <img src={myPageIconUrl.category} alt="category" />
           <h3>파도 장르</h3>
           <div>
-            {postData.categories.map(category => (
-              <PostTag category={category}>{category}</PostTag>
+            {postData.categories.map((category, i) => (
+              <PostTag key={i} category={category}>
+                {category}
+              </PostTag>
             ))}
           </div>
         </PostFeature>

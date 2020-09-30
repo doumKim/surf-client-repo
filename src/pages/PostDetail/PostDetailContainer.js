@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PostDetailPresenter from "./PostDetailPresenter";
 
 export default function PostDetailContainer() {
+  // post_detail_data  "get" api needed
+  // like_send  "post" api needed
+  const sendLike = bool => {
+    console.log(bool);
+  };
+
   return (
     <>
-      <PostDetailPresenter postData={POST_DETAIL_DATA} />
+      <PostDetailPresenter api={sendLike} postData={POST_DETAIL_DATA} />
     </>
   );
 }

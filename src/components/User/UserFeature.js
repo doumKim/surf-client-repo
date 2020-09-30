@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { size } from "../../constants/DiviceSize";
-import { FiArrowRight } from "react-icons/fi";
 import { myPageIconUrl } from "../../constants/SurfIcons";
 
 // user-feature style
