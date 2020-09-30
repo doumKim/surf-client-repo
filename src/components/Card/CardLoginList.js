@@ -16,7 +16,7 @@ const CardLoginListContainer = styled.div`
 `;
 
 const CardLoginBlock = styled.div`
-  width: 40%;
+  width: 42%;
   @media ${deviceSize.tablet} {
     width: 100%;
     min-width: 280px;
@@ -32,12 +32,12 @@ const BlockLabel = styled.span`
   margin-bottom: 40px;
 `;
 
-export default ({ postDatas }) => {
+export default ({ dataArr }) => {
   return (
     <CardLoginListContainer>
       <CardLoginBlock>
         <BlockLabel>내가 일으킨 파도 목록</BlockLabel>
-        {postDatas.map((data, index) => {
+        {dataArr.map((data, index) => {
           if (index < 3) {
             return <LoginCard key={data.postId} postData={data} />;
           } else {
@@ -47,7 +47,7 @@ export default ({ postDatas }) => {
       </CardLoginBlock>
       <CardLoginBlock>
         <BlockLabel>내가 참여한 파도 목록</BlockLabel>
-        {postDatas.map((data, index) => {
+        {dataArr.map((data, index) => {
           if (index < 3) {
             return <LoginCard key={data.postId} postData={data} />;
           } else {

@@ -220,9 +220,8 @@ const Header = ({ width }) => {
               />
               {modalState.isSuccessLogin ? (
                 <>
-                  <HeaderUser>
+                  <HeaderUser onClick={() => setUserMenu(!userMenu)}>
                     <img
-                      onClick={() => setUserMenu(!userMenu)}
                       src={LOGIN_DATA.avatar_url}
                       style={{
                         cursor: "pointer",

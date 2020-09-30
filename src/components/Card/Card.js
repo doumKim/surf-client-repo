@@ -9,7 +9,6 @@ const CardWrap = styled.div`
   position: relative;
   display: inline-block;
   overflow: hidden;
-  margin-bottom: 2rem;
   background-color: #ffffff;
   box-shadow: rgba(23, 25, 29, 0.05) 0 4px 10px;
   transform: translateY(0);
@@ -21,6 +20,7 @@ const CardWrap = styled.div`
 
   width: 330px;
   height: 430px;
+  margin: 15px;
   border-radius: 5px;
 
   @media ${deviceSize.tablet} {
@@ -28,6 +28,7 @@ const CardWrap = styled.div`
     height: 385px;
     min-width: 280px;
     border-radius: 2px;
+    margin: 0;
     margin-bottom: 1rem;
   }
 `;

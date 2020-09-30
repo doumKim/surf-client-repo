@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import CardList from "../../components/Card/CardList";
+import CardListContainer from "../../components/Card/CardListContainer";
 
 const MainWrapper = styled.div`
   margin: 60px 0;
 `;
 
-export default ({ categories, dataArr }) => {
+export default ({ dataArr }) => {
   return (
     <MainWrapper>
-      <CardList postDatas={dataArr} categories={categories} />
+      <CardListContainer dataArr={dataArr} />
     </MainWrapper>
   );
 };
