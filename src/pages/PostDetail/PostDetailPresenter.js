@@ -16,14 +16,14 @@ const DetailWrap = styled.section`
 
   @media (max-width: 1300px) {
     width: 100%;
-    margin-right: 0;
+    margin: 100px 0 80px 0;
   }
 `;
 
-export default function PostDetailPresenter({ postData }) {
+export default function PostDetailPresenter({ postData, api }) {
   return (
     <DetailWrap>
-      <PostDetailHeader postData={postData} />
+      <PostDetailHeader sendLikeApi={api} postData={postData} />
       <PostDetailInfo postData={postData} />
       <PostArea data={postData} />
     </DetailWrap>
