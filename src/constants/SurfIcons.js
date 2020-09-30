@@ -21,4 +21,6 @@ export const myPageIconUrl = {
     "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/bookmark_1f516.png",
   like:
     "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/heavy-black-heart_2764.png",
+  signout:
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/raised-hand_270b.png",
 };

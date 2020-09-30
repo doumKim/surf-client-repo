@@ -11,6 +11,7 @@ import MypageContainer from "./pages/Mypage/MypageContainer";
 import PostDetailContainer from "./pages/PostDetail/PostDetailContainer";
 import CreateWaveContainer from "./pages/Create/CreateWaveContainer";
 import CreatePhaseContainer from "./pages/Create/CreatePhaseContainer";
+import LikeListContainer from "./pages/LikeList/LikeListContainer";
 
 export default () => (
   <Router>
@@ -18,7 +19,8 @@ export default () => (
       <Header />
       <Switch>
         <Route path="/" exact component={Main} />
-        <Route path="/mypage" exact component={MypageContainer} />
+        <Route path="/user/likes" exact component={LikeListContainer} />
+        <Route path="/user/32" exact component={MypageContainer} />
         <Route path="/post/1" exact component={PostDetailContainer} />
         <Route path="/wave/new" exact component={CreateWaveContainer} />
         <Route path="/phase/1" exact component={CreatePhaseContainer} />

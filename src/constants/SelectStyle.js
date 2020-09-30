@@ -1,4 +1,3 @@
-import chroma from "chroma-js";
 export const selectStyle = {
   control: styles => ({
     ...styles,
