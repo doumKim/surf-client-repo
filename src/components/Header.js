@@ -122,6 +122,63 @@ const HambergerSpan = styled.span`
   }
 `;
 
+const UserMenu = styled.div`
+  display: ${props => (props.open === true ? "flex" : "none")};
+  position: fixed;
+  top: 80px;
+  float: right;
+  right: 7%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: display 0.2s ease-out;
+
+  padding: 1rem;
+  width: 160px;
+  background: #f1f3f5;
+  z-index: 6;
+  border: none;
+  border-radius: 3px;
+
+  box-shadow: #adb5bd 0px 1px 5px;
+
+  @media (max-width: 3000px) {
+    right: 5.4%;
+  }
+  @media (max-width: 2500px) {
+    right: 6%;
+  }
+  @media (max-width: 2000px) {
+    right: 7.5%;
+  }
+  @media (max-width: 1500px) {
+    right: 9%;
+  }
+  @media (max-width: 1450px) {
+    right: 9.6%;
+  }
+  @media (max-width: 1400px) {
+    right: 10%;
+  }
+  @media (max-width: 1366px) {
+    opacity: 0;
+  }
+`;
+const MenuLink = styled.a`
+  font-size: 1rem;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  color: #343a40;
+  padding-bottom: 8px;
+  margin-top: 1rem;
+
+  &:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
+`;
+
 const Header = ({ width }) => {
   // redux로 로그인 상태 확인 후 로그인 유뮤에 따라 헤너 내용을 다르게 보여줄 예정
 
@@ -129,8 +186,12 @@ const Header = ({ width }) => {
     // 모달이 현재 보여지고 있는가
     isModalVisible: false,
     // 현재 보여지고 있는 모달이 '로그인' 모달인가
-    isModalLogin: true,
+    isModalLogin: false,
+    // 현재 보여지고 있는 모달이 "로그인 된 유저가 보는" 모달인가
+    isSuccessLogin: true,
   });
+
+  const [userMenu, setUserMenu] = useState(false);
 
   const showModal = isModalLogin => {
     setModalState(prev => ({ ...prev, isModalVisible: true, isModalLogin }));
@@ -141,58 +202,118 @@ const Header = ({ width }) => {
   };
 
   return (
-    <HeaderContainer>
-      <HomePageLink to={"/"} style={{ justifyContent: "flex-start" }}>
-        <HeaderTitle>SURF</HeaderTitle>
-      </HomePageLink>
-      <HomePageLink to={"/"} style={{ justifyContent: "center" }}>
-        <HeaderLogo src="/images/surf_logo.png" />
-      </HomePageLink>
-      {width > 1366 ? (
-        <>
-          <HeaderFuncs>
-            <HeaderSearch
-              type="text"
-              name="search"
-              placeholder="Search for Wave"
+    <>
+      <HeaderContainer>
+        <HomePageLink to={"/"} style={{ justifyContent: "flex-start" }}>
+          <HeaderTitle>SURF</HeaderTitle>
+        </HomePageLink>
+        <HomePageLink to={"/"} style={{ justifyContent: "center" }}>
+          <HeaderLogo src="/images/surf_logo.png" />
+        </HomePageLink>
+        {width > 1366 ? (
+          <>
+            <HeaderFuncs>
+              <HeaderSearch
+                type="text"
+                name="search"
+                placeholder="Search for Wave"
+              />
+              {modalState.isSuccessLogin ? (
+                <>
+                  <HeaderUser>
+                    <img
+                      onClick={() => setUserMenu(!userMenu)}
+                      src={LOGIN_DATA.avatar_url}
+                      style={{
+                        cursor: "pointer",
+                        width: "40px",
+                        height: "40px",
+                        border: "none",
+                        borderRadius: "50%",
+                        marginRight: "1rem",
+                      }}
+                    />
+                    <HeaderUserText style={{ color: "#212529" }}>
+                      <a>{LOGIN_DATA.username}</a>
+                    </HeaderUserText>
+                  </HeaderUser>
+                  <HeaderUser
+                    onClick={() =>
+                      setModalState(prev => ({
+                        ...prev,
+                        isSuccessLogin: false,
+                        isModalLogin: true,
+                      }))
+                    }
+                  >
+                    <HeaderUserText>Log Out</HeaderUserText>
+                  </HeaderUser>
+                </>
+              ) : (
+                <>
+                  <HeaderUser onClick={() => showModal(true)}>
+                    <HeaderUserText>Log In</HeaderUserText>
+                  </HeaderUser>
+                  <HeaderUser onClick={() => showModal(false)}>
+                    <HeaderUserText>Sign Up</HeaderUserText>
+                  </HeaderUser>
+                </>
+              )}
+            </HeaderFuncs>
+            <AuthModal
+              showModal={showModal}
+              hideModal={hideModal}
+              modalState={modalState}
             />
-            <HeaderUser onClick={() => showModal(true)}>
-              <HeaderUserText>Log In</HeaderUserText>
-            </HeaderUser>
-            <HeaderUser onClick={() => showModal(false)}>
-              <HeaderUserText>Sign Up</HeaderUserText>
-            </HeaderUser>
-          </HeaderFuncs>
-          <AuthModal
-            showModal={showModal}
-            hideModal={hideModal}
-            modalState={modalState}
-          />
-        </>
-      ) : (
-        <>
-          <MenuContainer>
-            <HambergerIcon
-              onClick={() =>
-                modalState.isModalVisible
-                  ? hideModal()
-                  : showModal(modalState.isModalLogin)
-              }
-            >
-              <HambergerSpan isOpen={modalState.isModalVisible}></HambergerSpan>
-              <HambergerSpan isOpen={modalState.isModalVisible}></HambergerSpan>
-              <HambergerSpan isOpen={modalState.isModalVisible}></HambergerSpan>
-            </HambergerIcon>
-          </MenuContainer>
-          <HambergerModal
-            showModal={showModal}
-            hideModal={hideModal}
-            modalState={modalState}
-          />
-        </>
-      )}
-    </HeaderContainer>
+          </>
+        ) : (
+          <>
+            <MenuContainer>
+              <HambergerIcon
+                onClick={() =>
+                  modalState.isModalVisible
+                    ? hideModal()
+                    : showModal(modalState.isModalLogin)
+                }
+              >
+                <HambergerSpan
+                  isOpen={modalState.isModalVisible}
+                ></HambergerSpan>
+                <HambergerSpan
+                  isOpen={modalState.isModalVisible}
+                ></HambergerSpan>
+                <HambergerSpan
+                  isOpen={modalState.isModalVisible}
+                ></HambergerSpan>
+              </HambergerIcon>
+            </MenuContainer>
+            <HambergerModal
+              showModal={showModal}
+              hideModal={hideModal}
+              modalState={modalState}
+            />
+          </>
+        )}
+      </HeaderContainer>
+      <UserMenu open={userMenu}>
+        <MenuLink href={`/user/${LOGIN_DATA.userId}`}>서퍼 정보</MenuLink>
+        <MenuLink href="/wave/new">파도 일으키기</MenuLink>
+        <MenuLink href="/">좋아요 목록</MenuLink>
+        <MenuLink>로그아웃</MenuLink>
+      </UserMenu>
+    </>
   );
 };
 
 export default withResizeDetector(Header);
+
+const LOGIN_DATA = {
+  userId: 32,
+  username: "Dobby",
+  avatar_url:
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSYieM1wd1ScKyQR9OXbwnLkloYvD9QXNpbGA&usqp=CAU",
+};
+
+{
+  /*  */
+}

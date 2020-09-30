@@ -4,6 +4,7 @@ import ModalBackground from "./ModalBackground";
 import SideLoginController from "./Auth/SideLoginController";
 import SideJoinController from "./Auth/SideJoinController";
 import { deviceSize } from "../../constants/DiviceSize";
+import SideAfterLoginController from "./Auth/SideAfterLoginController";
 
 const Modal = styled.div`
   height: 100vh;
@@ -39,13 +40,26 @@ export default ({ showModal, hideModal, modalState }) => {
       {modalState.isModalVisible ? (
         <ModalBackground ref={ref} onClick={handleModalPress} />
       ) : null}
-      <Modal isOpen={modalState.isModalVisible}>
-        {modalState.isModalLogin ? (
-          <SideLoginController changeForm={() => showModal(false)} />
-        ) : (
-          <SideJoinController changeForm={() => showModal(true)} />
-        )}
-      </Modal>
+      {modalState.isSuccessLogin ? (
+        <Modal isOpen={modalState.isModalVisible}>
+          <SideAfterLoginController loginData={LOGIN_DATA} />
+        </Modal>
+      ) : (
+        <Modal isOpen={modalState.isModalVisible}>
+          {modalState.isModalLogin ? (
+            <SideLoginController changeForm={() => showModal(false)} />
+          ) : (
+            <SideJoinController changeForm={() => showModal(true)} />
+          )}
+        </Modal>
+      )}
     </>
   );
+};
+
+const LOGIN_DATA = {
+  userId: 32,
+  username: "Dobby",
+  avatar_url:
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSYieM1wd1ScKyQR9OXbwnLkloYvD9QXNpbGA&usqp=CAU",
 };
