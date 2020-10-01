@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import { isEmail, isPassword } from "../../../constants/AuthCheck";
@@ -132,13 +132,14 @@ const GotoJoin = styled.p`
 `;
 
 export default ({ hideModal, changeForm }) => {
-  const signInObj = useSelector(state => state.signIn);
+  const { pending, error } = useSelector(state => state.signIn);
   const dispatch = useDispatch();
   const [authData, setAuthData] = useState({
     email: "",
     password: "",
     isValidEmail: false,
     isValidPW: false,
+    isLoading: false,
   });
 
   const changeEmail = e => {
@@ -177,28 +178,36 @@ export default ({ hideModal, changeForm }) => {
     console.log(service);
   };
 
-  const loginSubmit = useCallback(
-    e => {
-      const { email, password, isValidEmail, isValidPW } = authData;
-      e.preventDefault();
-      if (email && password) {
-        if (isValidEmail && isValidPW) {
-          setAuthData({
-            email: "",
-            password: "",
-            isValidEmail: false,
-            isValidPW: false,
-          });
-          hideModal();
-        } else {
-          alert("올바른 형식의 정보를 입력해주세요.");
-        }
+  const loginSubmit = async e => {
+    const { email, password, isValidEmail, isValidPW } = authData;
+    e.preventDefault();
+    if (email && password) {
+      if (isValidEmail && isValidPW) {
+        setAuthData(prevState => ({ ...prevState, isLoading: true }));
+        dispatch(signIn(JSON.stringify({ email, password })));
       } else {
         alert("로그인 정보를 다 입력해주세요.");
       }
-    },
-    [signInObj]
-  );
+    }
+  };
+
+  useEffect(() => {
+    if (authData.isLoading && pending) {
+      if (error) {
+        alert("로그인에 실패했습니다.");
+        setAuthData(prevState => ({ ...prevState, isLoading: false }));
+      } else {
+        setAuthData({
+          email: "",
+          password: "",
+          isValidEmail: false,
+          isValidPW: false,
+          isLoading: false,
+        });
+        hideModal();
+      }
+    }
+  }, [pending]);
 
   return (
     <Loginwrapper>
@@ -249,7 +258,7 @@ export default ({ hideModal, changeForm }) => {
               )
             : null}
           <SubmitButton
-            onClick={loginSubmit}
+            onClick={async e => await loginSubmit(e)}
             fill={authData.email ? (authData.password ? 1 : 2) : 2}
           >
             로그인

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import data from "../../data";
 import MainPresenter from "./MainPresenter";
 
@@ -12,6 +12,16 @@ export default () => {
     "게임",
     "스포츠",
   ];
+
+  useEffect(() => {
+    fetch("http://localhost:4000/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ hi: "hello" }),
+    });
+  }, []);
 
   return <MainPresenter categories={categories} dataArr={data} />;
 };
