@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import { isEmail, isPassword } from "../../../constants/AuthCheck";
@@ -6,7 +6,6 @@ import { CloseOutlined } from "@ant-design/icons";
 import { keyframes } from "@emotion/core";
 
 import Wave from "../../Wave/WaveContainer";
-import { signIn } from "../../../modules/SignIn";
 
 const slideUp = keyframes`
   from {
@@ -178,37 +177,28 @@ export default ({ hideModal, changeForm }) => {
     console.log(service);
   };
 
-  const loginSubmit = e => {
-    const { email, password, isValidEmail, isValidPW } = authData;
-    e.preventDefault();
-    if (email && password) {
-      if (isValidEmail && isValidPW) {
-        // LoginUp(authData); //-> api 처리
-        dispatch(signIn(JSON.stringify({ email, passWord: password }))).then(
-          () => {
-            console.log(signInObj);
-            const error = signInObj.error;
-            // console.log(error);
-            if (error) {
-              alert("로그인 정보를 확인해주세요.");
-            } else {
-              setAuthData({
-                email: "",
-                password: "",
-                isValidEmail: false,
-                isValidPW: false,
-              });
-              hideModal();
-            }
-          }
-        );
+  const loginSubmit = useCallback(
+    e => {
+      const { email, password, isValidEmail, isValidPW } = authData;
+      e.preventDefault();
+      if (email && password) {
+        if (isValidEmail && isValidPW) {
+          setAuthData({
+            email: "",
+            password: "",
+            isValidEmail: false,
+            isValidPW: false,
+          });
+          hideModal();
+        } else {
+          alert("올바른 형식의 정보를 입력해주세요.");
+        }
       } else {
-        alert("올바른 형식의 정보를 입력해주세요.");
+        alert("로그인 정보를 다 입력해주세요.");
       }
-    } else {
-      alert("로그인 정보를 다 입력해주세요.");
-    }
-  };
+    },
+    [signInObj]
+  );
 
   return (
     <Loginwrapper>

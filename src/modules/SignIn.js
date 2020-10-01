@@ -7,29 +7,39 @@ const SIGNIN_FAIL = "SIGNIN_FAIL";
 const SIGNOUT = "SIGNOUT";
 
 // action creator
-export const signIn = data => dispatch => {
+export const signIn = data => async dispatch => {
   dispatch({ type: SIGNIN_PENDING }); // 요청 시작과 함께 시작됨
 
-  return signInAPI(data)
-    .then(result => {
-      if (result.status === 401) {
-        dispatch({
-          type: SIGNIN_FAIL,
-          payload: result.message,
-        });
-      } else {
-        dispatch({
-          type: SIGNIN_SUCCESS,
-          payload: result,
-        });
-      }
-    })
-    .catch(err => {
-      dispatch({
-        type: SIGNIN_FAIL,
-        payload: err,
-      });
-    });
+  const signData = await signInAPI(data); // API 호출
+  if (signData.status === 401) {
+    dispatch({ type: SIGNIN_FAIL, payload: signData.message });
+  } else {
+    dispatch({ type: SIGNIN_SUCCESS, signData }); // 성공
+  }
+
+  // catch (e) {
+  //   dispatch({ type: SIGNIN_FAIL, payload: e }); // 실패
+  // }
+  // return signInAPI(data)
+  //   .then(result => {
+  //     if (result.status === 401) {
+  //       dispatch({
+  //         type: SIGNIN_FAIL,
+  //         payload: result.message,
+  //       });
+  //     } else {
+  //       dispatch({
+  //         type: SIGNIN_SUCCESS,
+  //         payload: result,
+  //       });
+  //     }
+  //   })
+  //   .catch(err => {
+  //     dispatch({
+  //       type: SIGNIN_FAIL,
+  //       payload: err,
+  //     });
+  //   });
 };
 export const signOut = () => dispatch => {
   return signOutAPI().then(() => dispatch({ type: SIGNOUT }));
