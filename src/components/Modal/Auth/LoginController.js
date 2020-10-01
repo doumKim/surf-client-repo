@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import { isEmail, isPassword } from "../../../constants/AuthCheck";
 import { CloseOutlined } from "@ant-design/icons";
 import { keyframes } from "@emotion/core";
 
 import Wave from "../../Wave/WaveContainer";
+import { signIn } from "../../../modules/SignIn";
 
 const slideUp = keyframes`
   from {
@@ -131,6 +133,8 @@ const GotoJoin = styled.p`
 `;
 
 export default ({ hideModal, changeForm }) => {
+  const signInObj = useSelector(state => state.signIn);
+  const dispatch = useDispatch();
   const [authData, setAuthData] = useState({
     email: "",
     password: "",
@@ -180,12 +184,24 @@ export default ({ hideModal, changeForm }) => {
     if (email && password) {
       if (isValidEmail && isValidPW) {
         // LoginUp(authData); //-> api 처리
-        setAuthData({
-          email: "",
-          password: "",
-          isValidEmail: false,
-          isValidPW: false,
-        });
+        dispatch(signIn(JSON.stringify({ email, passWord: password }))).then(
+          () => {
+            console.log(signInObj);
+            const error = signInObj.error;
+            // console.log(error);
+            if (error) {
+              alert("로그인 정보를 확인해주세요.");
+            } else {
+              setAuthData({
+                email: "",
+                password: "",
+                isValidEmail: false,
+                isValidPW: false,
+              });
+              hideModal();
+            }
+          }
+        );
       } else {
         alert("올바른 형식의 정보를 입력해주세요.");
       }
@@ -212,7 +228,7 @@ export default ({ hideModal, changeForm }) => {
           onClick={hideModal}
         />
 
-        <form onSubmit={loginSubmit} style={{ zIndex: 5 }}>
+        <form style={{ zIndex: 5 }}>
           <LoginLabel>이메일</LoginLabel>
           <LoginInput
             onChange={changeEmail}
@@ -242,7 +258,10 @@ export default ({ hideModal, changeForm }) => {
                 </div>
               )
             : null}
-          <SubmitButton fill={authData.email ? (authData.password ? 1 : 2) : 2}>
+          <SubmitButton
+            onClick={loginSubmit}
+            fill={authData.email ? (authData.password ? 1 : 2) : 2}
+          >
             로그인
           </SubmitButton>
           <SocialWrap>

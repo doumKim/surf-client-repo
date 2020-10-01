@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styled from "@emotion/styled";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { deviceSize } from "../../constants/DiviceSize";
@@ -145,10 +145,22 @@ const CreatePhaseButton = styled.button`
   transition: background-color 0.4s ease, color 0.4s ease;
 `;
 
-export default function CreatePhase({ data }) {
+function CreatePhase({ data }) {
   const [open, setOpen] = useState(false);
-  const [subtitle, setSubtitle] = useState("");
-  const [post, setPost] = useState("");
+
+  const [inputs, setInputs] = useState({
+    subtitle: "",
+    post: "",
+  });
+
+  const onChange = useCallback(e => {
+    const { name, value } = e.target;
+    console.log("rerendered");
+    setInputs(inputs => ({
+      ...inputs,
+      [name]: value,
+    }));
+  }, []);
   return (
     <>
       <CreatePhaseWrap>
@@ -169,19 +181,21 @@ export default function CreatePhase({ data }) {
             </PostLabel>
             {open && (
               <input
-                onChange={e => setSubtitle(e.target.value)}
-                value={subtitle}
+                name="subtitle"
+                onChange={onChange}
+                value={inputs.subtitle}
               />
             )}
           </PhaseInfoWrap>
           <PostLabel>{data.phase + 1} 회차 내용</PostLabel>
           <PhaseTextArea
-            value={post}
-            onChange={e => setPost(e.target.value)}
+            name="post"
+            value={inputs.post}
+            onChange={onChange}
             maxLength="6000"
             style={{ height: "600px" }}
           />
-          {post.length > 100 ? (
+          {inputs.post.length > 100 ? (
             <CreatePhaseButton send="on">파도 이어가기</CreatePhaseButton>
           ) : (
             <CreatePhaseButton>파도 이어가기</CreatePhaseButton>
@@ -205,3 +219,5 @@ export default function CreatePhase({ data }) {
     </>
   );
 }
+
+export default React.memo(CreatePhase);
