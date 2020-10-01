@@ -6,7 +6,6 @@ import { CloseOutlined } from "@ant-design/icons";
 import { keyframes } from "@emotion/core";
 
 import Wave from "../../Wave/WaveContainer";
-import { signIn } from "../../../modules/SignIn";
 
 const slideUp = keyframes`
   from {
@@ -187,10 +186,8 @@ export default ({ hideModal, changeForm }) => {
         setAuthData(prevState => ({ ...prevState, isLoading: true }));
         dispatch(signIn(JSON.stringify({ email, password })));
       } else {
-        alert("올바른 형식의 정보를 입력해주세요.");
+        alert("로그인 정보를 다 입력해주세요.");
       }
-    } else {
-      alert("로그인 정보를 다 입력해주세요.");
     }
   };
 
