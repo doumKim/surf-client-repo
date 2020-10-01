@@ -186,9 +186,9 @@ const Header = ({ width }) => {
     // 모달이 현재 보여지고 있는가
     isModalVisible: false,
     // 현재 보여지고 있는 모달이 '로그인' 모달인가
-    isModalLogin: false,
+    isModalLogin: true,
     // 현재 보여지고 있는 모달이 "로그인 된 유저가 보는" 모달인가
-    isSuccessLogin: true,
+    isSuccessLogin: false,
   });
 
   const [userMenu, setUserMenu] = useState(false);
@@ -222,6 +222,7 @@ const Header = ({ width }) => {
                 <>
                   <HeaderUser onClick={() => setUserMenu(!userMenu)}>
                     <img
+                      alt="user-avatar"
                       src={LOGIN_DATA.avatar_url}
                       style={{
                         cursor: "pointer",
@@ -233,7 +234,7 @@ const Header = ({ width }) => {
                       }}
                     />
                     <HeaderUserText style={{ color: "#212529" }}>
-                      <a>{LOGIN_DATA.username}</a>
+                      <a href="/user">{LOGIN_DATA.username}</a>
                     </HeaderUserText>
                   </HeaderUser>
                   <HeaderUser
@@ -294,12 +295,14 @@ const Header = ({ width }) => {
           </>
         )}
       </HeaderContainer>
-      <UserMenu open={userMenu}>
-        <MenuLink href={`/user/${LOGIN_DATA.userId}`}>서퍼 정보</MenuLink>
-        <MenuLink href="/wave/new">파도 일으키기</MenuLink>
-        <MenuLink href="/">좋아요 목록</MenuLink>
-        <MenuLink>로그아웃</MenuLink>
-      </UserMenu>
+      {modalState.isSuccessLogin && (
+        <UserMenu open={userMenu}>
+          <MenuLink href={`/user/${LOGIN_DATA.userId}`}>서퍼 정보</MenuLink>
+          <MenuLink href="/wave/new">파도 일으키기</MenuLink>
+          <MenuLink href="/">좋아요 목록</MenuLink>
+          <MenuLink>로그아웃</MenuLink>
+        </UserMenu>
+      )}
     </>
   );
 };
@@ -312,7 +315,3 @@ const LOGIN_DATA = {
   avatar_url:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSYieM1wd1ScKyQR9OXbwnLkloYvD9QXNpbGA&usqp=CAU",
 };
-
-{
-  /*  */
-}
