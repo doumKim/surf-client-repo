@@ -1,22 +1,26 @@
 import React, { useCallback, useState } from "react";
 import MypagePresenter from "./MypagePresenter";
 import ChangePasswordModal from "../../components/Modal/Auth/ChangePasswordModal";
+import getUserInfo from "../../api";
 
 export default function MypageContainer() {
   const [modal, setModal] = useState({
     isVisible: false,
   });
+  const [userInfo, setUserInfo] = useState({
+    data: null,
+  });
+
   const showModal = isVisible => {
     setModal(prev => ({ ...prev, isVisible }));
   };
-
   const hideModal = () => {
     setModal(prev => ({ ...prev, isVisible: false }));
   };
-
   const changeUserDataApi = useCallback(datas => {
     console.log(datas);
   }, []);
+
   return (
     <>
       <ChangePasswordModal
@@ -29,6 +33,7 @@ export default function MypageContainer() {
         openModal={showModal}
         userData={USERDATA_SAMPLE}
         changeImgApi={changeUserDataApi}
+        setUserInfo={setUserInfo}
       />
     </>
   );

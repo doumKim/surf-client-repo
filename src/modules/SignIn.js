@@ -7,32 +7,34 @@ const SIGNIN_FAIL = "SIGNIN_FAIL";
 const SIGNOUT = "SIGNOUT";
 
 // action creator
-export const signIn = data => dispatch => {
+export const signIn = data => async dispatch => {
   dispatch({ type: SIGNIN_PENDING }); // 요청 시작과 함께 시작됨
 
-  return signInAPI(data)
-    .then(result => {
-      if (result.status === 401) {
-        dispatch({
-          type: SIGNIN_FAIL,
-          payload: result.message,
-        });
-      } else {
-        dispatch({
-          type: SIGNIN_SUCCESS,
-          payload: result,
-        });
-      }
-    })
-    .catch(err => {
-      dispatch({
+  try {
+    const result = await signInAPI(data);
+    if (result.status === 401) {
+      return dispatch({
         type: SIGNIN_FAIL,
-        payload: err,
+        payload: result.message,
       });
+    } else {
+      return dispatch({
+        type: SIGNIN_SUCCESS,
+        payload: result,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return dispatch({
+      type: SIGNIN_FAIL,
+      payload: error,
     });
+  }
 };
-export const signOut = () => dispatch => {
-  return signOutAPI().then(() => dispatch({ type: SIGNOUT }));
+
+export const signOut = () => async dispatch => {
+  await signOutAPI();
+  dispatch({ type: SIGNOUT });
 };
 
 export const clearUserData = () => dispatch => {
@@ -50,13 +52,11 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SIGNIN_PENDING:
-      console.log("pendding");
       return {
         ...state,
         pending: true,
       };
     case SIGNIN_SUCCESS:
-      console.log("success", action.payload);
       return {
         ...state,
         pending: false,
@@ -65,8 +65,6 @@ export default (state = initialState, action) => {
         data: action.payload,
       };
     case SIGNIN_FAIL:
-      console.log("fail");
-
       return {
         ...state,
         pending: false,

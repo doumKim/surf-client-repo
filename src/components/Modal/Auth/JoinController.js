@@ -5,6 +5,7 @@ import { keyframes } from "@emotion/core";
 
 import { isEmail, isPassword } from "../../../constants/AuthCheck";
 import Wave from "../../Wave/WaveContainer";
+import { signUpAPI } from "../../../api";
 
 const slideUp = keyframes`
   from {
@@ -130,6 +131,7 @@ export default ({ hideModal, changeForm }) => {
     password2: "",
     isValidEmail: false,
     isValidPassword: false,
+    isLoading: false,
   });
 
   const checkPassword = () => {
@@ -182,8 +184,9 @@ export default ({ hideModal, changeForm }) => {
     });
   };
 
-  const joinSubmit = e => {
+  const joinSubmit = async e => {
     e.preventDefault();
+
     const {
       email,
       password,
@@ -195,15 +198,23 @@ export default ({ hideModal, changeForm }) => {
 
     if (email && password && username && password2) {
       if (isValidEmail && isValidPassword) {
-        // 회원가입 요청하는 API 호출
-        setAuthData({
-          username: "",
-          email: "",
-          password: "",
-          password2: "",
-          isValidEmail: false,
-          isValidPassword: false,
-        });
+        setAuthData(prevState => ({ ...prevState, isLoading: true }));
+        try {
+          await signUpAPI(JSON.stringify({ email, username, password }));
+          alert("회원가입에 성공했습니다. 로그인 해 주세요.");
+          setAuthData({
+            username: "",
+            email: "",
+            password: "",
+            password2: "",
+            isValidEmail: false,
+            isValidPassword: false,
+            isLoading: false,
+          });
+          changeForm();
+        } catch (error) {
+          alert("중복되는 이메일 또는 닉네임을 입력하셨습니다.");
+        }
       } else {
         alert("🚨 이메일 또는 패스워드를 확인해주세요");
       }
