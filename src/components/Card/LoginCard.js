@@ -13,6 +13,7 @@ const CardWrap = styled.div`
   box-shadow: rgba(23, 25, 29, 0.05) 0 4px 10px;
   transform: translateY(0);
   transition: box-shadow 0.3s, transform 0.3s;
+  border-radius: 5px;
   &:hover {
     box-shadow: rgba(23, 25, 29, 0.15) 0 4px 10px;
     transform: translateY(-4px);
@@ -22,7 +23,7 @@ const CardWrap = styled.div`
 const CardContainer = styled.div`
   display: flex;
 
-  @media ${deviceSize.mobileS} {
+  @media ${deviceSize.mobile} {
     height: 100px;
   }
   @media ${deviceSize.laptop} {
@@ -32,17 +33,19 @@ const CardContainer = styled.div`
 
 const CardHead = styled.img`
   display: block;
-  width: 50%;
+  width: 48%;
   height: 160px;
   object-fit: cover;
+  border: none;
 
   @media ${deviceSize.tablet} {
     height: 150px;
   }
 `;
 const CardBody = styled.div`
-  width: 50%;
-  @media ${deviceSize.mobileS} {
+  width: 52%;
+  padding: 0.8rem;
+  @media ${deviceSize.mobile} {
     padding: 0.7rem;
   }
   @media ${deviceSize.laptop} {
@@ -51,12 +54,12 @@ const CardBody = styled.div`
 `;
 const Title = styled.h2`
   margin-top: 5px;
-  margin-bottom: 8px;
-  font-size: 22px;
+  margin-bottom: 14px;
+  font-size: 1.7rem;
   font-weight: 700;
 
   @media ${deviceSize.tablet} {
-    font-size: 20px;
+    font-size: 1.4rem;
     font-weight: 700;
   }
 `;
@@ -71,9 +74,10 @@ const Synopsis = styled.div`
   word-wrap: break-word;
   line-height: 1.5;
   font-weight: 400;
+  font-size: 1rem;
   color: #495057;
-  @media ${deviceSize.mobileS} {
-    font-size: 14px;
+  @media ${deviceSize.mobile} {
+    font-size: 0.8rem;
   }
 `;
 
@@ -83,7 +87,7 @@ export default ({ postData }) => {
   };
 
   return (
-    <Link style={{ textDecoration: "none" }} to={`posts/${postData.id}`}>
+    <Link style={{ textDecoration: "none" }} to={`post/${postData.id}`}>
       <CardWrap>
         <CardContainer>
           <CardHead
