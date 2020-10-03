@@ -8,12 +8,16 @@ export default function PostDetailContainer({ match }) {
   const [postData, setPostData] = useState(null);
   // const [phaseData, setPhaseData] = useState(null);
   const id = match.params.id;
+  console.log(id);
 
   useEffect(() => {
     const fetcher = async () => {
       await getWaveDetail(id)
         .then(res => res.json())
-        .then(data => setPostData(data));
+        .then(data => {
+          console.log(data);
+          setPostData(data);
+        });
       // await getPhase(id, id)
       //   .then(res => res.json())
       //   .then(data => setPhaseData(data));

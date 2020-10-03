@@ -29,7 +29,7 @@ const PhaseWrap = styled.section`
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  align-item: start;
+  align-items: start;
   background-color: #f8f9fa;
   box-shadow: #dee2e6 0 2px 5px;
 
@@ -117,7 +117,7 @@ const PhaseTextArea = styled.textarea`
   margin-bottom: 2rem;
 
   &:focus {
-    outline: 1px solid #66d9e8";
+    outline: 1px solid #66d9e8;
   }
 `;
 const LastPhaseArea = styled.article`
@@ -147,7 +147,7 @@ const CreatePhaseButton = styled.button`
   transition: background-color 0.4s ease, color 0.4s ease;
 `;
 
-function CreatePhase({ data, history }) {
+function CreatePhase({ data, history, match }) {
   const [open, setOpen] = useState(false);
 
   const [inputs, setInputs] = useState({
@@ -156,12 +156,10 @@ function CreatePhase({ data, history }) {
   });
 
   useEffect(() => {
-    // 왜 작동을 안할까요?
-    console.log("mounted");
-    return () => {
-      console.log("called");
+    if (!data) {
       removeCurrentJoinUser(data.post_id);
-    };
+      history.push(`/post/${match.params.id}`);
+    }
   }, []);
 
   const onChange = e => {
@@ -187,7 +185,6 @@ function CreatePhase({ data, history }) {
       }
     });
   };
-  console.log(data);
   return (
     <>
       <CreatePhaseWrap>

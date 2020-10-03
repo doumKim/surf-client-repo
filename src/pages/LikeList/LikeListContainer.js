@@ -5,7 +5,7 @@ import LikeListPresenter from "./LikeListPresenter";
 import { likePostsAPI } from "../../api";
 import { getUserData } from "../../modules/SignIn";
 
-export default withRouter(({ history }) => {
+export default ({ history }) => {
   const [likeData, setLikeData] = useState(null);
   const [login, setLogin] = useState(false);
   const { isSignIn, error } = useSelector(state => state.signIn);
@@ -45,9 +45,6 @@ export default withRouter(({ history }) => {
   }, [isSignIn]);
 
   return (
-    <>
-      {console.log(likeData)}
-      {likeData !== null ? <LikeListPresenter allPosts={likeData} /> : null}
-    </>
+    <>{likeData !== null ? <LikeListPresenter allPosts={likeData} /> : null}</>
   );
-});
+};

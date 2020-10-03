@@ -145,9 +145,7 @@ export default ({ postData }) => {
   }, []);
 
   return (
-
     <Link to={`post/${postData.id}/`}>
-
       <CardWrap>
         <CardHead
           src={postData.title_image}
@@ -169,7 +167,6 @@ export default ({ postData }) => {
               <FcLikePlaceholder style={{ marginRight: "5px" }} />
             )}
             {postData.likes}
-
           </CardUser>
         </CardBottom>
       </CardWrap>

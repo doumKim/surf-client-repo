@@ -6,9 +6,6 @@ export function getWaveDetail(id) {
     method: "GET",
     credentials: "include",
     mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 }
 
@@ -17,9 +14,6 @@ export const getPhase = (id, cur) =>
     method: "GET",
     credentials: "include",
     mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
 export const sendLike = id =>
@@ -59,9 +53,6 @@ export const searchWave = (category, sort = "created_at") =>
     method: "GET",
     credentials: "include",
     mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
 // /post/id/id -> 갔을 떄 권한 부여
@@ -90,7 +81,4 @@ export const getLikeWave = () =>
     method: "GET",
     credentials: "include",
     mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
