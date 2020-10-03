@@ -83,7 +83,7 @@ export default ({ postData }) => {
   };
 
   return (
-    <Link style={{ textDecoration: "none" }} to={`posts/:${postData.id}`}>
+    <Link style={{ textDecoration: "none" }} to={`posts/${postData.id}`}>
       <CardWrap>
         <CardContainer>
           <CardHead

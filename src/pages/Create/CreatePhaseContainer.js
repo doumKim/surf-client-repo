@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { getPhase, getWaveDetail } from "../../postApi";
+import { getPhase, getWaveDetail, removeCurrentJoinUser } from "../../postApi";
 import { getUserData } from "../../modules/SignIn";
 import CreatePhasePresenter from "./CreatePhasePresenter";
 
 export default function CreatePhaseContainer({ match, history }) {
   const [phaseData, setPhaseData] = useState(null);
-  const [login, setLogin] = useState(false);
   const { isSignIn, error, data } = useSelector(state => state.signIn);
   const dispatch = useDispatch();
   const postId = match.params.id;
 
   const verifyPermission = async () => {
-    console.log(postId);
     try {
       const result = await getWaveDetail(postId).then(res => res.json());
       if (result.current_join_user !== data.id) {
         history.push(`/post/${postId}`);
+        return false;
+      } else {
+        return true;
       }
     } catch (error) {
       history.push(`/post/${postId}`);
+      return false;
     }
   };
 
@@ -45,18 +46,29 @@ export default function CreatePhaseContainer({ match, history }) {
   useEffect(() => {
     const initPhase = async () => {
       if (isSignIn) {
-        setLogin(true);
-        await verifyPermission();
-        await getPrevPhaseData();
-      } else {
-        if (login) {
-          setLogin(false);
-          history.push("/");
+        const verified = await verifyPermission();
+        if (verified) {
+          window.addEventListener(
+            "beforeunload",
+            removeCurrentJoinUser(postId)
+          );
+
+          getPrevPhaseData();
+        } else {
+          alert("권한이 없습니다.");
+          history.push(`/post/${match.params.id}`);
         }
+      } else {
+        alert("권한이 없습니다.");
+        history.push(`/post/${match.params.id}`);
       }
     };
 
     initPhase();
+
+    return () => {
+      window.removeEventListener("beforeunload", removeCurrentJoinUser(postId));
+    };
   }, [isSignIn]);
 
   return (

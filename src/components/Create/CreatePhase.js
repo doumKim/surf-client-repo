@@ -155,13 +155,6 @@ function CreatePhase({ data, history, match }) {
     text: "",
   });
 
-  useEffect(() => {
-    if (!data) {
-      removeCurrentJoinUser(data.post_id);
-      history.push(`/post/${match.params.id}`);
-    }
-  }, []);
-
   const onChange = e => {
     const { name, value } = e.target;
     setInputs(inputs => ({
@@ -177,14 +170,16 @@ function CreatePhase({ data, history, match }) {
       data.current_phase,
       JSON.stringify(inputs)
     ).then(res => {
+      console.log(res);
       if (res.status === 201) {
         // 작성 완료 후 상세 페이지로 이동해주는 코드
         history.push(`/post/${data.post_id}`);
       } else {
-        alert("입력 정보를 잘 확인해주세요.");
+        alert("서버 업로드에 실패했습니다.");
       }
     });
   };
+
   return (
     <>
       <CreatePhaseWrap>
@@ -224,7 +219,13 @@ function CreatePhase({ data, history, match }) {
               파도 이어가기
             </CreatePhaseButton>
           ) : (
-            <CreatePhaseButton>파도 이어가기</CreatePhaseButton>
+            <CreatePhaseButton
+              onClick={() => {
+                alert("내용은 100자 이상이어야 합니다.");
+              }}
+            >
+              파도 이어가기
+            </CreatePhaseButton>
           )}
         </PhaseWrap>
         <PhaseWrap>

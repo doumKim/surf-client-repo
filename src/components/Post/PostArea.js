@@ -127,28 +127,20 @@ const PhasePostWrap = styled.article`
 
 function PostArea({ postData, history }) {
   const [tabIdx, setTabIdx] = useState(postData.current_phase);
-  const login = useSelector(state => state.signIn);
-  // const [phaseData, setPhaseData] = useState(postData.phase_waves);
+  const { isSignIn } = useSelector(state => state.signIn);
 
-  // useEffect(() => {
-  //   console.log(postData);
-  //   // const fetcher = async () => {
-  //   //   const promiseArr = [];
-
-  //   //   for (let i = 1; i <= postData.current_phase; i += 1) {
-  //   //     promiseArr.push(getPhase(postData.id, i).then(res => res.json()));
-  //   //   }
-
-  //   //   const result = await Promise.all(promiseArr);
-
-  //   //   setPhaseData(result);
-  //   // };
-  //   // fetcher();
-  // }, []);
-
-  const handleClick = e => {
+  const handleClick = async e => {
     e.preventDefault();
-    history.push(`/post/${postData.id}/${postData.current_phase + 1}`);
+    if (!isSignIn) {
+      alert("로그인이 필요한 기능입니다.");
+    } else {
+      try {
+        await createCurrentJoinUser(postData.id);
+        history.push(`/post/${postData.id}/${postData.current_phase + 1}`);
+      } catch (error) {
+        alert("권한을 받을 수 없습니다.");
+      }
+    }
   };
 
   // console.log(phaseData, postData);
@@ -189,7 +181,8 @@ function PostArea({ postData, history }) {
           </div>
           {/* login.isSignIn && */}
           {postData.max_phase !== postData.current_phase &&
-          postData.current_join_user !== 0 ? (
+          postData.current_join_user !== 0 &&
+          isSignIn ? (
             // -> 클릭했을때 -> current_join_user가 0이면 클릭 가능
             <button
               style={{

@@ -58,22 +58,16 @@ export const searchWave = (category, sort = "created_at") =>
 // /post/id/id -> 갔을 떄 권한 부여
 export const createCurrentJoinUser = id =>
   fetch(`${baseUrl}/post/createCurrentJoinUser/${id}`, {
-    method: "POST",
+    method: "GET",
     credentials: "include",
     mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
 export const removeCurrentJoinUser = id =>
   fetch(`${baseUrl}/post/removeCurrentJoinUser/${id}`, {
-    method: "POST",
+    method: "GET",
     credentials: "include",
     mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
 export const getLikeWave = () =>
