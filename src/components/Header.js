@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { withResizeDetector } from "react-resize-detector";
 
 import HambergerModal from "./Modal/HambergerModal";
@@ -47,14 +47,16 @@ const HeaderFuncs = styled.div`
   justify-content: flex-end;
 `;
 
-const HeaderSearch = styled.input`
-  width: 212px;
-  height: 35px;
-  margin-right: 24px;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.49);
-  border: 0;
-  padding: 0px 10px;
+const HeaderSearch = styled.form`
+  input {
+    width: 212px;
+    height: 35px;
+    margin-right: 24px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.49);
+    border: 0;
+    padding: 0px 10px;
+  }
 `;
 
 const HeaderUser = styled.div`
@@ -179,7 +181,7 @@ const MenuLink = styled.a`
   }
 `;
 
-const Header = ({ width }) => {
+const Header = withRouter(({ width, history }) => {
   // redux로 로그인 상태 확인 후 로그인 유뮤에 따라 헤너 내용을 다르게 보여줄 예정
 
   const [modalState, setModalState] = useState({
@@ -201,6 +203,16 @@ const Header = ({ width }) => {
     setModalState(prev => ({ ...prev, isModalVisible: false }));
   };
 
+  // search logic
+  const [search, setSearch] = useState("");
+  // const [state, setState] = useState(null);
+
+  const handleSearch = e => {
+    e.preventDefault();
+    history.push(`/?category=${search}`);
+    setSearch("");
+  };
+
   return (
     <>
       <HeaderContainer>
@@ -213,11 +225,15 @@ const Header = ({ width }) => {
         {width > 1366 ? (
           <>
             <HeaderFuncs>
-              <HeaderSearch
-                type="text"
-                name="search"
-                placeholder="Search for Wave"
-              />
+              <HeaderSearch onSubmit={handleSearch}>
+                <input
+                  onChange={e => setSearch(e.target.value)}
+                  value={search}
+                  // type="text"
+                  name="category"
+                  placeholder="Search for Wave"
+                />
+              </HeaderSearch>
               {modalState.isSuccessLogin ? (
                 <>
                   <HeaderUser onClick={() => setUserMenu(!userMenu)}>
@@ -305,7 +321,7 @@ const Header = ({ width }) => {
       )}
     </>
   );
-};
+});
 
 export default withResizeDetector(Header);
 

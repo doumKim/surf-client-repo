@@ -1,7 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { deviceSize } from "../../constants/DiviceSize";
+import { postPhaseWave, removeCurrentJoinUser } from "../../postApi";
+import { withRouter } from "react-router-dom";
 
 const CreatePhaseWrap = styled.section`
   width: 1440px;
@@ -145,29 +147,54 @@ const CreatePhaseButton = styled.button`
   transition: background-color 0.4s ease, color 0.4s ease;
 `;
 
-function CreatePhase({ data }) {
+function CreatePhase({ data, history }) {
   const [open, setOpen] = useState(false);
 
   const [inputs, setInputs] = useState({
-    subtitle: "",
-    post: "",
+    sub_title: "",
+    text: "",
   });
 
-  const onChange = useCallback(e => {
+  useEffect(() => {
+    // 왜 작동을 안할까요?
+    console.log("mounted");
+    return () => {
+      console.log("called");
+      removeCurrentJoinUser(data.post_id);
+    };
+  }, []);
+
+  const onChange = e => {
     const { name, value } = e.target;
-    console.log("rerendered");
     setInputs(inputs => ({
       ...inputs,
       [name]: value,
     }));
-  }, []);
+  };
+
+  const postPhase = e => {
+    e.preventDefault();
+    postPhaseWave(
+      data.post_id,
+      data.current_phase,
+      JSON.stringify(inputs)
+    ).then(res => {
+      if (res.status === 201) {
+        // 작성 완료 후 상세 페이지로 이동해주는 코드
+        history.push(`/post/${data.post_id}`);
+      } else {
+        alert("입력 정보를 잘 확인해주세요.");
+      }
+    });
+  };
+  console.log(data);
   return (
     <>
       <CreatePhaseWrap>
         <PhaseWrap>
           <PhaseInfoWrap>
             <h2 style={{ color: "#339af0", borderBottom: "4px solid #339af0" }}>
-              {data.phase + 1}회차
+              {data.current_phase + 1}회차
             </h2>
             <PostLabel>
               소제목 작성<span>[option]</span>
@@ -181,22 +208,24 @@ function CreatePhase({ data }) {
             </PostLabel>
             {open && (
               <input
-                name="subtitle"
+                name="sub_title"
                 onChange={onChange}
-                value={inputs.subtitle}
+                value={inputs.sub_title}
               />
             )}
           </PhaseInfoWrap>
-          <PostLabel>{data.phase + 1} 회차 내용</PostLabel>
+          <PostLabel>{data.current_phase + 1} 회차 내용</PostLabel>
           <PhaseTextArea
-            name="post"
-            value={inputs.post}
+            name="text"
+            value={inputs.text}
             onChange={onChange}
             maxLength="6000"
             style={{ height: "600px" }}
           />
-          {inputs.post.length > 100 ? (
-            <CreatePhaseButton send="on">파도 이어가기</CreatePhaseButton>
+          {inputs.text.length > 100 ? (
+            <CreatePhaseButton send="on" onClick={postPhase}>
+              파도 이어가기
+            </CreatePhaseButton>
           ) : (
             <CreatePhaseButton>파도 이어가기</CreatePhaseButton>
           )}
@@ -207,11 +236,11 @@ function CreatePhase({ data }) {
               style={{ color: "#adb5bd", borderBottom: "4px solid #adb5bd" }}
               last="on"
             >
-              {data.phase}회차
+              {data.current_phase}회차
             </h2>
-            <PostLabel>{data.subtitle}</PostLabel>
+            <PostLabel>{data.sub_title}</PostLabel>
           </PhaseInfoWrap>
-          {data.post.split("\n").map((el, i) => (
+          {data.text.split("\n").map((el, i) => (
             <LastPhaseArea key={i}>{el}</LastPhaseArea>
           ))}
         </PhaseWrap>
@@ -220,4 +249,4 @@ function CreatePhase({ data }) {
   );
 }
 
-export default React.memo(CreatePhase);
+export default withRouter(CreatePhase);

@@ -6,8 +6,8 @@ import { deviceSize } from "../../constants/DiviceSize";
 const PostDetaillWrap = styled.section`
   display: flex;
   flex-direction: row;
-  align-items: start;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: space-between;
   padding: 2rem;
 
   @media ${deviceSize.laptop} {
@@ -21,6 +21,7 @@ const PostInfoWrap = styled.div`
   flex-direction: column;
   algin-items: start;
   max-width: 48%;
+  padding: 1rem;
 
   @media (max-width: 1300px) {
     max-width: 40%;
@@ -103,10 +104,7 @@ const PostFeature = styled.div`
     margin-bottom: 8px;
     font-size: 1rem;
     font-weight: 400;
-    // @media (max-width: 1300px) {
-    //   margin-bottom: 5px;
-    //   font-size: 0.9rem;
-    // }
+
     @media ${deviceSize.mobile} {
       font-size: 0.8rem;
       display: inline-block;
@@ -117,18 +115,13 @@ const PostFeature = styled.div`
     margin-bottom: 4px;
     font-size: 1.2rem;
     font-weight: 600;
-    // @media (max-width: 1300px) {
-    //   margin-bottom: 5px;
-    //   font-size: 1rem;
-    // }
+
     @media ${deviceSize.mobile} {
       font-size: 1rem;
       display: inline-block;
     }
   }
-  // div {
-  //   margin-top: 12px;
-  // }
+
   &:hover {
     box-shadow: #ced4da 0 2px 5px;
     transition: box-shadow 0.4s ease;
@@ -148,7 +141,7 @@ const PostFeature = styled.div`
 const PostTag = styled.div`
   display: inline-block;
   margin-right: 3px;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   padding: 5px;
   border: none;
   color: #fff;
@@ -160,23 +153,27 @@ const PostTag = styled.div`
 `;
 
 export default function PostDetailInfo({ postData }) {
+  // username 받아오기 위해서 userInfo api 필요
+  const username = "test";
   return (
     <PostDetaillWrap>
       <PostInfoWrap>
-        <PostTitle category={postData.categories}>{postData.title}</PostTitle>
+        <PostTitle category={postData.categories.split(",")[0].toLowerCase()}>
+          {postData.title}
+        </PostTitle>
         <PostSynop>{postData.synopsis}</PostSynop>
       </PostInfoWrap>
       <PostWriterWrap>
         <PostFeature>
           <img src={myPageIconUrl.write} alt="writer" />
           <h3>메이커 서퍼</h3>
-          <p>{postData.username}</p>
+          <p>{username}</p>
         </PostFeature>
         <PostFeature>
           <img src={myPageIconUrl.category} alt="category" />
           <h3>파도 장르</h3>
           <div>
-            {postData.categories.map((category, i) => (
+            {postData.categories.split(",").map((category, i) => (
               <PostTag key={i} category={category}>
                 {category}
               </PostTag>
@@ -186,7 +183,7 @@ export default function PostDetailInfo({ postData }) {
         <PostFeature>
           <img src={myPageIconUrl.create_at} alt="create_at" />
           <h3>파도 생성일</h3>
-          <p>{postData.created_at}</p>
+          <p>{postData.updatedAt.slice(0, 10)}</p>
         </PostFeature>
       </PostWriterWrap>
     </PostDetaillWrap>
@@ -202,4 +199,12 @@ const COLORS = [
   "#0ca678",
   "#ffd43b",
 ];
-const CATEGORIES = ["무협", "판타지", "로맨스", "SF", "현대", "게임", "스포츠"];
+const CATEGORIES = [
+  "action",
+  "fantasy",
+  "romance",
+  "SF",
+  "modern",
+  "game",
+  "sports",
+];

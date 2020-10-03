@@ -10,7 +10,7 @@ const MainWrapper = styled.div`
 `;
 
 export default ({ categories, dataArr }) => {
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   return (
     <MainWrapper>
       {isLoggedIn ? <CardLoginList dataArr={dataArr} /> : null}

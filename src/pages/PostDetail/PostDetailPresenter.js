@@ -20,12 +20,12 @@ const DetailWrap = styled.section`
   }
 `;
 
-export default function PostDetailPresenter({ postData, api }) {
+export default function PostDetailPresenter({ postData }) {
   return (
     <DetailWrap>
-      <PostDetailHeader sendLikeApi={api} postData={postData} />
+      <PostDetailHeader postData={postData} />
       <PostDetailInfo postData={postData} />
-      <PostArea data={postData} />
+      <PostArea postData={postData} />
     </DetailWrap>
   );
 }

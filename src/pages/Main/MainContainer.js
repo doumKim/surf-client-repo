@@ -1,27 +1,47 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import data from "../../data";
 import MainPresenter from "./MainPresenter";
+import queryString from "query-string";
+import { searchWave } from "../../postApi";
+import SearchContainer from "../SearchContainer";
 
-export default () => {
-  const categories = [
-    "무협",
-    "판타지",
-    "로맨스",
-    "SF",
-    "현대",
-    "게임",
-    "스포츠",
-  ];
+export default ({ location }) => {
+  const [searchData, setSearchData] = useState(null);
+  const query = queryString.parse(location.search);
+
+  const handleQuery = async () => {
+    if (query.category) {
+      const keyword = CATEGORIES[`${query.category}`];
+
+      await searchWave(keyword)
+        .then(res => res.json())
+        .then(data => setSearchData(data));
+    }
+  };
 
   useEffect(() => {
-    fetch("http://localhost:4000/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ hi: "hello" }),
-    });
-  }, []);
+    setSearchData(null);
+    handleQuery();
+  }, [query.category]);
 
-  return <MainPresenter categories={categories} dataArr={data} />;
+  return (
+    <>
+      {searchData ? (
+        <SearchContainer dataArr={searchData} />
+      ) : (
+        <MainPresenter categories={Object.keys(CATEGORIES)} dataArr={data} />
+      )}{" "}
+    </>
+  );
+};
+
+const CATEGORIES = {
+  무협: "martial",
+  액션: "action",
+  판타지: "fantasy",
+  로맨스: "romance",
+  SF: "sf",
+  현대: "modern",
+  게임: "game",
+  스포츠: "sports",
 };
