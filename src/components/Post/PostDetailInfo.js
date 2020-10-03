@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { myPageIconUrl } from "../../constants/SurfIcons";
 import { deviceSize } from "../../constants/DiviceSize";
-import { categories } from "../../constants/Category";
+import { categories, engToCategory } from "../../constants/Category";
 
 const PostDetaillWrap = styled.section`
   display: flex;
@@ -20,7 +20,7 @@ const PostDetaillWrap = styled.section`
 const PostInfoWrap = styled.div`
   display: flex;
   flex-direction: column;
-  algin-items: start;
+  align-items: start;
   max-width: 48%;
   padding: 1rem;
 
@@ -175,8 +175,8 @@ export default function PostDetailInfo({ postData }) {
           <h3>파도 장르</h3>
           <div>
             {postData.categories.split(",").map((category, i) => (
-              <PostTag key={i} category={category}>
-                {category}
+              <PostTag key={i} category={engToCategory[category]}>
+                {engToCategory[category]}
               </PostTag>
             ))}
           </div>

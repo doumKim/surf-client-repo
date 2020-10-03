@@ -127,28 +127,20 @@ const PhasePostWrap = styled.article`
 
 function PostArea({ postData, history }) {
   const [tabIdx, setTabIdx] = useState(postData.current_phase);
-  const login = useSelector(state => state.signIn);
-  // const [phaseData, setPhaseData] = useState(postData.phase_waves);
+  const { isSignIn } = useSelector(state => state.signIn);
 
-  // useEffect(() => {
-  //   console.log(postData);
-  //   // const fetcher = async () => {
-  //   //   const promiseArr = [];
-
-  //   //   for (let i = 1; i <= postData.current_phase; i += 1) {
-  //   //     promiseArr.push(getPhase(postData.id, i).then(res => res.json()));
-  //   //   }
-
-  //   //   const result = await Promise.all(promiseArr);
-
-  //   //   setPhaseData(result);
-  //   // };
-  //   // fetcher();
-  // }, []);
-
-  const handleClick = e => {
+  const handleClick = async e => {
     e.preventDefault();
-    history.push(`/post/${postData.id}/${postData.current_phase + 1}`);
+    if (!isSignIn) {
+      alert("로그인이 필요한 기능입니다.");
+    } else {
+      try {
+        const res = await createCurrentJoinUser(postData.id);
+        history.push(`/post/${postData.id}/${postData.current_phase + 1}`);
+      } catch (error) {
+        alert("권한을 받을 수 없습니다.");
+      }
+    }
   };
 
   // console.log(phaseData, postData);
@@ -160,13 +152,13 @@ function PostArea({ postData, history }) {
           회차 <span>( 총 {postData.max_Phase}회 )</span>
         </PostPhaseLabel>
         <PhaseTapWrap>
-          {postData.phase_waves.map(post => {
+          {postData.phase_waves.map((post, index) => {
             if (post.current_phase === tabIdx) {
               return (
                 <PhaseTap
                   cur="cur"
                   onClick={() => setTabIdx(post.current_phase)}
-                  key={post.current_phase}
+                  key={index}
                 >
                   {post.current_phase}
                 </PhaseTap>
@@ -175,7 +167,7 @@ function PostArea({ postData, history }) {
               return (
                 <PhaseTap
                   onClick={() => setTabIdx(post.current_phase)}
-                  key={post.current_phase}
+                  key={index}
                 >
                   {post.current_phase}
                 </PhaseTap>
@@ -185,11 +177,16 @@ function PostArea({ postData, history }) {
         </PhaseTapWrap>
         <PhaseDetail>
           <div>
-            <h3>"{postData.phase_waves[tabIdx - 1].sub_title}"</h3>
+            <h3>
+              {postData.phase_waves[tabIdx - 1].sub_title
+                ? postData.phase_waves[tabIdx - 1].sub_title
+                : "무제"}
+            </h3>
           </div>
           {/* login.isSignIn && */}
           {postData.max_phase !== postData.current_phase &&
-          postData.current_join_user !== 0 ? (
+          postData.current_join_user == null &&
+          isSignIn ? (
             // -> 클릭했을때 -> current_join_user가 0이면 클릭 가능
             <button
               style={{

@@ -36,12 +36,13 @@ function CreateWaveContainer({ history }) {
     }
     try {
       const res = await createWave(form);
+      console.log(res);
       if (res.status === 201) {
         const { id } = await res.json();
         history.push(`/post/${id}`);
       }
     } catch (error) {
-      alert("서버에 업로드를 실패했습니다..");
+      alert("서버에 업로드를 실패했습니다.");
     }
   };
 
@@ -75,12 +76,7 @@ function CreateWaveContainer({ history }) {
     <>
       {login ? (
         <CreateWaveWrap>
-          <CreatePost
-            selectDue={DUE}
-            selectPhase={PHASE}
-            category={CATEGORIES}
-            sendData={setData}
-          />
+          <CreatePost selectDue={DUE} selectPhase={PHASE} sendData={setData} />
         </CreateWaveWrap>
       ) : null}
     </>
@@ -97,15 +93,6 @@ const DUE = [
   { label: "12시간", value: 12 },
   { label: "24시간", value: 24 },
   { label: "48시간", value: 48 },
-];
-const CATEGORIES = [
-  { label: "무협", value: "무협" },
-  { label: "판타지", value: "판타지" },
-  { label: "로맨스", value: "로맨스" },
-  { label: "SF", value: "SF" },
-  { label: "현대", value: "현대" },
-  { label: "게임", value: "게임" },
-  { label: "스포츠", value: "스포츠" },
 ];
 
 export default withRouter(CreateWaveContainer);
