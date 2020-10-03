@@ -86,10 +86,10 @@ const SideAfterLoginController = ({ loginData }) => {
       <InnerBox>
         <MenuBox>
           <UserInfoBox>
-            {loginData.avatar_url ? (
+            {loginData.avartar_url ? (
               <Avatar
                 alt="avatar"
-                src={loginData.avatar_url}
+                src={loginData.avartar_url}
                 onError={handleImageLoadFailure}
               />
             ) : (

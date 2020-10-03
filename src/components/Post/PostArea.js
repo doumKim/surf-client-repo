@@ -128,7 +128,6 @@ const PhasePostWrap = styled.article`
 function PostArea({ postData, history }) {
   const [tabIdx, setTabIdx] = useState(postData.current_phase);
   const login = useSelector(state => state.signIn);
-  console.log(postData.phase_waves);
   // const [phaseData, setPhaseData] = useState(postData.phase_waves);
 
   // useEffect(() => {
@@ -149,22 +148,7 @@ function PostArea({ postData, history }) {
 
   const handleClick = e => {
     e.preventDefault();
-
-    getWaveDetail(postData.id)
-      .then(json => {
-        if (json.current_join_user === null) {
-          createCurrentJoinUser(postData.id);
-          history.push(`/post/${postData.id}/${postData.current_phase + 1}`);
-        } else {
-          postData.current_join_user = 1;
-          alert("해당 회차는 다른 유저가 작성중입니다. ");
-        }
-      })
-      .catch(err => {
-        postData.current_join_user = 1;
-        console.log(postData.current_join_user);
-        alert("해당 회차는 다른 유저가 작성중입니다. ");
-      });
+    history.push(`/post/${postData.id}/${postData.current_phase + 1}`);
   };
 
   // console.log(phaseData, postData);

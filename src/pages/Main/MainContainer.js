@@ -7,7 +7,8 @@ import { getAllWavesAPI, joinWavesAPI, myWavesAPI } from "../../api";
 import queryString from "query-string";
 import { searchWave } from "../../postApi";
 import SearchContainer from "../SearchContainer";
-export default withRouter(({ location }) => {
+
+export default ({ location }) => {
   const { isSignIn } = useSelector(state => state.signIn);
   const [state, setState] = useState({ isLoading: false });
   const [category, setCategory] = useState("전체");
@@ -17,6 +18,7 @@ export default withRouter(({ location }) => {
   const [currentSort, setCurrentSort] = useState("like");
   const [searchData, setSearchData] = useState(null);
   const query = queryString.parse(location.search);
+
   useEffect(() => {
     const getWavesData = async () => {
       const promiseArr = [
@@ -25,14 +27,13 @@ export default withRouter(({ location }) => {
         ),
       ];
       if (isSignIn && myWaveList === null) {
-        console.log("fetching myWaveList");
         promiseArr.push(myWavesAPI("created_at", 3).then(res => res.json()));
       }
       if (isSignIn && joinWaveList === null) {
-        console.log("fetching joinWaveList");
         promiseArr.push(joinWavesAPI(3).then(res => res.json()));
       }
       const results = await Promise.all(promiseArr);
+      console.log(results);
       if (isSignIn && myWaveList === null) {
         setMyWaveList(results[1]);
       }
@@ -45,10 +46,12 @@ export default withRouter(({ location }) => {
     setState({ isLoading: true });
     getWavesData();
   }, [isSignIn, currentSort, category]);
+
   useEffect(() => {
     setSearchData(null);
     handleQuery();
   }, [query.category]);
+
   const handleQuery = async () => {
     if (query.category) {
       const keyword = categoryToEng[`${query.category}`];
@@ -57,24 +60,25 @@ export default withRouter(({ location }) => {
         .then(data => setSearchData(data));
     }
   };
+
   return (
     <>
       {!state.isLoading && posts ? (
-       {searchData ? (
+        searchData ? (
           <SearchContainer dataArr={searchData} />
-          ) : (
-            <MainPresenter
-              isSignIn={isSignIn}
-              allPosts={posts}
-              myWaveList={myWaveList}
-              joinWaveList={joinWaveList}
-              category={category}
-              currentSort={currentSort}
-              changeCategory={setCategory}
-              changeCurrentSort={setCurrentSort}
-            />
+        ) : (
+          <MainPresenter
+            isSignIn={isSignIn}
+            allPosts={posts}
+            myWaveList={myWaveList}
+            joinWaveList={joinWaveList}
+            category={category}
+            currentSort={currentSort}
+            changeCategory={setCategory}
+            changeCurrentSort={setCurrentSort}
+          />
         )
       ) : null}
     </>
   );
-});
+};

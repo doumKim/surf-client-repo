@@ -155,17 +155,20 @@ const CameraButton = styled.button`
 
 const UserInfo = ({ userData, openModal }) => {
   const [image, setImage] = useState(
-    userData.avatar_url ? userData.avatar_url : "/images/default_user.png"
+    userData.avartar_url ? userData.avartar_url : "/images/default_user.png"
   );
 
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
+
+  console.log(userData);
 
   const handleImageUpload = async event => {
     const formData = new FormData();
     formData.append("avatar", event.target.files[0]);
     try {
       const result = await changeImageAPI(formData).then(res => res.json());
+      console.log(result);
       setImage(result.url);
     } catch (error) {
       alert("아바타 변경에 실패했습니다.");

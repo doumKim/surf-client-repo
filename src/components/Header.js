@@ -184,7 +184,6 @@ const MenuLink = styled(Link)`
 `;
 
 const Header = withRouter(({ width, history }) => {
-
   const { data, isSignIn } = useSelector(state => state.signIn);
   const dispatch = useDispatch();
 
@@ -211,7 +210,6 @@ const Header = withRouter(({ width, history }) => {
     setModalState(prev => ({ ...prev, isModalVisible: false }));
   };
 
-
   // search logic
   const [search, setSearch] = useState("");
   // const [state, setState] = useState(null);
@@ -220,10 +218,9 @@ const Header = withRouter(({ width, history }) => {
     e.preventDefault();
     history.push(`/?category=${search}`);
     setSearch("");
-
+  };
   const handleImageLoadFailure = e => {
     e.target.src = "/images/default_user.png";
-
   };
 
   return (
@@ -238,7 +235,6 @@ const Header = withRouter(({ width, history }) => {
         {width > 1366 ? (
           <>
             <HeaderFuncs>
-
               <HeaderSearch onSubmit={handleSearch}>
                 <input
                   onChange={e => setSearch(e.target.value)}
@@ -248,14 +244,13 @@ const Header = withRouter(({ width, history }) => {
                   placeholder="Search for Wave"
                 />
               </HeaderSearch>
-              {modalState.isSuccessLogin ? (
-
+              {isSignIn && data ? (
                 <>
                   <HeaderUser onClick={() => setUserMenu(!userMenu)}>
-                    {data.avatar_url ? (
+                    {data.avartar_url ? (
                       <img
                         alt="user-avatar"
-                        src={data.avatar_url}
+                        src={data.avartar_url}
                         onError={handleImageLoadFailure}
                         style={{
                           cursor: "pointer",

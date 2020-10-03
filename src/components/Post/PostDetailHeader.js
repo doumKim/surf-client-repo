@@ -78,7 +78,6 @@ export default function PostDetailHeader({ match, postData }) {
       sendLike(id);
     }
   };
-  console.log(postData);
   return (
     <DetailImgWrap>
       <DetailImg src={postData.title_image} alt={postData.title} />

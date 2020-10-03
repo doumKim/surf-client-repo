@@ -22,16 +22,12 @@ export default () => (
       <Switch>
         <Route path="/" exact component={Main} />
         <Route path="/user/likes" exact component={LikeListContainer} />
-
-
         <Route path="/post/:id" exact component={PostDetailContainer} />
         <Route path="/wave/new" exact component={CreateWaveContainer} />
         <Route path="/post/:id/:phase" exact component={CreatePhaseContainer} />
-
         <Route path="/user/mypage" exact component={MypageContainer} />
         <Route path="/user/mywave" exact component={MyWaveContainer} />
         <Route path="/user/joinwave" exact component={JoinWaveContainer} />
-
         <Redirect from="*" to="/" />
       </Switch>
     </>

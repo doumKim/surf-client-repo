@@ -4,11 +4,10 @@ import styled from "@emotion/styled";
 import { isEmail, isPassword } from "../../../constants/AuthCheck";
 import { CloseOutlined } from "@ant-design/icons";
 import { keyframes } from "@emotion/core";
-import { signIn } from "../../../modules/SignIn";
 
 import Wave from "../../Wave/WaveContainer";
-import { signIn } from "../../../modules/SignIn";
 import { baseUrl } from "../../../constants/GlobalVariables";
+import { signIn } from "../../../modules/SignIn";
 
 const slideUp = keyframes`
   from {

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { myPageIconUrl } from "../../constants/SurfIcons";
 import { deviceSize } from "../../constants/DiviceSize";
+import { categories } from "../../constants/Category";
 
 const PostDetaillWrap = styled.section`
   display: flex;
@@ -147,7 +148,7 @@ const PostTag = styled.div`
   color: #fff;
   border-radius: 2px;
   background-color: ${props => {
-    const colorIdx = CATEGORIES.indexOf(props.category);
+    const colorIdx = categories.indexOf(props.category);
     return COLORS[colorIdx];
   }};
 `;
@@ -198,13 +199,7 @@ const COLORS = [
   "#0ca678",
   "#0ca678",
   "#ffd43b",
-];
-const CATEGORIES = [
-  "action",
-  "fantasy",
-  "romance",
-  "SF",
-  "modern",
-  "game",
-  "sports",
+  "#228be6",
+  "#e67700",
+  "#ae3ec9",
 ];

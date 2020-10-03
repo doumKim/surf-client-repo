@@ -51,10 +51,15 @@ export default withRouter(({ dataArr, history }) => {
       {dataArr.length === 0 ? (
         <NoSearchWrap>
           <h2>찾으시는 결과가 없습니다.</h2>
-          <button onClick={() => history.goBack()}>뒤로 돌아가기</button>
+          <button
+            style={{ cursor: "pointer" }}
+            onClick={() => history.goBack()}
+          >
+            뒤로 돌아가기
+          </button>
         </NoSearchWrap>
       ) : (
-        <CardListContainer dataArr={dataArr} />
+        <CardListContainer allPosts={dataArr} />
       )}
     </MainWrapper>
   );

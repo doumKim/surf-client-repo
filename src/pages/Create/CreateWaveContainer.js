@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { withRouter } from "react-router-dom";
+
 import styled from "@emotion/styled";
 import CreatePost from "../../components/Create/CreatePost";
 import { createWave } from "../../postApi";
+import { getUserData } from "../../modules/SignIn";
 
 const CreateWaveWrap = styled.section`
   width: 1250px;
@@ -19,42 +23,67 @@ const CreateWaveWrap = styled.section`
   }
 `;
 
-export default function CreateWaveContainer() {
+function CreateWaveContainer({ history }) {
   const [data, setData] = useState(null);
-  const [state, setState] = useState(false);
+  const [login, setLogin] = useState(false);
+  const { isSignIn, error } = useSelector(state => state.signIn);
+  const dispatch = useDispatch();
+
+  const postFormData = async () => {
+    const form = new FormData();
+    for (let props in data) {
+      form.append(`${props}`, data[props]);
+    }
+    try {
+      const res = await createWave(form);
+      if (res.status === 201) {
+        const { id } = await res.json();
+        history.push(`/post/${id}`);
+      }
+    } catch (error) {
+      alert("서버에 업로드를 실패했습니다..");
+    }
+  };
 
   useEffect(() => {
     if (data !== null) {
-      // data를 new FormData로 업롣드.
-      console.log(data);
-      const form = new FormData();
-      for (let props in data) {
-        form.append(`${props}`, data[props]);
-      }
-      for (var key of form.keys()) {
-        console.log(key);
-      }
-      for (var value of form.values()) {
-        console.log(value);
-      }
-      createWave(form)
-        .then(res => {
-          if (res.status === 200) {
-            setState(true);
-          }
-        })
-        .catch(alert("모든 정보를 입력해주세요."));
+      postFormData();
     }
   }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      alert("로그인이 필요합니다.");
+      history.push("/");
+    } else {
+      dispatch(getUserData());
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isSignIn) {
+      setLogin(true);
+    } else {
+      if (login) {
+        setLogin(false);
+        history.push("/");
+      }
+    }
+  }, [isSignIn]);
+
   return (
-    <CreateWaveWrap>
-      <CreatePost
-        selectDue={DUE}
-        selectPhase={PHASE}
-        category={CATEGORIES}
-        sendData={setData}
-      />
-    </CreateWaveWrap>
+    <>
+      {login ? (
+        <CreateWaveWrap>
+          <CreatePost
+            selectDue={DUE}
+            selectPhase={PHASE}
+            category={CATEGORIES}
+            sendData={setData}
+          />
+        </CreateWaveWrap>
+      ) : null}
+    </>
   );
 }
 
@@ -78,3 +107,5 @@ const CATEGORIES = [
   { label: "게임", value: "게임" },
   { label: "스포츠", value: "스포츠" },
 ];
+
+export default withRouter(CreateWaveContainer);
