@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
-import { HeartTwoTone } from "@ant-design/icons";
 import { deviceSize } from "../../constants/DiviceSize";
 import { useSelector } from "react-redux";
-import { getLikeWave } from "../../postApi";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 
 // Basic Card
@@ -111,6 +109,7 @@ export const CardUser = styled.div`
   color: #495057;
   font-size: 16px;
   display: flex;
+  align-items: center;
 
   @media ${deviceSize.tablet} {
     font-size: 12px;
@@ -118,31 +117,13 @@ export const CardUser = styled.div`
 `;
 
 export default ({ postData }) => {
-  const [userLike, setUserLike] = useState(false);
   const handleImageLoadFailure = e => {
     e.target.src = "/images/no_image_indicator.png";
   };
+  const handleUserImageLoadFailure = e => {
+    e.target.src = "/images/default_user.png";
+  };
   const login = useSelector(state => state.signIn);
-  useEffect(() => {
-    const fetcher = async () => {
-      // login.isSignIn
-      if (login.isSignIn) {
-        // 로그인 된 상태라면 -> likeWave post 데이터 요청
-        // -> 결과로 받은 것을 props.postData와 비교하고
-        // -> 동일한 것을
-        let temp = [];
-        await getLikeWave().then(data => temp.concat(data.likeWaveList));
-
-        const check = temp.filter(el => el.id === postData.id);
-        if (check.length !== 0) {
-          setUserLike(true);
-        } else {
-          setUserLike(false);
-        }
-      }
-    };
-    fetcher();
-  }, []);
 
   return (
     <Link to={`post/${postData.id}/`}>
@@ -158,15 +139,29 @@ export default ({ postData }) => {
         </CardBody>
         <CardBottom>
           {/* login.isSignIn && */}
-          <CardUser>{postData.username}</CardUser>
+          <CardUser>
+            <img
+              style={{
+                width: "18px",
+                height: "18px",
+                borderRadius: "50%",
+                marginRight: "8px",
+                backgroundColor: "#dee2e6",
+              }}
+              src={postData.creator_info.avartar_url}
+              alt={postData.creator_info.username}
+              onError={handleUserImageLoadFailure}
+            />
+            <div>{postData.creator_info.username}</div>
+          </CardUser>
 
           <CardUser style={{ color: "#fa5252" }}>
-            {userLike ? (
+            {postData.liked ? (
               <FcLike style={{ marginRight: "5px" }} />
             ) : (
               <FcLikePlaceholder style={{ marginRight: "5px" }} />
             )}
-            {postData.likes}
+            {postData.like_count}
           </CardUser>
         </CardBottom>
       </CardWrap>

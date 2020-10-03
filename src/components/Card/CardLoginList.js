@@ -6,7 +6,7 @@ import LoginCard from "./LoginCard";
 const CardLoginListContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin: 0 auto;
   margin-top: 150px;
 
