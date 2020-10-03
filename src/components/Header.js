@@ -49,14 +49,16 @@ const HeaderFuncs = styled.div`
   justify-content: flex-end;
 `;
 
-const HeaderSearch = styled.input`
-  width: 212px;
-  height: 35px;
-  margin-right: 24px;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.49);
-  border: 0;
-  padding: 0px 10px;
+const HeaderSearch = styled.form`
+  input {
+    width: 212px;
+    height: 35px;
+    margin-right: 24px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.49);
+    border: 0;
+    padding: 0px 10px;
+  }
 `;
 
 const HeaderUser = styled.div`
@@ -182,6 +184,7 @@ const MenuLink = styled(Link)`
 `;
 
 const Header = withRouter(({ width, history }) => {
+
   const { data, isSignIn } = useSelector(state => state.signIn);
   const dispatch = useDispatch();
 
@@ -208,8 +211,19 @@ const Header = withRouter(({ width, history }) => {
     setModalState(prev => ({ ...prev, isModalVisible: false }));
   };
 
+
+  // search logic
+  const [search, setSearch] = useState("");
+  // const [state, setState] = useState(null);
+
+  const handleSearch = e => {
+    e.preventDefault();
+    history.push(`/?category=${search}`);
+    setSearch("");
+
   const handleImageLoadFailure = e => {
     e.target.src = "/images/default_user.png";
+
   };
 
   return (
@@ -224,12 +238,18 @@ const Header = withRouter(({ width, history }) => {
         {width > 1366 ? (
           <>
             <HeaderFuncs>
-              <HeaderSearch
-                type="text"
-                name="search"
-                placeholder="Search for Wave"
-              />
-              {isSignIn && data ? (
+
+              <HeaderSearch onSubmit={handleSearch}>
+                <input
+                  onChange={e => setSearch(e.target.value)}
+                  value={search}
+                  // type="text"
+                  name="category"
+                  placeholder="Search for Wave"
+                />
+              </HeaderSearch>
+              {modalState.isSuccessLogin ? (
+
                 <>
                   <HeaderUser onClick={() => setUserMenu(!userMenu)}>
                     {data.avatar_url ? (

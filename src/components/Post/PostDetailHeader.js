@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { FiHeart } from "react-icons/fi";
+import { sendLike } from "../../postApi";
+import { useSelector } from "react-redux";
 
 const DetailImgWrap = styled.div`
   position: relative;
@@ -63,27 +65,37 @@ const LikeButton = styled.button`
   }
 `;
 
-export default function PostDetailHeader({ postData, sendLikeApi }) {
+export default function PostDetailHeader({ match, postData }) {
+  const login = useSelector(state => state.signIn);
+
   const [like, setLike] = useState(false);
+  const id = postData.id;
+
   const handleClickLike = () => {
     if (!like) {
+      console.log(id);
       setLike(true);
-      sendLikeApi(true);
+      sendLike(id);
     }
   };
-
+  console.log(postData);
   return (
     <DetailImgWrap>
-      <DetailImg src={postData.postImage_url} alt={postData.postImage_url} />
-      {like ? (
-        <LikeButton like="like" onClick={handleClickLike}>
-          <FiHeart />
-        </LikeButton>
-      ) : (
-        <LikeButton onClick={handleClickLike}>
-          <FiHeart />
-        </LikeButton>
-      )}
+      <DetailImg src={postData.title_image} alt={postData.title} />
+      {login.isSignIn ? (
+        like ? (
+          <LikeButton like="like">
+            <FiHeart />
+          </LikeButton>
+        ) : (
+          <LikeButton onClick={handleClickLike}>
+            <FiHeart />
+          </LikeButton>
+        )
+      ) : null}
     </DetailImgWrap>
   );
 }
+
+// 클릭 되지 않은 상태에서만 api 호출할 수 있도록 처리
+// 로그인 상태인지 확인하고 like button 조건부 랜더링

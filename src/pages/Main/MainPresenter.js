@@ -9,6 +9,7 @@ const MainWrapper = styled.div`
   margin-top: 60px;
 `;
 
+
 export default ({
   isSignIn,
   allPosts,
@@ -19,6 +20,7 @@ export default ({
   changeCategory,
   changeCurrentSort,
 }) => {
+
   return (
     <MainWrapper>
       {isSignIn && myWaveList !== null && joinWaveList !== null ? (

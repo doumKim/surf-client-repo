@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { lighten } from "polished";
 import { deviceSize } from "../../constants/DiviceSize";
+import { useSelector } from "react-redux";
+import { getWaveDetail, getPhase, createCurrentJoinUser } from "../../postApi";
+import { withRouter } from "react-router-dom";
 
 const PostAreaWrap = styled.section`
   display: flex;
@@ -84,17 +87,16 @@ const PhaseDetail = styled.section`
     padding: 12px;
     font-size: 15px;
     font-weight: 500;
-    color: #fff;
     text-align: center;
     border: none;
     border-radius: 5px;
-    background-color: #228be6;
-    cursor: pointer;
-    &:hover {
-      background: ${lighten(0.05, "#228be6")};
-      box-shadow: #1864ab 0 1px 4px;
-      transition: all 0.4s ease;
-    }
+    // cursor: pointer;
+
+    // &:hover {
+    //   background: ${lighten(0.05, "#228be6")};
+    //   box-shadow: #1864ab 0 1px 4px;
+    //   transition: all 0.4s ease;
+    // }
     &:focus {
       outline: none;
     }
@@ -123,62 +125,116 @@ const PhasePostWrap = styled.article`
   }
 `;
 
-export default function PostArea({ data }) {
-  const [tabIdx, setTabIdx] = useState(data.posts.length - 1);
+function PostArea({ postData, history }) {
+  const [tabIdx, setTabIdx] = useState(postData.current_phase);
+  const login = useSelector(state => state.signIn);
+  console.log(postData.phase_waves);
+  // const [phaseData, setPhaseData] = useState(postData.phase_waves);
 
+  // useEffect(() => {
+  //   console.log(postData);
+  //   // const fetcher = async () => {
+  //   //   const promiseArr = [];
+
+  //   //   for (let i = 1; i <= postData.current_phase; i += 1) {
+  //   //     promiseArr.push(getPhase(postData.id, i).then(res => res.json()));
+  //   //   }
+
+  //   //   const result = await Promise.all(promiseArr);
+
+  //   //   setPhaseData(result);
+  //   // };
+  //   // fetcher();
+  // }, []);
+
+  const handleClick = e => {
+    e.preventDefault();
+
+    getWaveDetail(postData.id)
+      .then(json => {
+        if (json.current_join_user === null) {
+          createCurrentJoinUser(postData.id);
+          history.push(`/post/${postData.id}/${postData.current_phase + 1}`);
+        } else {
+          postData.current_join_user = 1;
+          alert("해당 회차는 다른 유저가 작성중입니다. ");
+        }
+      })
+      .catch(err => {
+        postData.current_join_user = 1;
+        console.log(postData.current_join_user);
+        alert("해당 회차는 다른 유저가 작성중입니다. ");
+      });
+  };
+
+  // console.log(phaseData, postData);
   return (
-    <PostAreaWrap>
-      <PostPhaseLabel>
-        회차 <span>( 총 {data.max_phase}회 )</span>
-      </PostPhaseLabel>
-      <PhaseTapWrap>
-        {data.posts.map((post, idx) => {
-          if (idx === tabIdx) {
-            return (
-              <PhaseTap cur="cur" onClick={() => setTabIdx(idx)} key={idx}>
-                {post.phase}
-              </PhaseTap>
-            );
-          } else {
-            return (
-              <PhaseTap onClick={() => setTabIdx(idx)} key={idx}>
-                {post.phase}
-              </PhaseTap>
-            );
-          }
-        })}
-      </PhaseTapWrap>
-      <PhaseDetail>
-        <div>
-          <h3>"{data.posts[tabIdx].subtitle}"</h3>
-          <h3
-            style={{
-              borderLeft: "3px solid #495057",
-              paddingLeft: "10px",
-              height: "fit-content",
-            }}
-          >
-            {data.posts[tabIdx].writer}
-          </h3>
-        </div>
-        {data.max_phase !== data.last_phase && (
-          <button>
-            <a
-              href={`/post/${data.postId}/createPhaseWave/${
-                data.last_phase + 1
-              }`}
-              style={{ textDecoration: "none" }}
+    <>
+      {/* {phaseData.length !== 0 ? ( */}
+      <PostAreaWrap>
+        <PostPhaseLabel>
+          회차 <span>( 총 {postData.max_Phase}회 )</span>
+        </PostPhaseLabel>
+        <PhaseTapWrap>
+          {postData.phase_waves.map(post => {
+            if (post.current_phase === tabIdx) {
+              return (
+                <PhaseTap
+                  cur="cur"
+                  onClick={() => setTabIdx(post.current_phase)}
+                  key={post.current_phase}
+                >
+                  {post.current_phase}
+                </PhaseTap>
+              );
+            } else {
+              return (
+                <PhaseTap
+                  onClick={() => setTabIdx(post.current_phase)}
+                  key={post.current_phase}
+                >
+                  {post.current_phase}
+                </PhaseTap>
+              );
+            }
+          })}
+        </PhaseTapWrap>
+        <PhaseDetail>
+          <div>
+            <h3>"{postData.phase_waves[tabIdx - 1].sub_title}"</h3>
+          </div>
+          {/* login.isSignIn && */}
+          {postData.max_phase !== postData.current_phase &&
+          postData.current_join_user !== 0 ? (
+            // -> 클릭했을때 -> current_join_user가 0이면 클릭 가능
+            <button
+              style={{
+                backgroundColor: "#228be6",
+                color: "#fff",
+                cursor: "pointer",
+              }}
+              onClick={handleClick}
             >
               파도 이어가기
-            </a>
-          </button>
-        )}
-      </PhaseDetail>
-      <PhasePostWrap>
-        {data.posts[tabIdx].post.split("\n").map((el, i) => (
-          <article key={i}>{el}</article>
-        ))}
-      </PhasePostWrap>
-    </PostAreaWrap>
+            </button>
+          ) : (
+            <button
+              disabled
+              style={{ backgroundColor: "#ced4da", color: "#868e96" }}
+            >
+              파도 이어가기
+            </button>
+          )}
+        </PhaseDetail>
+        <PhasePostWrap>
+          {postData.phase_waves[tabIdx - 1].text.split("\n").map((el, i) => (
+            <article key={i}>{el}</article>
+          ))}
+        </PhasePostWrap>
+      </PostAreaWrap>
+      {/* // ) : null} */}
+    </>
   );
 }
+
+export default withRouter(PostArea);
