@@ -7,10 +7,10 @@ const CardListContainer = styled.div`
   width: 100%;
 `;
 
-export default ({ dataArr }) => {
+export default ({ allPosts }) => {
   return (
-    <CardListContainer length={dataArr.length}>
-      {dataArr.map((data, index) => (
+    <CardListContainer length={allPosts.length}>
+      {allPosts.map((data, index) => (
         <Card key={index} postData={data} />
       ))}
     </CardListContainer>

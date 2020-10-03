@@ -12,6 +12,8 @@ import PostDetailContainer from "./pages/PostDetail/PostDetailContainer";
 import CreateWaveContainer from "./pages/Create/CreateWaveContainer";
 import CreatePhaseContainer from "./pages/Create/CreatePhaseContainer";
 import LikeListContainer from "./pages/LikeList/LikeListContainer";
+import MyWaveContainer from "./pages/MyWaveList/MyWaveContainer";
+import JoinWaveContainer from "./pages/JoinWaveList/JoinWaveContainer";
 
 export default () => (
   <Router>
@@ -20,10 +22,12 @@ export default () => (
       <Switch>
         <Route path="/" exact component={Main} />
         <Route path="/user/likes" exact component={LikeListContainer} />
-        <Route path="/user/32" exact component={MypageContainer} />
-        <Route path="/post/1" exact component={PostDetailContainer} />
+        <Route path="/user/mypage" exact component={MypageContainer} />
+        <Route path="/user/mywave" exact component={MyWaveContainer} />
+        <Route path="/user/joinwave" exact component={JoinWaveContainer} />
+        <Route path="/post/:id" exact component={PostDetailContainer} />
         <Route path="/wave/new" exact component={CreateWaveContainer} />
-        <Route path="/phase/1" exact component={CreatePhaseContainer} />
+        <Route path="/phase/:id" exact component={CreatePhaseContainer} />
         <Redirect from="*" to="/" />
       </Switch>
     </>

@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { withResizeDetector } from "react-resize-detector";
 import { myPageIconUrl } from "../../../constants/SurfIcons";
+import { signOut } from "../../../modules/SignIn";
 
 const MainContainer = styled.div`
   position: relative;
@@ -44,7 +47,7 @@ const MenuBox = styled.section`
   flex-direction: column;
   align-items: center;
 `;
-const MenuLink = styled.a`
+const MenuLink = styled(Link)`
   display: flex;
   justify-content: start;
   align-items: center;
@@ -72,29 +75,50 @@ const MenuIcon = styled.img`
 `;
 
 const SideAfterLoginController = ({ loginData }) => {
+  const dispatch = useDispatch();
+
+  const handleImageLoadFailure = e => {
+    e.target.src = "/images/default_user.png";
+  };
+
   return (
     <MainContainer>
       <InnerBox>
         <MenuBox>
           <UserInfoBox>
-            <Avatar alt="avatar" src={loginData.avatar_url} />
+            {loginData.avatar_url ? (
+              <Avatar
+                alt="avatar"
+                src={loginData.avatar_url}
+                onError={handleImageLoadFailure}
+              />
+            ) : (
+              <Avatar alt="avatar" src={"/images/default_user.png"} />
+            )}
+
             <div>
-              <a href={`/user/${loginData.userId}`}>{loginData.username}</a>
+              <Link to="/user/mypage">{loginData.username}</Link>
             </div>
           </UserInfoBox>
-          <MenuLink href={`/user/${loginData.userId}`}>
+          <MenuLink to="/user/mypage">
             <MenuIcon alt="user" src={myPageIconUrl.surfing_man}></MenuIcon>
             <h3>서퍼 정보 확인하기</h3>
           </MenuLink>
-          <MenuLink href="/wave/new">
+          <MenuLink to="/wave/new">
             <MenuIcon alt="post" src={myPageIconUrl.wave} />
             <h3>파도 일으키기</h3>
           </MenuLink>
-          <MenuLink href="/">
+          <MenuLink to="/user/likes">
             <MenuIcon alt="like" src={myPageIconUrl.like} />
             <h3>좋아요 목록</h3>
           </MenuLink>
-          <MenuLink>
+          <MenuLink
+            onClick={e => {
+              e.preventDefault();
+              dispatch(signOut());
+            }}
+            to="/"
+          >
             <MenuIcon alt="like" src={myPageIconUrl.signout} />
             <h3>로그아웃</h3>
           </MenuLink>

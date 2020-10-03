@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import LikeListPresenter from "./LikeListPresenter";
-import { likePostsAPI } from "../../api";
+import JoinWavePresenter from "./JoinWavePresenter";
+import { joinWavesAPI } from "../../api";
 import { getUserData } from "../../modules/SignIn";
 
 export default withRouter(({ history }) => {
-  const [likeData, setLikeData] = useState(null);
+  const [joinData, setJoinData] = useState(null);
   const [login, setLogin] = useState(false);
   const { isSignIn, error } = useSelector(state => state.signIn);
   const dispatch = useDispatch();
@@ -20,14 +20,14 @@ export default withRouter(({ history }) => {
     }
   }, [error]);
 
-  const getLikePosts = async () => {
+  const getJoinPosts = async () => {
     try {
       if (isSignIn) {
-        const result = await likePostsAPI().then(res => res.json());
-        setLikeData(result);
+        const result = await joinWavesAPI().then(res => res.json());
+        setJoinData(result);
       }
     } catch (error) {
-      alert("좋아요 한 목록을 가져오는데 실패했습니다.");
+      alert("내가 참여한 글 목록을 가져오는데 실패했습니다.");
       history.push("/");
     }
   };
@@ -35,7 +35,7 @@ export default withRouter(({ history }) => {
   useEffect(() => {
     if (isSignIn) {
       setLogin(true);
-      getLikePosts();
+      getJoinPosts();
     } else {
       if (login) {
         setLogin(false);
@@ -45,9 +45,6 @@ export default withRouter(({ history }) => {
   }, [isSignIn]);
 
   return (
-    <>
-      {console.log(likeData)}
-      {likeData !== null ? <LikeListPresenter allPosts={likeData} /> : null}
-    </>
+    <>{joinData !== null ? <JoinWavePresenter allPosts={joinData} /> : null}</>
   );
 });

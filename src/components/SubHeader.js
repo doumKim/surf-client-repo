@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 
 const SubHeaderNav = styled.ul`
@@ -31,50 +31,46 @@ const SubHeaderText = styled.span`
   color: ${props => (props.selected ? "#6D87EA" : "black")};
 `;
 
-export default () => {
-  const [state, setState] = useState({
-    curSelection: 0,
-  });
-
+export default ({ currentSort, changeCurrentSort }) => {
   return (
     <SubHeaderNav>
       <SubHeaderItem
-        onClick={() =>
-          setState(prevState => ({
-            ...prevState,
-            curSelection: 0,
-          }))
-        }
-        selected={state.curSelection === 0}
+        onClick={() => {
+          if (currentSort === "created_at") {
+            changeCurrentSort("like");
+          }
+        }}
+        selected={currentSort === "like"}
       >
         <SubHeaderImage
           style={{ width: "24px", height: "24px" }}
           imageUrl={
-            state.curSelection === 0
+            currentSort === "like"
               ? "/images/fav_active.png"
               : "/images/fav_normal.png"
           }
         />
-        <SubHeaderText selected={state.curSelection === 0}>인기</SubHeaderText>
+        <SubHeaderText selected={currentSort === "like"}>인기</SubHeaderText>
       </SubHeaderItem>
       <SubHeaderItem
-        onClick={() =>
-          setState(prevState => ({
-            ...prevState,
-            curSelection: 1,
-          }))
-        }
-        selected={state.curSelection === 1}
+        onClick={() => {
+          if (currentSort === "like") {
+            changeCurrentSort("created_at");
+          }
+        }}
+        selected={currentSort === "created_at"}
       >
         <SubHeaderImage
           style={{ width: "18px", height: "24px" }}
           imageUrl={
-            state.curSelection === 1
+            currentSort === "created_at"
               ? "/images/recent_active.png"
               : "/images/recent_normal.png"
           }
         />
-        <SubHeaderText selected={state.curSelection === 1}>최신</SubHeaderText>
+        <SubHeaderText selected={currentSort === "created_at"}>
+          최신
+        </SubHeaderText>
       </SubHeaderItem>
     </SubHeaderNav>
   );

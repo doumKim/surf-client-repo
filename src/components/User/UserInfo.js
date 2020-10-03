@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { size } from "../../constants/DiviceSize";
 import { FiCamera, FiUnlock } from "react-icons/fi";
 import { lighten } from "polished";
+import { changeImageAPI } from "../../api";
 
 const UserInfoBox = styled.div`
   padding: 3rem;
@@ -152,29 +153,22 @@ const CameraButton = styled.button`
   }
 `;
 
-const UserInfo = ({ userData, changeImgApi, openModal }) => {
-  const [image, setImage] = useState(userData.avatar_url);
+const UserInfo = ({ userData, openModal }) => {
+  const [image, setImage] = useState(
+    userData.avatar_url ? userData.avatar_url : "/images/default_user.png"
+  );
 
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
 
-  const handleImageUpload = e => {
-    // e.preventDefault();
-    const prevImage = userData.avatar_url;
-    const [file] = e.target.files;
-    if (file) {
-      const reader = new FileReader();
-      const { current } = uploadedImage;
-      current.file = file;
-      reader.onload = e => {
-        current.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    setImage(e.target.files[0]);
-    if (prevImage !== image) {
-      changeImgApi({ image });
+  const handleImageUpload = async event => {
+    const formData = new FormData();
+    formData.append("avatar", event.target.files[0]);
+    try {
+      const result = await changeImageAPI(formData).then(res => res.json());
+      setImage(result.url);
+    } catch (error) {
+      alert("아바타 변경에 실패했습니다.");
     }
   };
 
@@ -196,17 +190,8 @@ const UserInfo = ({ userData, changeImgApi, openModal }) => {
       </section>
       <section>
         <UserDetail>
-          {/* <div>서퍼 이름</div>
-          {isModify ? (
-            <input value={username} onChange={handleChangeUsername} />
-          ) : ( */}
           <div>{userData.username}</div>
-          {/* )} */}
         </UserDetail>
-        {/* <UserDetail>
-          <div>이메일</div>
-          <p>{userData.email}</p>
-        </UserDetail> */}
 
         <AmendButton type="submit" onClick={() => openModal(true)}>
           패스워드 수정{" "}

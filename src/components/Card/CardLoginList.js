@@ -17,6 +17,7 @@ const CardLoginListContainer = styled.div`
 
 const CardLoginBlock = styled.div`
   width: 42%;
+  height: 480px;
   @media ${deviceSize.tablet} {
     width: 100%;
     min-width: 280px;
@@ -32,28 +33,48 @@ const BlockLabel = styled.span`
   margin-bottom: 40px;
 `;
 
-export default ({ dataArr }) => {
+const EmptyReplacer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: bold;
+`;
+
+const EmptyText = styled.span`
+  display: inline-block;
+  vertical-align: middle;
+`;
+
+export default ({ myWaveList, joinWaveList }) => {
+  console.log(myWaveList, joinWaveList);
   return (
     <CardLoginListContainer>
       <CardLoginBlock>
         <BlockLabel>내가 일으킨 파도 목록</BlockLabel>
-        {dataArr.map((data, index) => {
-          if (index < 3) {
+        {myWaveList.length !== 0 ? (
+          myWaveList.map(data => {
             return <LoginCard key={data.postId} postData={data} />;
-          } else {
-            return null;
-          }
-        })}
+          })
+        ) : (
+          <EmptyReplacer>
+            <EmptyText>내가 일으킨 파도가 없습니다.</EmptyText>
+          </EmptyReplacer>
+        )}
       </CardLoginBlock>
       <CardLoginBlock>
-        <BlockLabel>내가 참여한 파도 목록</BlockLabel>
-        {dataArr.map((data, index) => {
-          if (index < 3) {
+        <BlockLabel>
+          <EmptyText>내가 참여한 파도 목록</EmptyText>
+        </BlockLabel>
+        {joinWaveList.length !== 0 ? (
+          joinWaveList.map(data => {
             return <LoginCard key={data.postId} postData={data} />;
-          } else {
-            return null;
-          }
-        })}
+          })
+        ) : (
+          <EmptyReplacer>내가 참여한 파도가 없습니다.</EmptyReplacer>
+        )}
       </CardLoginBlock>
     </CardLoginListContainer>
   );

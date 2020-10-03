@@ -87,7 +87,7 @@ export default ({ postData }) => {
       <CardWrap>
         <CardContainer>
           <CardHead
-            src={postData.imageUrl}
+            src={postData.title_image}
             alt={postData.title}
             onError={handleImageLoadFailure}
           />

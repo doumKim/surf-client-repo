@@ -7,10 +7,14 @@ const MainWrapper = styled.div`
   margin: 60px 0;
 `;
 
-export default ({ allPosts }) => {
+export default ({ allPosts, currentSort, changeCurrentSort }) => {
   return (
     <MainWrapper>
-      <CardListContainer allPosts={allPosts} showSubHeader={false} />
+      <CardListContainer
+        allPosts={allPosts}
+        currentSort={currentSort}
+        changeCurrentSort={changeCurrentSort}
+      />
     </MainWrapper>
   );
 };

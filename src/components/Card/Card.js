@@ -119,10 +119,10 @@ export default ({ postData }) => {
   };
 
   return (
-    <Link to={`posts/:${postData.postId}/`}>
+    <Link to={`posts/:${postData.id}/`}>
       <CardWrap>
         <CardHead
-          src={postData.imageUrl}
+          src={postData.title_image}
           alt={postData.title}
           onError={handleImageLoadFailure}
         />
@@ -137,7 +137,7 @@ export default ({ postData }) => {
               style={{ marginRight: "5px" }}
               twoToneColor="#eb2f96"
             />{" "}
-            {postData.likes}
+            {postData.like}
           </CardUser>
         </CardBottom>
       </CardWrap>
