@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import LikeListPresenter from "./LikeListPresenter";
-import { likePostsAPI } from "../../api";
+import MyWavePresenter from "./MyWavePresenter";
+import { myWavesAPI } from "../../api";
 import { getUserData } from "../../modules/SignIn";
 
 export default withRouter(({ history }) => {
-  const [likeData, setLikeData] = useState(null);
+  const [myWaveData, setMyWaveData] = useState(null);
   const [login, setLogin] = useState(false);
+  const [currentSort, setCurrentSort] = useState("like");
   const { isSignIn, error } = useSelector(state => state.signIn);
   const dispatch = useDispatch();
 
@@ -20,22 +21,28 @@ export default withRouter(({ history }) => {
     }
   }, [error]);
 
-  const getLikePosts = async () => {
+  const getMyWavePosts = async sort => {
     try {
       if (isSignIn) {
-        const result = await likePostsAPI().then(res => res.json());
-        setLikeData(result);
+        const result = await myWavesAPI(sort).then(res => res.json());
+        setMyWaveData(result);
       }
     } catch (error) {
-      alert("좋아요 한 목록을 가져오는데 실패했습니다.");
+      alert("내가 작성한 글 목록을 가져오는데 실패했습니다.");
       history.push("/");
     }
+  };
+
+  const changeCurrentSort = async sort => {
+    setCurrentSort(sort);
+    const result = await getMyWavePosts(sort);
+    setMyWaveData(result);
   };
 
   useEffect(() => {
     if (isSignIn) {
       setLogin(true);
-      getLikePosts();
+      getMyWavePosts(currentSort);
     } else {
       if (login) {
         setLogin(false);
@@ -46,8 +53,13 @@ export default withRouter(({ history }) => {
 
   return (
     <>
-      {console.log(likeData)}
-      {likeData !== null ? <LikeListPresenter allPosts={likeData} /> : null}
+      {myWaveData !== null ? (
+        <MyWavePresenter
+          allPosts={myWaveData}
+          currentSort={currentSort}
+          changeCurrentSort={changeCurrentSort}
+        />
+      ) : null}
     </>
   );
 });

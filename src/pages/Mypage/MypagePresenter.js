@@ -61,18 +61,14 @@ const UserInfoWrap = styled.section`
   }
 `;
 
-export default function MypagePresenter({ openModal, userData, changeImgApi }) {
+export default function MypagePresenter({ openModal, userData, myPageData }) {
   return (
     <>
       <MypageWrap>
         <MypageLabel>마이페이지</MypageLabel>
         <UserInfoWrap>
-          <UserInfo
-            openModal={openModal}
-            userData={userData}
-            changeImgApi={changeImgApi}
-          />
-          <UserFeatures userData={userData} />
+          <UserInfo openModal={openModal} userData={userData} />
+          <UserFeatures userData={userData} myPageData={myPageData} />
         </UserInfoWrap>
       </MypageWrap>
     </>

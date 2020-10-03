@@ -2,12 +2,7 @@ import React, { useRef } from "react";
 import { ModalBackground } from "../../../constants/modalStyles";
 import ChangePwController from "./ChangePwController";
 
-export default function ChangePasswordModal({
-  api,
-  data,
-  disappear,
-  modalState,
-}) {
+export default function ChangePasswordModal({ data, disappear, modalState }) {
   let ref = useRef(null);
 
   const handleWindowPress = e => {
@@ -21,11 +16,7 @@ export default function ChangePasswordModal({
   } else {
     return (
       <ModalBackground ref={ref} onClick={handleWindowPress}>
-        <ChangePwController
-          pwChangeApi={api}
-          close={disappear}
-          userData={data}
-        />
+        <ChangePwController close={disappear} userData={data} />
       </ModalBackground>
     );
   }

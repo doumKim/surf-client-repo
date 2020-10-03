@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 import { size } from "../../constants/DiviceSize";
 import { myPageIconUrl } from "../../constants/SurfIcons";
 
@@ -69,24 +70,34 @@ const UserFeature = styled.div`
   }
 `;
 
-const UserFeatures = ({ userData }) => {
+const UserFeatures = ({ userData, myPageData }) => {
   return (
     <UserFeatureBox>
       <UserFeatureItemWrap>
-        <UserFeature>
-          <img alt="wave" src={myPageIconUrl.wave} />
-          <div>
-            <h4>파도 일으키기</h4>
-            <h2>{userData.surfs}</h2>
-          </div>
-        </UserFeature>
-        <UserFeature>
-          <img alt="wave" src={myPageIconUrl.surfing} />
-          <div>
-            <h4>파도 이어가기</h4>
-            <h2>{userData.join_surfs}</h2>
-          </div>
-        </UserFeature>
+        <Link
+          to="/user/mywave"
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          <UserFeature>
+            <img alt="wave" src={myPageIconUrl.wave} />
+            <div>
+              <h4>파도 일으키기</h4>
+              <h2>{myPageData.countCreateWave}</h2>
+            </div>
+          </UserFeature>
+        </Link>
+        <Link
+          to="/user/joinwave"
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          <UserFeature>
+            <img alt="wave" src={myPageIconUrl.surfing} />
+            <div>
+              <h4>파도 이어가기</h4>
+              <h2>{myPageData.countJoinWave}</h2>
+            </div>
+          </UserFeature>
+        </Link>
       </UserFeatureItemWrap>
       <UserFeatureItemWrap>
         <UserFeature>
@@ -105,15 +116,18 @@ const UserFeatures = ({ userData }) => {
             <h2>{userData.lv}</h2>
           </div>
         </UserFeature>
-        <UserFeature>
-          <a href="/" style={{ textDecoration: "none", color: "black" }}>
+        <Link
+          to="/user/likes"
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          <UserFeature>
             <img alt="link" src={myPageIconUrl.like} />
             <div>
               <h4>좋아요한 파도</h4>
-              <h2>{userData.like}</h2>
+              <h2>{myPageData.countLikeWave}</h2>
             </div>
-          </a>
-        </UserFeature>
+          </UserFeature>
+        </Link>
       </UserFeatureItemWrap>
     </UserFeatureBox>
   );

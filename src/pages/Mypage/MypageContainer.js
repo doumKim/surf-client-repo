@@ -1,15 +1,52 @@
-import React, { useCallback, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { withRouter } from "react-router-dom";
+
 import MypagePresenter from "./MypagePresenter";
 import ChangePasswordModal from "../../components/Modal/Auth/ChangePasswordModal";
-import getUserInfo from "../../api";
+import { getUserData } from "../../modules/SignIn";
+import { myPageInfoAPI } from "../../api";
 
-export default function MypageContainer() {
+function MypageContainer({ history }) {
+  const { isSignIn, data, error } = useSelector(state => state.signIn);
+  const [login, setLogin] = useState(false);
+  const dispatch = useDispatch();
+
   const [modal, setModal] = useState({
     isVisible: false,
   });
-  const [userInfo, setUserInfo] = useState({
-    data: null,
-  });
+  const [myPageData, setMyPageData] = useState(null);
+
+  useEffect(() => {
+    if (error) {
+      alert("로그인이 필요합니다.");
+      history.push("/");
+    } else {
+      dispatch(getUserData());
+    }
+  }, [error]);
+
+  useEffect(() => {
+    const getMyPageInfo = async () => {
+      if (isSignIn) {
+        setLogin(true);
+        try {
+          const result = await myPageInfoAPI().then(res => res.json());
+          setMyPageData(result);
+        } catch (error) {
+          alert("서버에서 정보를 가져오는데 실패했습니다.");
+          history.push("/");
+        }
+      } else {
+        if (login) {
+          setLogin(false);
+          history.push("/");
+        }
+      }
+    };
+
+    getMyPageInfo();
+  }, [isSignIn]);
 
   const showModal = isVisible => {
     setModal(prev => ({ ...prev, isVisible }));
@@ -17,36 +54,25 @@ export default function MypageContainer() {
   const hideModal = () => {
     setModal(prev => ({ ...prev, isVisible: false }));
   };
-  const changeUserDataApi = useCallback(datas => {
-    console.log(datas);
-  }, []);
 
   return (
     <>
-      <ChangePasswordModal
-        disappear={hideModal}
-        api={changeUserDataApi}
-        data={USERDATA_SAMPLE}
-        modalState={modal}
-      />
-      <MypagePresenter
-        openModal={showModal}
-        userData={USERDATA_SAMPLE}
-        changeImgApi={changeUserDataApi}
-        setUserInfo={setUserInfo}
-      />
+      {data && myPageData ? (
+        <>
+          <ChangePasswordModal
+            disappear={hideModal}
+            data={data}
+            modalState={modal}
+          />
+          <MypagePresenter
+            openModal={showModal}
+            userData={data}
+            myPageData={myPageData}
+          />
+        </>
+      ) : null}
     </>
   );
 }
-const USERDATA_SAMPLE = {
-  password: "qwer1234",
-  avatar_url:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSYieM1wd1ScKyQR9OXbwnLkloYvD9QXNpbGA&usqp=CAU",
-  email: "dobby@dobby.com",
-  surfer_name: "dobby377",
-  username: "dobby_is_free",
-  surfs: 6,
-  join_surfs: 2,
-  lv: 1,
-  like: 3,
-};
+
+export default withRouter(MypageContainer);
