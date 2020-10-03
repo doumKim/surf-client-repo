@@ -135,7 +135,7 @@ function PostArea({ postData, history }) {
       alert("로그인이 필요한 기능입니다.");
     } else {
       try {
-        await createCurrentJoinUser(postData.id);
+        const res = await createCurrentJoinUser(postData.id);
         history.push(`/post/${postData.id}/${postData.current_phase + 1}`);
       } catch (error) {
         alert("권한을 받을 수 없습니다.");
@@ -152,13 +152,13 @@ function PostArea({ postData, history }) {
           회차 <span>( 총 {postData.max_Phase}회 )</span>
         </PostPhaseLabel>
         <PhaseTapWrap>
-          {postData.phase_waves.map(post => {
+          {postData.phase_waves.map((post, index) => {
             if (post.current_phase === tabIdx) {
               return (
                 <PhaseTap
                   cur="cur"
                   onClick={() => setTabIdx(post.current_phase)}
-                  key={post.current_phase}
+                  key={index}
                 >
                   {post.current_phase}
                 </PhaseTap>
@@ -167,7 +167,7 @@ function PostArea({ postData, history }) {
               return (
                 <PhaseTap
                   onClick={() => setTabIdx(post.current_phase)}
-                  key={post.current_phase}
+                  key={index}
                 >
                   {post.current_phase}
                 </PhaseTap>
@@ -177,11 +177,15 @@ function PostArea({ postData, history }) {
         </PhaseTapWrap>
         <PhaseDetail>
           <div>
-            <h3>"{postData.phase_waves[tabIdx - 1].sub_title}"</h3>
+            <h3>
+              {postData.phase_waves[tabIdx - 1].sub_title
+                ? postData.phase_waves[tabIdx - 1].sub_title
+                : "무제"}
+            </h3>
           </div>
           {/* login.isSignIn && */}
           {postData.max_phase !== postData.current_phase &&
-          postData.current_join_user !== 0 &&
+          postData.current_join_user == null &&
           isSignIn ? (
             // -> 클릭했을때 -> current_join_user가 0이면 클릭 가능
             <button

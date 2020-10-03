@@ -5,6 +5,7 @@ import { lighten } from "polished";
 import Select from "react-select";
 import { selectStyle } from "../../constants/SelectStyle";
 import makeAnimated from "react-select/animated";
+import { categories, categoryToEng } from "../../constants/Category";
 
 const animatedComponents = makeAnimated();
 const WaveHeadWrap = styled.section`
@@ -203,12 +204,7 @@ const CreateWaveButton = styled.button`
   transition: background-color 0.4s ease, color 0.4s ease;
 `;
 
-export default function CreatePost({
-  category,
-  selectPhase,
-  selectDue,
-  sendData,
-}) {
+export default function CreatePost({ selectPhase, selectDue, sendData }) {
   const [open, setOpen] = useState(false);
   const [genre, setGenre] = useState("");
   const [maxPhase, setMaxPhase] = useState("");
@@ -236,9 +232,10 @@ export default function CreatePost({
 
   const clickSendData = e => {
     e.preventDefault();
+    const genreToEng = genre.map(item => categoryToEng[item]);
     const data = {
       ...waveData,
-      categories: genre.join(","), // -> 문자열 변환
+      categories: genreToEng.join(","), // -> 문자열 변환
       maxPhase: maxPhase.value,
     };
     // console.log(data);
@@ -261,15 +258,18 @@ export default function CreatePost({
           <WaveSelect>
             <WaveSelectLabel>카테고리 설정</WaveSelectLabel>
             <Select
-              onChange={selectedOption =>
-                setGenre(selectedOption.map(el => el.value))
-              }
-              value={category.value}
+              onChange={selectedOption => {
+                console.log(selectedOption);
+                setGenre(selectedOption.map(el => el.value));
+              }}
               closeMenuOnSelect={false}
               components={animatedComponents}
               isMulti
               styles={selectStyle}
-              options={category}
+              options={categories.map(category => ({
+                label: category,
+                value: category,
+              }))}
             />
           </WaveSelect>
           <WaveSelect>

@@ -23,3 +23,16 @@ export const categoryToEng = {
   스릴러: "thriller",
   공포: "horror",
 };
+
+export const engToCategory = {
+  oriental: "무협",
+  action: "액션",
+  fantasy: "판타지",
+  romance: "로맨스",
+  sf: "SF",
+  modern: "현대",
+  game: "게임",
+  sports: "스포츠",
+  thriller: "스릴러",
+  horror: "공포",
+};

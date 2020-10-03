@@ -26,10 +26,9 @@ export default function CreatePhaseContainer({ match, history }) {
   };
 
   const getPrevPhaseData = async () => {
-    const data = await getPhase(
-      match.params.id,
-      match.params.phase - 1
-    ).then(res => res.json());
+    const data = await getPhase(postId, match.params.phase - 1).then(res =>
+      res.json()
+    );
 
     setPhaseData(data);
   };
@@ -37,7 +36,7 @@ export default function CreatePhaseContainer({ match, history }) {
   useEffect(() => {
     if (error) {
       alert("로그인이 필요합니다.");
-      history.push(`/post/${match.params.id}`);
+      history.push(`/post/${postId}`);
     } else {
       dispatch(getUserData());
     }
@@ -56,20 +55,25 @@ export default function CreatePhaseContainer({ match, history }) {
           getPrevPhaseData();
         } else {
           alert("권한이 없습니다.");
-          history.push(`/post/${match.params.id}`);
+          removeCurrentJoinUser(postId);
+          history.push(`/post/${postId}`);
         }
       } else {
         alert("권한이 없습니다.");
-        history.push(`/post/${match.params.id}`);
+        removeCurrentJoinUser(postId);
+        history.push(`/post/${postId}`);
       }
     };
 
     initPhase();
+  }, [isSignIn]);
 
+  useEffect(() => {
     return () => {
+      removeCurrentJoinUser(postId);
       window.removeEventListener("beforeunload", removeCurrentJoinUser(postId));
     };
-  }, [isSignIn]);
+  }, []);
 
   return (
     <>

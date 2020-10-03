@@ -9,17 +9,14 @@ const UserInfoBox = styled.div`
   padding: 3rem;
   height: 640px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  place-items: center;
 
   img {
     border-radius: 70%;
     text-align: center;
     width: 270px;
     height: 270px;
-    margin-bottom: 5rem;
 
     box-shadow: #ced4da 0 2px 8px;
 
@@ -128,8 +125,8 @@ const AmendButton = styled.button`
 `;
 const CameraButton = styled.button`
   position: relative;
-  bottom: 85px;
-  left: -60px;
+  bottom: 60px;
+  left: 80px;
   border: none;
   border-radius: 50%;
   padding: 10px;
@@ -177,7 +174,7 @@ const UserInfo = ({ userData, openModal }) => {
 
   return (
     <UserInfoBox>
-      <section>
+      <section style={{ display: "grid", placeItems: "center" }}>
         <input
           ref={imageUploader}
           type="file"
@@ -186,12 +183,11 @@ const UserInfo = ({ userData, openModal }) => {
           style={{ display: "none" }}
         />
         <img ref={uploadedImage} src={image} alt={userData.username} />
-
         <CameraButton onClick={() => imageUploader.current.click()}>
           <FiCamera style={{ color: "#4dabf7" }} />
         </CameraButton>
       </section>
-      <section>
+      <section style={{ display: "grid", placeItems: "center" }}>
         <UserDetail>
           <div>{userData.username}</div>
         </UserDetail>

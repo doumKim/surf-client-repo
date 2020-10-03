@@ -56,7 +56,7 @@ export default ({ myWaveList, joinWaveList }) => {
         <BlockLabel>내가 일으킨 파도 목록</BlockLabel>
         {myWaveList.length !== 0 ? (
           myWaveList.map(data => {
-            return <LoginCard key={data.postId} postData={data} />;
+            return <LoginCard key={data.id} postData={data} />;
           })
         ) : (
           <EmptyReplacer>
@@ -70,7 +70,7 @@ export default ({ myWaveList, joinWaveList }) => {
         </BlockLabel>
         {joinWaveList.length !== 0 ? (
           joinWaveList.map(data => {
-            return <LoginCard key={data.postId} postData={data} />;
+            return <LoginCard key={data.id} postData={data} />;
           })
         ) : (
           <EmptyReplacer>내가 참여한 파도가 없습니다.</EmptyReplacer>

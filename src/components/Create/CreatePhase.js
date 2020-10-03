@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { deviceSize } from "../../constants/DiviceSize";
-import { postPhaseWave, removeCurrentJoinUser } from "../../postApi";
+import { postPhaseWave } from "../../postApi";
 import { withRouter } from "react-router-dom";
 
 const CreatePhaseWrap = styled.section`
