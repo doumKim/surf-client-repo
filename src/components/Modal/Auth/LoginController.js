@@ -7,6 +7,8 @@ import { keyframes } from "@emotion/core";
 import { signIn } from "../../../modules/SignIn";
 
 import Wave from "../../Wave/WaveContainer";
+import { signIn } from "../../../modules/SignIn";
+import { baseUrl } from "../../../constants/GlobalVariables";
 
 const slideUp = keyframes`
   from {
@@ -98,9 +100,11 @@ const SubmitButton = styled.button`
   font-weight: 500;
   transition: background-color 0.5s ease;
 `;
-const SocialButton = styled.button`
+const SocialButton = styled.a`
   cursor: pointer;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${props => {
     const socials = ["kakao", "google", "naver", "submit"];
     const socialColors = ["#fcc419", "#fa5252", "#51cf66", "#ced4da"];
@@ -175,10 +179,6 @@ export default ({ hideModal, changeForm }) => {
     }
   };
 
-  const handleSocial = service => {
-    console.log(service);
-  };
-
   const loginSubmit = async e => {
     const { email, password, isValidEmail, isValidPW } = authData;
     e.preventDefault();
@@ -193,7 +193,7 @@ export default ({ hideModal, changeForm }) => {
   };
 
   useEffect(() => {
-    if (authData.isLoading && pending) {
+    if (authData.isLoading && !pending) {
       if (error) {
         alert("로그인에 실패했습니다.");
         setAuthData(prevState => ({ ...prevState, isLoading: false }));
@@ -265,16 +265,13 @@ export default ({ hideModal, changeForm }) => {
             로그인
           </SubmitButton>
           <SocialWrap>
-            <SocialButton onClick={() => handleSocial("kakao")} social="kakao">
+            <SocialButton href={`${baseUrl}/auth/kakao`} social="kakao">
               Kakao
             </SocialButton>
-            <SocialButton
-              onClick={() => handleSocial("google")}
-              social="google"
-            >
+            <SocialButton href={`${baseUrl}/auth/google`} social="google">
               Google
             </SocialButton>
-            <SocialButton onClick={() => handleSocial("naver")} social="naver">
+            <SocialButton href={`${baseUrl}/auth/naver`} social="naver">
               Naver
             </SocialButton>
           </SocialWrap>

@@ -33,13 +33,28 @@ const CardListContainer = styled.div`
   }
 `;
 
-export default ({ categories, dataArr }) => {
+export default ({
+  allPosts,
+  showCategories = false,
+  showSubHeader = true,
+  category,
+  currentSort,
+  changeCurrentSort,
+  changeCategory,
+}) => {
   return (
     <CardListWrapper>
       <CardListContainer>
-        {categories ? <MainHeader categories={categories} /> : null}
-        <SubHeader />
-        <CardList dataArr={dataArr} />
+        {showCategories ? (
+          <MainHeader category={category} changeCategory={changeCategory} />
+        ) : null}
+        {showSubHeader ? (
+          <SubHeader
+            currentSort={currentSort}
+            changeCurrentSort={changeCurrentSort}
+          />
+        ) : null}
+        <CardList allPosts={allPosts} />
       </CardListContainer>
     </CardListWrapper>
   );

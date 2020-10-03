@@ -9,12 +9,31 @@ const MainWrapper = styled.div`
   margin-top: 60px;
 `;
 
-export default ({ categories, dataArr }) => {
-  const isLoggedIn = false;
+
+export default ({
+  isSignIn,
+  allPosts,
+  myWaveList,
+  joinWaveList,
+  category,
+  currentSort,
+  changeCategory,
+  changeCurrentSort,
+}) => {
+
   return (
     <MainWrapper>
-      {isLoggedIn ? <CardLoginList dataArr={dataArr} /> : null}
-      <CardListContainer dataArr={dataArr} categories={categories} />
+      {isSignIn && myWaveList !== null && joinWaveList !== null ? (
+        <CardLoginList myWaveList={myWaveList} joinWaveList={joinWaveList} />
+      ) : null}
+      <CardListContainer
+        allPosts={allPosts}
+        showCategories={true}
+        category={category}
+        currentSort={currentSort}
+        changeCategory={changeCategory}
+        changeCurrentSort={changeCurrentSort}
+      />
     </MainWrapper>
   );
 };

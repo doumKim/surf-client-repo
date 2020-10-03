@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import { withResizeDetector } from "react-resize-detector";
 
 import { isEmail, isPassword } from "../../../constants/AuthCheck";
 import Wave from "../../Wave/WaveContainer";
+import { signIn } from "../../../modules/SignIn";
+import { baseUrl } from "../../../constants/GlobalVariables";
 
 const Loginwrapper = styled.div`
   position: relative;
@@ -82,9 +85,11 @@ const SubmitButton = styled.button`
   font-weight: 500;
   transition: background-color 0.5s ease;
 `;
-const SocialButton = styled.button`
+const SocialButton = styled.a`
   cursor: pointer;
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${props => {
     const socials = ["kakao", "google", "naver", "submit"];
     const socialColors = ["#fcc419", "#fa5252", "#51cf66", "#ced4da"];
@@ -116,12 +121,15 @@ const GotoJoin = styled.p`
   }
 `;
 
-const Login = ({ width, height, changeForm }) => {
+const Login = ({ width, height, hideModal, changeForm }) => {
+  const { pending, error } = useSelector(state => state.signIn);
+  const dispatch = useDispatch();
   const [authData, setAuthData] = useState({
     email: "",
     password: "",
     isValidEmail: false,
     isValidPW: false,
+    isLoading: false,
   });
 
   const changeEmail = e => {
@@ -161,13 +169,8 @@ const Login = ({ width, height, changeForm }) => {
     e.preventDefault();
     if (email && password) {
       if (isValidEmail && isValidPW) {
-        // 로그인 API 호출
-        setAuthData({
-          email: "",
-          password: "",
-          isValidEmail: false,
-          isValidPW: false,
-        });
+        setAuthData(prevState => ({ ...prevState, isLoading: true }));
+        dispatch(signIn(JSON.stringify({ email, password })));
       } else {
         alert("올바른 형식의 정보를 입력해주세요.");
       }
@@ -176,9 +179,23 @@ const Login = ({ width, height, changeForm }) => {
     }
   };
 
-  const handleSocialLogin = service => {
-    console.log(service);
-  };
+  useEffect(() => {
+    if (authData.isLoading && pending) {
+      if (error) {
+        alert("로그인에 실패했습니다.");
+        setAuthData(prevState => ({ ...prevState, isLoading: false }));
+      } else {
+        setAuthData({
+          email: "",
+          password: "",
+          isValidEmail: false,
+          isValidPW: false,
+          isLoading: false,
+        });
+        hideModal();
+      }
+    }
+  }, [pending]);
 
   return (
     <Loginwrapper>
@@ -226,22 +243,13 @@ const Login = ({ width, height, changeForm }) => {
             로그인
           </SubmitButton>
           <SocialWrap>
-            <SocialButton
-              onClick={() => handleSocialLogin("kakao")}
-              social="kakao"
-            >
+            <SocialButton href={`${baseUrl}/auth/kakao`} social="kakao">
               Kakao
             </SocialButton>
-            <SocialButton
-              onClick={() => handleSocialLogin("google")}
-              social="google"
-            >
+            <SocialButton href={`${baseUrl}/auth/google`} social="google">
               Google
             </SocialButton>
-            <SocialButton
-              onClick={() => handleSocialLogin("naver")}
-              social="naver"
-            >
+            <SocialButton href={`${baseUrl}/auth/naver`} social="naver">
               Naver
             </SocialButton>
           </SocialWrap>

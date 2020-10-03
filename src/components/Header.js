@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import { Link, withRouter } from "react-router-dom";
 import { withResizeDetector } from "react-resize-detector";
 
 import HambergerModal from "./Modal/HambergerModal";
 import AuthModal from "./Modal/Auth/AuthModal";
+import { getUserData, signOut } from "../modules/SignIn";
 
 const HeaderContainer = styled.div`
   width: 100%;
@@ -166,7 +168,7 @@ const UserMenu = styled.div`
     opacity: 0;
   }
 `;
-const MenuLink = styled.a`
+const MenuLink = styled(Link)`
   font-size: 1rem;
   width: 100%;
   text-align: center;
@@ -182,18 +184,24 @@ const MenuLink = styled.a`
 `;
 
 const Header = withRouter(({ width, history }) => {
-  // redux로 로그인 상태 확인 후 로그인 유뮤에 따라 헤너 내용을 다르게 보여줄 예정
+
+  const { data, isSignIn } = useSelector(state => state.signIn);
+  const dispatch = useDispatch();
 
   const [modalState, setModalState] = useState({
     // 모달이 현재 보여지고 있는가
     isModalVisible: false,
     // 현재 보여지고 있는 모달이 '로그인' 모달인가
     isModalLogin: true,
-    // 현재 보여지고 있는 모달이 "로그인 된 유저가 보는" 모달인가
-    isSuccessLogin: false,
   });
 
   const [userMenu, setUserMenu] = useState(false);
+
+  useEffect(() => {
+    if (isSignIn && !data) {
+      dispatch(getUserData());
+    }
+  }, [isSignIn]);
 
   const showModal = isModalLogin => {
     setModalState(prev => ({ ...prev, isModalVisible: true, isModalLogin }));
@@ -203,6 +211,7 @@ const Header = withRouter(({ width, history }) => {
     setModalState(prev => ({ ...prev, isModalVisible: false }));
   };
 
+
   // search logic
   const [search, setSearch] = useState("");
   // const [state, setState] = useState(null);
@@ -211,6 +220,10 @@ const Header = withRouter(({ width, history }) => {
     e.preventDefault();
     history.push(`/?category=${search}`);
     setSearch("");
+
+  const handleImageLoadFailure = e => {
+    e.target.src = "/images/default_user.png";
+
   };
 
   return (
@@ -225,6 +238,7 @@ const Header = withRouter(({ width, history }) => {
         {width > 1366 ? (
           <>
             <HeaderFuncs>
+
               <HeaderSearch onSubmit={handleSearch}>
                 <input
                   onChange={e => setSearch(e.target.value)}
@@ -235,34 +249,55 @@ const Header = withRouter(({ width, history }) => {
                 />
               </HeaderSearch>
               {modalState.isSuccessLogin ? (
+
                 <>
                   <HeaderUser onClick={() => setUserMenu(!userMenu)}>
-                    <img
-                      alt="user-avatar"
-                      src={LOGIN_DATA.avatar_url}
-                      style={{
-                        cursor: "pointer",
-                        width: "40px",
-                        height: "40px",
-                        border: "none",
-                        borderRadius: "50%",
-                        marginRight: "1rem",
-                      }}
-                    />
+                    {data.avatar_url ? (
+                      <img
+                        alt="user-avatar"
+                        src={data.avatar_url}
+                        onError={handleImageLoadFailure}
+                        style={{
+                          cursor: "pointer",
+                          width: "40px",
+                          height: "40px",
+                          border: "none",
+                          borderRadius: "50%",
+                          marginRight: "1rem",
+                        }}
+                      />
+                    ) : (
+                      <img
+                        alt="user-avatar"
+                        src={"/images/default_user.png"}
+                        style={{
+                          cursor: "pointer",
+                          width: "40px",
+                          height: "40px",
+                          border: "none",
+                          borderRadius: "50%",
+                          marginRight: "1rem",
+                        }}
+                      />
+                    )}
+
                     <HeaderUserText style={{ color: "#212529" }}>
-                      <a href="/user">{LOGIN_DATA.username}</a>
+                      <span>{data.username}</span>
                     </HeaderUserText>
                   </HeaderUser>
-                  <HeaderUser
-                    onClick={() =>
-                      setModalState(prev => ({
-                        ...prev,
-                        isSuccessLogin: false,
-                        isModalLogin: true,
-                      }))
-                    }
-                  >
-                    <HeaderUserText>Log Out</HeaderUserText>
+                  <HeaderUser>
+                    <HeaderUserText
+                      onClick={() => {
+                        console.log("clicked");
+                        setModalState(prevState => ({
+                          ...prevState,
+                          isModalLogin: true,
+                        }));
+                        dispatch(signOut());
+                      }}
+                    >
+                      Log Out
+                    </HeaderUserText>
                   </HeaderUser>
                 </>
               ) : (
@@ -311,12 +346,24 @@ const Header = withRouter(({ width, history }) => {
           </>
         )}
       </HeaderContainer>
-      {modalState.isSuccessLogin && (
+      {isSignIn && data && (
         <UserMenu open={userMenu}>
-          <MenuLink href={`/user/${LOGIN_DATA.userId}`}>서퍼 정보</MenuLink>
-          <MenuLink href="/wave/new">파도 일으키기</MenuLink>
-          <MenuLink href="/">좋아요 목록</MenuLink>
-          <MenuLink>로그아웃</MenuLink>
+          <MenuLink to="/user/mypage">서퍼 정보</MenuLink>
+          <MenuLink to="/wave/new">파도 일으키기</MenuLink>
+          <MenuLink to="/user/likes">좋아요 목록</MenuLink>
+          <MenuLink
+            onClick={e => {
+              e.preventDefault();
+              dispatch(signOut);
+              setModalState(prevState => ({
+                ...prevState,
+                isModalLogin: true,
+              }));
+            }}
+            to="/"
+          >
+            로그아웃
+          </MenuLink>
         </UserMenu>
       )}
     </>
@@ -324,10 +371,3 @@ const Header = withRouter(({ width, history }) => {
 });
 
 export default withResizeDetector(Header);
-
-const LOGIN_DATA = {
-  userId: 32,
-  username: "Dobby",
-  avatar_url:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSYieM1wd1ScKyQR9OXbwnLkloYvD9QXNpbGA&usqp=CAU",
-};

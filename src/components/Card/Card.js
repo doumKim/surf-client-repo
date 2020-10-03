@@ -145,10 +145,12 @@ export default ({ postData }) => {
   }, []);
 
   return (
+
     <Link to={`post/${postData.id}/`}>
+
       <CardWrap>
         <CardHead
-          src={postData.imageUrl}
+          src={postData.title_image}
           alt={postData.title}
           onError={handleImageLoadFailure}
         />
@@ -159,6 +161,7 @@ export default ({ postData }) => {
         <CardBottom>
           {/* login.isSignIn && */}
           <CardUser>{postData.username}</CardUser>
+
           <CardUser style={{ color: "#fa5252" }}>
             {userLike ? (
               <FcLike style={{ marginRight: "5px" }} />
@@ -166,6 +169,7 @@ export default ({ postData }) => {
               <FcLikePlaceholder style={{ marginRight: "5px" }} />
             )}
             {postData.likes}
+
           </CardUser>
         </CardBottom>
       </CardWrap>

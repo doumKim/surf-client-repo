@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import ModalBackground from "./ModalBackground";
 import SideLoginController from "./Auth/SideLoginController";
@@ -27,6 +28,8 @@ const Modal = styled.div`
 `;
 
 export default ({ showModal, hideModal, modalState }) => {
+  const { isSignIn, data } = useSelector(state => state.signIn);
+  const dispatch = useDispatch();
   let ref = useRef(null);
 
   const handleModalPress = e => {
@@ -40,14 +43,17 @@ export default ({ showModal, hideModal, modalState }) => {
       {modalState.isModalVisible ? (
         <ModalBackground ref={ref} onClick={handleModalPress} />
       ) : null}
-      {modalState.isSuccessLogin ? (
+      {isSignIn && data ? (
         <Modal isOpen={modalState.isModalVisible}>
-          <SideAfterLoginController loginData={LOGIN_DATA} />
+          <SideAfterLoginController loginData={data} />
         </Modal>
       ) : (
         <Modal isOpen={modalState.isModalVisible}>
           {modalState.isModalLogin ? (
-            <SideLoginController changeForm={() => showModal(false)} />
+            <SideLoginController
+              hideModal={hideModal}
+              changeForm={() => showModal(false)}
+            />
           ) : (
             <SideJoinController changeForm={() => showModal(true)} />
           )}
@@ -55,11 +61,4 @@ export default ({ showModal, hideModal, modalState }) => {
       )}
     </>
   );
-};
-
-const LOGIN_DATA = {
-  userId: 32,
-  username: "Dobby",
-  avatar_url:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSYieM1wd1ScKyQR9OXbwnLkloYvD9QXNpbGA&usqp=CAU",
 };

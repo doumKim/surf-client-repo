@@ -10,8 +10,10 @@ import {
   SubmitButton,
 } from "../../../constants/formStyles";
 import { isPassword } from "../../../constants/AuthCheck";
+import { changePasswordAPI } from "../../../api";
 
-export default function ChangePwController({ pwChangeApi, userData, close }) {
+export default function ChangePwController({ userData, close }) {
+  // 패스워드 변경 로직 넣기
   const [authData, setAuthData] = useState({
     password: "",
     changePw: "",
@@ -19,19 +21,23 @@ export default function ChangePwController({ pwChangeApi, userData, close }) {
   });
   const { password, changePw, changePw2 } = authData;
 
-  const handleChangeApi = e => {
+  const handleChangeApi = async e => {
     e.preventDefault();
-    const prevPW = userData.password;
 
     if (password && changePw && changePw2) {
-      if (
-        prevPW === password &&
-        prevPW !== changePw &&
-        changePw === changePw2
-      ) {
-        pwChangeApi(changePw);
-        close();
-        alert("정보가 수정되었습니다.");
+      if (changePw === changePw2 && password !== changePw) {
+        try {
+          await changePasswordAPI(
+            JSON.stringify({
+              prevPassword: password,
+              nextPassword: changePw,
+            })
+          );
+          alert("정보가 수정되었습니다.");
+          close();
+        } catch (error) {
+          alert("현재 비밀번호를 잘못 입력하셨습니다.");
+        }
       } else {
         alert("🚨 변경할 패스워드를 확인해주세요.");
       }
@@ -67,15 +73,6 @@ export default function ChangePwController({ pwChangeApi, userData, close }) {
             value={password}
             type="password"
           />
-          {password ? (
-            userData.password === password ? (
-              <div style={{ color: "#a9e34b" }}>기존 패스워드와 일치</div>
-            ) : (
-              <div style={{ color: "#fa5252" }}>
-                기존 패스워드를 확인해주세요.
-              </div>
-            )
-          ) : null}
           <Label>
             신규 패스워드{" "}
             <span style={{ fontSize: "14px" }}>(8~10자리 영어, 숫자 조합)</span>

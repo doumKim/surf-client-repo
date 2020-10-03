@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Arrow from "./Wave/Arrow";
+import { categories } from "../constants/Category";
 
 const MainHeaderContainer = styled.div`
   width: 100%;
@@ -58,14 +59,12 @@ const CategorySplit = styled.div`
   margin-bottom: 18px;
 `;
 
-export default ({ categories }) => {
+export default ({ category, changeCategory }) => {
   const [state, setState] = useState({
-    curCategory: "전체",
     mainHeaderOpen: false,
   });
 
   const handleMainHeaderClick = () => {
-    console.log("clicked");
     setState(prevState => ({
       ...prevState,
       mainHeaderOpen: !prevState.mainHeaderOpen,
@@ -74,9 +73,9 @@ export default ({ categories }) => {
 
   const handleCategorySelect = e => {
     const curCategory = e.target.textContent;
+    changeCategory(curCategory);
     setState(prevState => ({
       ...prevState,
-      curCategory,
       mainHeaderOpen: false,
     }));
   };
@@ -84,26 +83,26 @@ export default ({ categories }) => {
   return (
     <MainHeaderContainer>
       <div onClick={handleMainHeaderClick}>
-        <MainHeader open={state.mainHeaderOpen}>{state.curCategory}</MainHeader>
+        <MainHeader open={state.mainHeaderOpen}>{category}</MainHeader>
         <Arrow open={state.mainHeaderOpen} />
       </div>
       <MainCategoryScroll open={state.mainHeaderOpen}>
         <MainCategoryItem
           onClick={handleCategorySelect}
-          selected={state.curCategory === "전체"}
+          selected={category === "전체"}
           style={{ fontSize: "27px" }}
         >
           전체
         </MainCategoryItem>
         <CategorySplit>Category</CategorySplit>
-        {categories.map((category, index) => (
+        {categories.map((categoryItem, index) => (
           <MainCategoryItem
             key={index}
             onClick={handleCategorySelect}
-            selected={state.curCategory === category}
+            selected={category === categoryItem}
             style={{ fontSize: "19px" }}
           >
-            {category}
+            {categoryItem}
           </MainCategoryItem>
         ))}
       </MainCategoryScroll>

@@ -4,6 +4,8 @@ import { withResizeDetector } from "react-resize-detector";
 
 import { isEmail, isPassword } from "../../../constants/AuthCheck";
 import Wave from "../../Wave/WaveContainer";
+import { signUpAPI } from "../../../api";
+import { baseUrl } from "../../../constants/GlobalVariables";
 
 const JoinWrapper = styled.div`
   position: relative;
@@ -72,10 +74,11 @@ const SubmitButton = styled.button`
   font-weight: 500;
 `;
 
-const SocialButton = styled.button`
+const SocialButton = styled.a`
   cursor: pointer;
-  display: block;
-  // color-set
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${props => {
     const socials = ["kakao", "google", "naver", "submit"];
     const socialColors = ["#fcc419", "#fa5252", "#51cf66", "#ced4da"];
@@ -169,7 +172,7 @@ const Join = ({ width, height, changeForm }) => {
     });
   };
 
-  const joinSubmit = e => {
+  const joinSubmit = async e => {
     e.preventDefault();
 
     const {
@@ -183,26 +186,27 @@ const Join = ({ width, height, changeForm }) => {
 
     if (email && password && username && password2) {
       if (isValidEmail && isValidPassword) {
-        // 서버에 회원가입 요청하는 API 호출
-        setAuthData({
-          username: "",
-          email: "",
-          password: "",
-          password2: "",
-          isValidEmail: false,
-          isValidPassword: false,
-        });
+        try {
+          await signUpAPI(JSON.stringify({ email, username, password }));
+          alert("회원가입에 성공했습니다. 로그인 해 주세요.");
+          setAuthData({
+            username: "",
+            email: "",
+            password: "",
+            password2: "",
+            isValidEmail: false,
+            isValidPassword: false,
+          });
+          changeForm();
+        } catch (error) {
+          alert("중복되는 이메일 또는 닉네임을 입력하셨습니다.");
+        }
       } else {
         alert("🚨 이메일 또는 패스워드를 확인해주세요");
       }
     } else {
       alert("🚨 모든 빈칸을 작성해주세요");
     }
-  };
-
-  const handleSocialJoin = service => {
-    // 서버에 소셜 회원가입 요청하는 API 호출
-    console.log(service);
   };
 
   return (
@@ -273,22 +277,13 @@ const Join = ({ width, height, changeForm }) => {
           ) : null}
           <SubmitButton type="submit">회원가입</SubmitButton>
           <SocialWrap>
-            <SocialButton
-              onClick={() => handleSocialJoin("kakao")}
-              social="kakao"
-            >
+            <SocialButton href={`${baseUrl}/auth/kakao`} social="kakao">
               Kakao
             </SocialButton>
-            <SocialButton
-              onClick={() => handleSocialJoin("google")}
-              social="google"
-            >
+            <SocialButton href={`${baseUrl}/auth/google`} social="google">
               Google
             </SocialButton>
-            <SocialButton
-              onClick={() => handleSocialJoin("naver")}
-              social="naver"
-            >
+            <SocialButton href={`${baseUrl}/auth/naver`} social="naver">
               Naver
             </SocialButton>
           </SocialWrap>
