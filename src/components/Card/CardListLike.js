@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 // import { deviceSize } from "../../constants/DiviceSize";
-import CardMine from "./CardMine";
+import CardLike from "./CardLike";
 import { myPageIconUrl } from "../../constants/SurfIcons";
 
 const CardListContainer = styled.div`
@@ -29,12 +29,12 @@ export default ({ allPosts }) => {
   return (
     <CardListContainer length={allPosts.length}>
       <PageLabel>
-        <img src={myPageIconUrl.wave} alt="like" />
-        내가 일으킨 파도 목록
+        <img src={myPageIconUrl.like} alt="like" />
+        내가 좋아요 한 목록
       </PageLabel>
       <div>
         {allPosts.map((data, index) => (
-          <CardMine key={index} postData={data} />
+          <CardLike key={index} postData={data} />
         ))}
       </div>
     </CardListContainer>

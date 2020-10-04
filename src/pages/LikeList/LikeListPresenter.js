@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "@emotion/styled";
-
-import CardListContainer from "../../components/Card/CardListContainer";
+import CardListContainerLike from "../../components/Card/CardListContainerLike";
+import { myPageIconUrl } from "../../constants/SurfIcons";
 
 const MainWrapper = styled.div`
-  margin: 140px 0;
+  margin: 140px auto;
 `;
 
 export default ({ allPosts }) => {
   return (
     <MainWrapper>
-      <CardListContainer allPosts={allPosts} showSubHeader={false} />
+      <CardListContainerLike allPosts={allPosts} showSubHeader={false} />
     </MainWrapper>
   );
 };

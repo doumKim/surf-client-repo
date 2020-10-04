@@ -74,7 +74,7 @@ const WaveSelectWrap = styled.section`
   }
 `;
 const WaveSelect = styled.section`
-  width: 24%;
+  width: 50%;
   height: fit-content;
   padding: 8px;
   display: flex;
@@ -89,9 +89,11 @@ const WaveSelect = styled.section`
   }
 
   @media (max-width: 1300px) {
-    width: 88%;
-    flex-direction: row;
-    align-items: center;
+    display: grid
+    grid-template-columns: 1fr 4fr;
+    width: 100%;
+    // flex-direction: row;
+    // align-items: center;
     height: 80px;
 
     label {
@@ -137,6 +139,7 @@ export default function CreateWaveHead({ category, selectPhase, selectDue }) {
             accept="image/jpg,image/png,image/jpeg,image/gif"
           />
         </WaveSelect>
+
         <WaveSelect>
           <WaveSelectLabel>총 회차 설정</WaveSelectLabel>
           <Select

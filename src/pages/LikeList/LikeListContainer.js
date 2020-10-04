@@ -24,7 +24,6 @@ export default ({ history }) => {
     try {
       if (isSignIn) {
         const result = await likePostsAPI().then(res => res.json());
-        console.log(result);
         setLikeData(result.LikedWaves);
       }
     } catch (error) {

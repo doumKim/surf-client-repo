@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { lighten } from "polished";
 import { deviceSize } from "../../constants/DiviceSize";
 import { useSelector } from "react-redux";
 import { getWaveDetail, getPhase, createCurrentJoinUser } from "../../postApi";
@@ -23,6 +22,12 @@ const PostPhaseLabel = styled.label`
     color: #495057;
     font-size: 1.2rem;
     margin-left: 10px;
+  }
+  @media (max-width: 760px) {
+    font-size: 1.2rem;
+    span {
+      font-size: 0.8rem;
+    }
   }
 `;
 const PhaseTapWrap = styled.ul`
@@ -66,6 +71,10 @@ const PhaseTap = styled.li`
     font-size: 1.2rem;
     width: 60px;
   }
+  @media ${deviceSize.mobile} {
+    font-size: 1rem;
+    width: 40px;
+  }
 `;
 const PhaseDetail = styled.section`
   display: flex;
@@ -90,18 +99,15 @@ const PhaseDetail = styled.section`
     text-align: center;
     border: none;
     border-radius: 5px;
-    // cursor: pointer;
+    cursor: pointer;
 
-    // &:hover {
-    //   background: ${lighten(0.05, "#228be6")};
-    //   box-shadow: #1864ab 0 1px 4px;
-    //   transition: all 0.4s ease;
-    // }
     &:focus {
       outline: none;
     }
     @media ${deviceSize.tablet} {
       margin-top: 1rem;
+      font-size: 12px;
+      padding: 8px;
     }
   }
   @media ${deviceSize.tablet} {
@@ -122,6 +128,10 @@ const PhasePostWrap = styled.article`
 
   article {
     margin-top: 8px;
+  }
+
+  @media ${deviceSize.tablet} {
+    font-size: 1rem;
   }
 `;
 
