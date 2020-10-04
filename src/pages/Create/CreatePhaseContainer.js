@@ -14,13 +14,11 @@ export default function CreatePhaseContainer({ match, history }) {
     try {
       const result = await getWaveDetail(postId).then(res => res.json());
       if (result.current_join_user !== data.id) {
-        history.push(`/post/${postId}`);
         return false;
       } else {
         return true;
       }
     } catch (error) {
-      history.push(`/post/${postId}`);
       return false;
     }
   };
@@ -55,7 +53,6 @@ export default function CreatePhaseContainer({ match, history }) {
           getPrevPhaseData();
         } else {
           alert("권한이 없습니다.");
-          removeCurrentJoinUser(postId);
           history.push(`/post/${postId}`);
         }
       } else {
@@ -78,7 +75,10 @@ export default function CreatePhaseContainer({ match, history }) {
   return (
     <>
       {isSignIn && phaseData ? (
-        <CreatePhasePresenter phaseData={phaseData} />
+        <>
+          <CreatePhasePresenter phaseData={phaseData} />
+          <div onClick={() => removeCurrentJoinUser(postId)}>권한해제</div>
+        </>
       ) : null}
     </>
   );
