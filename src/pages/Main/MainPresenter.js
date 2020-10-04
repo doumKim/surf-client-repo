@@ -7,8 +7,8 @@ import CardLoginList from "../../components/Card/CardLoginList";
 const MainWrapper = styled.div`
   width: 100%;
   margin-top: 60px;
+  /* min-height: calc(100vh - 59px); */
 `;
-
 
 export default ({
   isSignIn,
@@ -20,7 +20,6 @@ export default ({
   changeCategory,
   changeCurrentSort,
 }) => {
-
   return (
     <MainWrapper>
       {isSignIn && myWaveList !== null && joinWaveList !== null ? (

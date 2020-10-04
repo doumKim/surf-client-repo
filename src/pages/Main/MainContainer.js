@@ -1,82 +1,81 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 import MainPresenter from "./MainPresenter";
 import { categoryToEng } from "../../constants/Category";
 import { getAllWavesAPI, joinWavesAPI, myWavesAPI } from "../../api";
-import queryString from "query-string";
-import { searchWave } from "../../postApi";
-import SearchContainer from "../SearchContainer";
 
-export default ({ location }) => {
+export default () => {
   const { isSignIn } = useSelector(state => state.signIn);
-  const [state, setState] = useState({ isLoading: false });
+  const [state, setState] = useState({ isLoading: true });
   const [category, setCategory] = useState("전체");
   const [posts, setPosts] = useState(null);
   const [myWaveList, setMyWaveList] = useState(null);
   const [joinWaveList, setJoinWaveList] = useState(null);
   const [currentSort, setCurrentSort] = useState("like");
-  const [searchData, setSearchData] = useState(null);
-  const query = queryString.parse(location.search);
+  const [mainStart, setMainStart] = useState(0);
+  const [mainHasMore, setMainHasMore] = useState(true);
 
-  useEffect(() => {
-    const getWavesData = async () => {
-      const promiseArr = [
-        getAllWavesAPI(currentSort, categoryToEng[category]).then(res =>
-          res.json()
-        ),
-      ];
-      if (isSignIn && myWaveList === null) {
-        promiseArr.push(myWavesAPI("created_at", 3).then(res => res.json()));
-      }
-      if (isSignIn && joinWaveList === null) {
-        promiseArr.push(joinWavesAPI(3).then(res => res.json()));
-      }
-      const results = await Promise.all(promiseArr);
-      if (isSignIn && myWaveList === null) {
-        setMyWaveList(results[1]);
-      }
-      if (isSignIn && joinWaveList === null) {
-        setJoinWaveList(results[2]);
-      }
-      setPosts(results[0]);
-      setState({ isLoading: false });
-    };
-    if (!query.category) {
-      console.log("rendering main");
-      setSearchData(null);
-      setState({ isLoading: true });
-      getWavesData();
+  const getNextAllWaves = async start => {
+    const result = await getAllWavesAPI(
+      currentSort,
+      categoryToEng[category],
+      start
+    ).then(res => res.json());
+    console.log(result);
+    setPosts(prev => (prev === null ? result : [...prev, ...result]));
+    setMainStart(prev => prev + 10);
+    setState({ isLoading: false });
+  };
+
+  const getWavesData = async () => {
+    const promiseArr = [];
+
+    if (isSignIn && myWaveList === null) {
+      promiseArr.push(myWavesAPI("created_at", 3).then(res => res.json()));
     }
-  }, [isSignIn, currentSort, category, query.category]);
-
-  useEffect(() => {
-    if (query.category) {
-      console.log("rendering category");
-      setSearchData(null);
-      handleQuery();
+    if (isSignIn && joinWaveList === null) {
+      promiseArr.push(joinWavesAPI(3).then(res => res.json()));
     }
-  }, [query.category, currentSort]);
 
-  const handleQuery = async () => {
-    if (query.category) {
-      console.log(currentSort);
-      const keyword = categoryToEng[`${query.category}`];
-      await searchWave(keyword, currentSort)
-        .then(res => res.json())
-        .then(data => setSearchData(data));
+    const result = await Promise.all(promiseArr);
+
+    if (isSignIn && myWaveList === null) {
+      setMyWaveList(result[0]);
+    }
+    if (isSignIn && joinWaveList === null) {
+      setJoinWaveList(result[1]);
     }
   };
 
+  useEffect(() => {
+    const getInitialSearchResults = async () => {
+      setState({ isLoading: true });
+      setPosts(null);
+      setMainStart(0);
+      if (isSignIn) {
+        await getWavesData();
+      }
+    };
+    getInitialSearchResults();
+  }, [isSignIn, currentSort, category]);
+
+  useEffect(() => {
+    if (mainStart === 0) {
+      getNextAllWaves(mainStart);
+    }
+  }, [mainStart]);
   return (
     <>
-      {!state.isLoading && posts ? (
-        searchData ? (
-          <SearchContainer
-            dataArr={searchData}
-            currentSort={currentSort}
-            changeCurrentSort={setCurrentSort}
-          />
-        ) : (
+      {!state.isLoading ? (
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={() => getNextAllWaves(mainStart)}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+          style={{ overflow: "hidden" }}
+        >
           <MainPresenter
             isSignIn={isSignIn}
             allPosts={posts}
@@ -87,7 +86,7 @@ export default ({ location }) => {
             changeCategory={setCategory}
             changeCurrentSort={setCurrentSort}
           />
-        )
+        </InfiniteScroll>
       ) : null}
     </>
   );

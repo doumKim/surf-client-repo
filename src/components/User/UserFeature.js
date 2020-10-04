@@ -71,7 +71,6 @@ const UserFeature = styled.div`
 `;
 
 const UserFeatures = ({ userData, myPageData }) => {
-  console.log(myPageData, userData);
   return (
     <UserFeatureBox>
       <UserFeatureItemWrap>

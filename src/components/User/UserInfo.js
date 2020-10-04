@@ -157,14 +157,11 @@ const UserInfo = ({ userData, openModal }) => {
   const uploadedImage = useRef(null);
   const imageUploader = useRef(null);
 
-  console.log(userData);
-
   const handleImageUpload = async event => {
     const formData = new FormData();
     formData.append("avatar", event.target.files[0]);
     try {
       const result = await changeImageAPI(formData).then(res => res.json());
-      console.log(result);
       setImage(result.url);
     } catch (error) {
       alert("아바타 변경에 실패했습니다.");

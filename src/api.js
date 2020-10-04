@@ -104,15 +104,18 @@ export const joinWavesAPI = (count = 0) => {
   }
 };
 
-export const getAllWavesAPI = (sort, category) => {
+export const getAllWavesAPI = (sort, category, offset = 0) => {
   if (category) {
-    return fetch(`${baseUrl}/post/allWave?category=${category}&sort=${sort}`, {
-      method: "GET",
-      mode: "cors",
-      credentials: "include",
-    });
+    return fetch(
+      `${baseUrl}/post/allWave?category=${category}&sort=${sort}&offset=${offset}`,
+      {
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+      }
+    );
   } else {
-    return fetch(`${baseUrl}/post/allWave?sort=${sort}`, {
+    return fetch(`${baseUrl}/post/allWave?sort=${sort}&offset=${offset}`, {
       method: "GET",
       mode: "cors",
       credentials: "include",

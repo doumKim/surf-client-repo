@@ -259,7 +259,6 @@ export default function CreatePost({ selectPhase, selectDue, sendData }) {
             <WaveSelectLabel>카테고리 설정</WaveSelectLabel>
             <Select
               onChange={selectedOption => {
-                console.log(selectedOption);
                 setGenre(selectedOption.map(el => el.value));
               }}
               closeMenuOnSelect={false}

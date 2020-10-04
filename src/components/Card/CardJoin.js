@@ -124,7 +124,6 @@ export default ({ postData }) => {
     e.target.src = "/images/default_user.png";
   };
   const login = useSelector(state => state.signIn);
-  console.log(postData.wave);
   return (
     <Link to={`/post/${postData.wave.id}/`}>
       <CardWrap>

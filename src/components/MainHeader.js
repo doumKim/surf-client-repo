@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import styled from "@emotion/styled";
 import Arrow from "./Wave/Arrow";
 import { categories } from "../constants/Category";
@@ -63,6 +63,16 @@ export default ({ category, changeCategory }) => {
   const [state, setState] = useState({
     mainHeaderOpen: false,
   });
+  const mainHeaderRef = useRef();
+
+  const handleMainHeaderOuterClick = useCallback(
+    e => {
+      if (state.mainHeaderOpen && e.target !== mainHeaderRef.current) {
+        setState(prevState => ({ ...prevState, mainHeaderOpen: false }));
+      }
+    },
+    [state.mainHeaderOpen]
+  );
 
   const handleMainHeaderClick = () => {
     setState(prevState => ({
@@ -80,13 +90,21 @@ export default ({ category, changeCategory }) => {
     }));
   };
 
+  useEffect(() => {
+    window.addEventListener("click", handleMainHeaderOuterClick);
+
+    return () => {
+      window.removeEventListener("click", handleMainHeaderOuterClick);
+    };
+  }, [handleMainHeaderOuterClick]);
+
   return (
     <MainHeaderContainer>
       <div onClick={handleMainHeaderClick}>
         <MainHeader open={state.mainHeaderOpen}>{category}</MainHeader>
         <Arrow open={state.mainHeaderOpen} />
       </div>
-      <MainCategoryScroll open={state.mainHeaderOpen}>
+      <MainCategoryScroll open={state.mainHeaderOpen} ref={mainHeaderRef}>
         <MainCategoryItem
           onClick={handleCategorySelect}
           selected={category === "전체"}

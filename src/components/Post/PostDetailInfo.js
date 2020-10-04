@@ -177,7 +177,6 @@ const PostTag = styled.div`
 
 export default function PostDetailInfo({ postData }) {
   // username 받아오기 위해서 userInfo api 필요
-  console.log(postData);
   const username = "test";
   return (
     <PostDetaillWrap>

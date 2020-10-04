@@ -222,10 +222,6 @@ export default ({ hideModal, changeForm }) => {
     }
   };
 
-  const handleSocialLogin = service => {
-    console.log(service);
-  };
-
   return (
     <JoinWrapper>
       <Wave width={480} height={780} />

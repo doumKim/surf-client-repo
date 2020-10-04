@@ -48,12 +48,15 @@ export const createWave = data =>
     body: data,
   });
 
-export const searchWave = (category, sort = "created_at") =>
-  fetch(`${baseUrl}/post/allWave?category=${category}&sort=${sort}`, {
-    method: "GET",
-    credentials: "include",
-    mode: "cors",
-  });
+export const searchWave = (category, sort = "created_at", offset = 0) =>
+  fetch(
+    `${baseUrl}/post/allWave?category=${category}&sort=${sort}&offset=${offset}`,
+    {
+      method: "GET",
+      credentials: "include",
+      mode: "cors",
+    }
+  );
 
 // /post/id/id -> 갔을 떄 권한 부여
 export const createCurrentJoinUser = id =>

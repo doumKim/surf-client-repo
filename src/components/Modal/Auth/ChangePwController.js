@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { FiLock } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+
 import {
   Wrapper,
   Box,
@@ -11,6 +13,7 @@ import {
 } from "../../../constants/formStyles";
 import { isPassword } from "../../../constants/AuthCheck";
 import { changePasswordAPI } from "../../../api";
+import { signOut } from "../../../modules/SignIn";
 
 export default function ChangePwController({ userData, close }) {
   // 패스워드 변경 로직 넣기
@@ -19,6 +22,7 @@ export default function ChangePwController({ userData, close }) {
     changePw: "",
     changePw2: "",
   });
+  const dispatch = useDispatch();
   const { password, changePw, changePw2 } = authData;
 
   const handleChangeApi = async e => {
@@ -34,6 +38,7 @@ export default function ChangePwController({ userData, close }) {
             })
           );
           alert("정보가 수정되었습니다.");
+          dispatch(signOut());
           close();
         } catch (error) {
           alert("현재 비밀번호를 잘못 입력하셨습니다.");

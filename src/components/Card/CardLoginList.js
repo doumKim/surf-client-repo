@@ -69,11 +69,10 @@ const EmptyText = styled.span`
 `;
 
 export default ({ myWaveList, joinWaveList }) => {
-  console.log(myWaveList, joinWaveList);
   return (
     <CardLoginListContainer>
       <CardLoginBlock>
-        <BlockLabel>내가 일으킨 파도 목록</BlockLabel>
+        <BlockLabel>일으킨 파도 목록</BlockLabel>
         {myWaveList.length !== 0 ? (
           myWaveList.map(data => {
             return <LoginCard key={data.id} postData={data} />;
@@ -86,7 +85,7 @@ export default ({ myWaveList, joinWaveList }) => {
       </CardLoginBlock>
       <CardLoginBlock>
         <BlockLabel>
-          <EmptyText>내가 참여한 파도 목록</EmptyText>
+          <EmptyText>이어간 파도 목록</EmptyText>
         </BlockLabel>
         {joinWaveList.length !== 0 ? (
           joinWaveList.map(data => {
