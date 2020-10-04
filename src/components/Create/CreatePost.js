@@ -92,7 +92,7 @@ const WaveSelect = styled.section`
   }
 
   @media (max-width: 1300px) {
-    width: 88%;
+    width: 100%;
     flex-direction: row;
     align-items: center;
     height: 80px;
@@ -190,7 +190,7 @@ const CreateWaveButton = styled.button`
   font-size: 1.2rem;
   font-weight: 600;
   padding: 12px;
-  float: right;
+  // float: right;
   margin-bottom: 1rem;
 
   background-color: ${props => (props.send === "on" ? "#339af0" : "#dee2e6")};
