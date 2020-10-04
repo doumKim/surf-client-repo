@@ -74,7 +74,7 @@ const MenuIcon = styled.img`
   border: none;
 `;
 
-const SideAfterLoginController = ({ loginData }) => {
+const SideAfterLoginController = ({ loginData, hideModal }) => {
   const dispatch = useDispatch();
 
   const handleImageLoadFailure = e => {
@@ -97,24 +97,27 @@ const SideAfterLoginController = ({ loginData }) => {
             )}
 
             <div>
-              <Link to="/user/mypage">{loginData.username}</Link>
+              <Link to="/user/mypage" onClick={hideModal}>
+                {loginData.username}
+              </Link>
             </div>
           </UserInfoBox>
-          <MenuLink to="/user/mypage">
+          <MenuLink to="/user/mypage" onClick={hideModal}>
             <MenuIcon alt="user" src={myPageIconUrl.surfing_man}></MenuIcon>
             <h3>서퍼 정보 확인하기</h3>
           </MenuLink>
-          <MenuLink to="/wave/new">
+          <MenuLink to="/wave/new" onClick={hideModal}>
             <MenuIcon alt="post" src={myPageIconUrl.wave} />
             <h3>파도 일으키기</h3>
           </MenuLink>
-          <MenuLink to="/user/likes">
+          <MenuLink to="/user/likes" onClick={hideModal}>
             <MenuIcon alt="like" src={myPageIconUrl.like} />
             <h3>좋아요 목록</h3>
           </MenuLink>
           <MenuLink
             onClick={e => {
               e.preventDefault();
+              hideModal();
               dispatch(signOut());
             }}
             to="/"

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { withRouter } from "react-router-dom";
 import MainPresenter from "./MainPresenter";
 import { categoryToEng } from "../../constants/Category";
 import { getAllWavesAPI, joinWavesAPI, myWavesAPI } from "../../api";
@@ -33,7 +32,6 @@ export default ({ location }) => {
         promiseArr.push(joinWavesAPI(3).then(res => res.json()));
       }
       const results = await Promise.all(promiseArr);
-      console.log(results);
       if (isSignIn && myWaveList === null) {
         setMyWaveList(results[1]);
       }
@@ -43,19 +41,27 @@ export default ({ location }) => {
       setPosts(results[0]);
       setState({ isLoading: false });
     };
-    setState({ isLoading: true });
-    getWavesData();
-  }, [isSignIn, currentSort, category]);
+    if (!query.category) {
+      console.log("rendering main");
+      setSearchData(null);
+      setState({ isLoading: true });
+      getWavesData();
+    }
+  }, [isSignIn, currentSort, category, query.category]);
 
   useEffect(() => {
-    setSearchData(null);
-    handleQuery();
-  }, [query.category]);
+    if (query.category) {
+      console.log("rendering category");
+      setSearchData(null);
+      handleQuery();
+    }
+  }, [query.category, currentSort]);
 
   const handleQuery = async () => {
     if (query.category) {
+      console.log(currentSort);
       const keyword = categoryToEng[`${query.category}`];
-      await searchWave(keyword)
+      await searchWave(keyword, currentSort)
         .then(res => res.json())
         .then(data => setSearchData(data));
     }
@@ -65,7 +71,11 @@ export default ({ location }) => {
     <>
       {!state.isLoading && posts ? (
         searchData ? (
-          <SearchContainer dataArr={searchData} />
+          <SearchContainer
+            dataArr={searchData}
+            currentSort={currentSort}
+            changeCurrentSort={setCurrentSort}
+          />
         ) : (
           <MainPresenter
             isSignIn={isSignIn}
