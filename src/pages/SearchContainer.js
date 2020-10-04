@@ -40,8 +40,8 @@ const NoSearchWrap = styled.div`
     padding: 12px;
     font-size: 1rem;
     font-weight: 500;
-    color: #868e96;
-    background-color: #ced4da;
+    color: #fff;
+    background-color: #228be6;
     width: fit-content;
   }
 `;

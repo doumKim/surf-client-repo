@@ -24,6 +24,15 @@ const DetailImg = styled.img`
   @media (max-width: 1300px) {
     border-radius: 0;
   }
+  @media (max-width: 760px) {
+    height: 300px;
+  }
+  @media (max-width: 500px) {
+    height: 260px;
+  }
+  @media (max-width: 370px) {
+    height: 200px;
+  }
 `;
 const LikeButton = styled.button`
   width: 48px;
@@ -39,6 +48,11 @@ const LikeButton = styled.button`
 
   z-index: 1;
   position: absolute;
+  @media (max-width: 400px) {
+    left: 90%;
+    top: 86%;
+    font-size: 1.6rem;
+  }
   top: 85%;
   left: 94%;
   transform: translate(-50%, -50%);

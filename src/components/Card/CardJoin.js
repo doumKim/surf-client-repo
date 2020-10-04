@@ -171,12 +171,12 @@ export default ({ postData }) => {
           </CardUser>
 
           <CardUser style={{ color: "#fa5252" }}>
-            {postData.liked ? (
+            {postData.wave.liked ? (
               <FcLike style={{ marginRight: "5px" }} />
             ) : (
               <FcLikePlaceholder style={{ marginRight: "5px" }} />
             )}
-            {postData.like}
+            {postData.wave.like}
           </CardUser>
         </CardBottom>
       </CardWrap>

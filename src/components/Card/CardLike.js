@@ -168,7 +168,7 @@ export default ({ postData }) => {
           </CardUser>
 
           <CardUser style={{ color: "#fa5252" }}>
-            {postData.liked ? (
+            {postData.id === postData.like_posts.PostId ? (
               <FcLike style={{ marginRight: "5px" }} />
             ) : (
               <FcLikePlaceholder style={{ marginRight: "5px" }} />
@@ -181,4 +181,4 @@ export default ({ postData }) => {
   );
 };
 
-//postData.id === postData.like_posts.PostId
+//
