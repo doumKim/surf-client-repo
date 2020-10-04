@@ -8,7 +8,7 @@ const DetailWrap = styled.section`
   width: 1250px;
   display: flex;
   flex-direction: column;
-  margin: 120px auto 80px auto;
+  margin: 140px auto 80px auto;
   background-color: #f8f9fa;
   border: none;
   border-radius: 5px;

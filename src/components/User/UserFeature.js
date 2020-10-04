@@ -71,6 +71,7 @@ const UserFeature = styled.div`
 `;
 
 const UserFeatures = ({ userData, myPageData }) => {
+  console.log(myPageData, userData);
   return (
     <UserFeatureBox>
       <UserFeatureItemWrap>
@@ -104,16 +105,22 @@ const UserFeatures = ({ userData, myPageData }) => {
           <img
             alt="level"
             src={
-              userData.lv === 1
-                ? myPageIconUrl.medal1st
-                : userData.lv === 2
+              userData.level === 1
+                ? myPageIconUrl.medal3rd
+                : userData.level === 2
                 ? myPageIconUrl.medal2nd
-                : myPageIconUrl.medal3rd
+                : myPageIconUrl.medal1st
             }
           />
           <div>
             <h4>서퍼 등급</h4>
-            <h2>{userData.lv}</h2>
+            <h2 style={{ fontSize: "2rem" }}>
+              {userData.level === 1
+                ? "베이비 서퍼"
+                : userData.level === 2
+                ? "주니어 서퍼"
+                : "마스터 서퍼"}
+            </h2>
           </div>
         </UserFeature>
         <Link

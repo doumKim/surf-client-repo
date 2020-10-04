@@ -22,9 +22,9 @@ const UserInfoBox = styled.div`
 
     @media (max-width: ${size.laptop}) {
       margin-left: 0;
-      margin-bottom: 4rem;
-      width: 220px;
-      height: 220px;
+      margin-bottom: 1rem;
+      width: 250px;
+      height: 250px;
     }
   }
 
@@ -41,15 +41,14 @@ const UserDetail = styled.div`
   align-items: center;
 
   div {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 600;
-    // width: 180px;
-    // margin-right: 1rem;
 
     @media (max-width: ${size.laptop}) {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       margin-right: 12px;
       width: 120px;
+      text-align: center;
     }
   }
 
@@ -145,8 +144,8 @@ const CameraButton = styled.button`
     }
   }
   @media (max-width: ${size.laptop}) {
-    bottom: 75px;
-    left: -45px;
+    bottom: 100px;
+    left: 65px;
   }
 `;
 
