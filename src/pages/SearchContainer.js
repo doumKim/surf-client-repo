@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import CardListContainer from "../components/Card/CardListContainer";
 import { withRouter } from "react-router-dom";
+import { getAllWavesAPI } from "../api";
 
 const MainWrapper = styled.div`
   width: 100%;
@@ -45,22 +46,28 @@ const NoSearchWrap = styled.div`
   }
 `;
 
-export default withRouter(({ dataArr, history }) => {
-  return (
-    <MainWrapper>
-      {dataArr.length === 0 ? (
-        <NoSearchWrap>
-          <h2>찾으시는 결과가 없습니다.</h2>
-          <button
-            style={{ cursor: "pointer" }}
-            onClick={() => history.goBack()}
-          >
-            뒤로 돌아가기
-          </button>
-        </NoSearchWrap>
-      ) : (
-        <CardListContainer allPosts={dataArr} />
-      )}
-    </MainWrapper>
-  );
-});
+export default withRouter(
+  ({ dataArr, currentSort, changeCurrentSort, history }) => {
+    return (
+      <MainWrapper>
+        {dataArr.length === 0 ? (
+          <NoSearchWrap>
+            <h2>찾으시는 결과가 없습니다.</h2>
+            <button
+              style={{ cursor: "pointer" }}
+              onClick={() => history.goBack()}
+            >
+              뒤로 돌아가기
+            </button>
+          </NoSearchWrap>
+        ) : (
+          <CardListContainer
+            allPosts={dataArr}
+            currentSort={currentSort}
+            changeCurrentSort={changeCurrentSort}
+          />
+        )}
+      </MainWrapper>
+    );
+  }
+);

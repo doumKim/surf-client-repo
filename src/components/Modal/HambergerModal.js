@@ -10,19 +10,19 @@ import SideAfterLoginController from "./Auth/SideAfterLoginController";
 const Modal = styled.div`
   height: 100vh;
   width: 500px;
+  right: 0;
   background-color: #ededed;
   position: absolute;
   top: 0px;
-  right: -500px;
   z-index: 4;
 
   @media ${deviceSize.tablet} {
-    width: 100vw;
-    right: -100vw;
+    width: 100%;
   }
 
   transform-origin: 0% 0%;
-  transform: ${props => (props.isOpen ? "translate(-100%, 0)" : null)};
+
+  transform: ${props => (!props.isOpen ? "translate(100%, 0)" : null)};
 
   transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
 `;
@@ -45,7 +45,7 @@ export default ({ showModal, hideModal, modalState }) => {
       ) : null}
       {isSignIn && data ? (
         <Modal isOpen={modalState.isModalVisible}>
-          <SideAfterLoginController loginData={data} />
+          <SideAfterLoginController loginData={data} hideModal={hideModal} />
         </Modal>
       ) : (
         <Modal isOpen={modalState.isModalVisible}>

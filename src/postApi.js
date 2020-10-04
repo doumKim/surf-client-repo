@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:4000";
+import { baseUrl } from "./constants/GlobalVariables";
 
 // 글 상세 페이지 데이터 조회
 export function getWaveDetail(id) {

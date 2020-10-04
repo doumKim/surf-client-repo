@@ -180,7 +180,7 @@ const Login = ({ width, height, hideModal, changeForm }) => {
   };
 
   useEffect(() => {
-    if (authData.isLoading && pending) {
+    if (authData.isLoading && !pending) {
       if (error) {
         alert("로그인에 실패했습니다.");
         setAuthData(prevState => ({ ...prevState, isLoading: false }));
