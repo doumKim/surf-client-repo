@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
+
 import JoinWavePresenter from "./JoinWavePresenter";
 import { joinWavesAPI } from "../../api";
 import { getUserData } from "../../modules/SignIn";
+import { setSaturation } from "polished";
 
 export default withRouter(({ history }) => {
   const [joinData, setJoinData] = useState(null);
@@ -20,10 +22,10 @@ export default withRouter(({ history }) => {
     }
   }, [error]);
 
-  const getJoinPosts = async () => {
+  const getJoinPosts = async start => {
     try {
       if (isSignIn) {
-        const result = await joinWavesAPI().then(res => res.json());
+        const result = await joinWavesAPI(start).then(res => res.json());
         setJoinData(result);
       }
     } catch (error) {

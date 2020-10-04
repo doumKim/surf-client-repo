@@ -117,7 +117,6 @@ const UserFeature = styled.div`
 `;
 
 const UserFeatures = ({ userData, myPageData }) => {
-  console.log(myPageData, userData);
   return (
     <UserFeatureBox>
       <UserFeatureItemWrap>
@@ -140,7 +139,7 @@ const UserFeatures = ({ userData, myPageData }) => {
           <UserFeature>
             <img alt="wave" src={myPageIconUrl.surfing} />
             <div>
-              <h4>어어간 목록</h4>
+              <h4>이어간 목록</h4>
               <h2>{myPageData.countJoinWave}</h2>
             </div>
           </UserFeature>

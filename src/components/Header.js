@@ -295,15 +295,6 @@ const Header = withRouter(({ width, history }) => {
         {width > 1366 ? (
           <>
             <HeaderFuncs>
-              <HeaderSearch onSubmit={handleSearch}>
-                <input
-                  onChange={e => setSearch(e.target.value)}
-                  value={search}
-                  // type="text"
-                  name="category"
-                  placeholder="Search for Wave"
-                />
-              </HeaderSearch>
               {isSignIn && data ? (
                 <>
                   <HeaderUser onClick={() => setUserMenu(!userMenu)}>

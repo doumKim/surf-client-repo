@@ -126,7 +126,6 @@ export default ({ postData }) => {
       "https://s3.ap-northeast-2.amazonaws.com/surfsurf.co.uk/dummyImg/default_user.png";
   };
   const login = useSelector(state => state.signIn);
-  console.log(postData.wave);
   return (
     <Link to={`/post/${postData.wave.id}/`}>
       <CardWrap>

@@ -9,7 +9,7 @@ const CardListContainer = styled.div`
 
 export default ({ allPosts }) => {
   return (
-    <CardListContainer length={allPosts.length}>
+    <CardListContainer>
       {allPosts.map((data, index) => (
         <Card key={index} postData={data} />
       ))}

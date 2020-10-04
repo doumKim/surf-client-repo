@@ -172,7 +172,6 @@ function CreatePhase({ data, history, match }) {
       data.current_phase,
       JSON.stringify(inputs)
     ).then(res => {
-      console.log(res);
       if (res.status === 201) {
         // 작성 완료 후 상세 페이지로 이동해주는 코드
         history.push(`/post/${data.post_id}`);
