@@ -1,19 +1,18 @@
 import React from "react";
 import styled from "@emotion/styled";
-
-import CardListContainer from "../../components/Card/CardListContainer";
+import CardListContainerMine from "../../components/Card/CardListContainerMine";
 
 const MainWrapper = styled.div`
-  margin: 60px 0;
+  margin: 140px 0;
 `;
 
 export default ({ allPosts, currentSort, changeCurrentSort }) => {
   return (
     <MainWrapper>
-      <CardListContainer
+      <CardListContainerMine
         allPosts={allPosts}
-        currentSort={currentSort}
-        changeCurrentSort={changeCurrentSort}
+        showCategories={false}
+        showSubHeader={false}
       />
     </MainWrapper>
   );

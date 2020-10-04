@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import CardListContainer from "../../components/Card/CardListContainer";
+import CardListContainerJoin from "../../components/Card/CardListContainerJoin";
 
 const MainWrapper = styled.div`
   margin: 60px 0;
@@ -10,7 +10,7 @@ const MainWrapper = styled.div`
 export default ({ allPosts }) => {
   return (
     <MainWrapper>
-      <CardListContainer allPosts={allPosts} showSubHeader={false} />
+      <CardListContainerJoin allPosts={allPosts} showSubHeader={true} />
     </MainWrapper>
   );
 };

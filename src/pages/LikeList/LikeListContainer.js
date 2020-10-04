@@ -25,7 +25,7 @@ export default ({ history }) => {
       if (isSignIn) {
         const result = await likePostsAPI().then(res => res.json());
         console.log(result);
-        setLikeData(result);
+        setLikeData(result.LikedWaves);
       }
     } catch (error) {
       alert("좋아요 한 목록을 가져오는데 실패했습니다.");

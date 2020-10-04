@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { FiHeart } from "react-icons/fi";
+import { AiFillHeart } from "react-icons/ai";
 import { sendLike } from "../../postApi";
 import { useSelector } from "react-redux";
 
@@ -8,7 +8,7 @@ const DetailImgWrap = styled.div`
   position: relative;
   width: 100%;
 
-  box-shadow: #495057 0 2px 7px;
+  box-shadow: #495057 0 2px 3px;
   border: none;
   border-radius: 8px 8px 0 0;
   background: none;
@@ -18,77 +18,80 @@ const DetailImgWrap = styled.div`
 `;
 const DetailImg = styled.img`
   width: 100%;
-  height: auto;
+  height: 400px;
+  object-fit: cover;
   border-radius: 8px 8px 0 0;
   @media (max-width: 1300px) {
     border-radius: 0;
   }
 `;
 const LikeButton = styled.button`
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
   background: none;
   text-align: center;
   line-height: 1;
-  opacity: 0.7;
+  opacity: 0.9;
   border-radius: 50%;
-  font-size: 2rem;
+  font-size: 2.5rem;
   cursor: pointer;
   border: none;
 
-  // position config
-  z-index: 3;
+  z-index: 1;
   position: absolute;
-  top: 90%;
+  top: 85%;
   left: 94%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-
-  // @media (max-width: 1300px) {
-  //   bottom: 66px;
-  // }
 
   &:focus {
     outline: none;
   }
 
   svg {
-    color: ${props => (props.like === "like" ? "#fa5252" : "#f8f9fa")};
+    color: ${props => (props.like ? "#c92a2a" : "#ffa8a8")};
     transition: all ease 0.5s;
     &:focus {
       outline: none;
     }
     &:hover {
       transform: scale(1.3);
-      color: #e03131;
+      color: #c92a2a;
     }
   }
 `;
 
-export default function PostDetailHeader({ match, postData }) {
+export default function PostDetailHeader({ postData }) {
   const login = useSelector(state => state.signIn);
 
   const [like, setLike] = useState(false);
-  const id = postData.id;
 
+  const handleImageLoadFailure = e => {
+    e.target.src = "/images/no_image_indicator.png";
+  };
+
+  const id = postData.id;
   const handleClickLike = () => {
     if (!like) {
-      console.log(id);
-      setLike(true);
+      setLike(prev => !prev);
       sendLike(id);
     }
   };
   return (
     <DetailImgWrap>
-      <DetailImg src={postData.title_image} alt={postData.title} />
+      <DetailImg
+        src={postData.title_image}
+        alt={postData.title}
+        onError={handleImageLoadFailure}
+      />
       {login.isSignIn ? (
-        like ? (
+        like || postData.liked ? (
           <LikeButton like="like">
-            <FiHeart />
+            <AiFillHeart />
           </LikeButton>
         ) : (
           <LikeButton onClick={handleClickLike}>
-            <FiHeart />
+            <AiFillHeart />
           </LikeButton>
         )
       ) : null}
