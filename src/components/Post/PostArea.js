@@ -125,6 +125,7 @@ const PhasePostWrap = styled.article`
 
   font-size: 1.2rem;
   line-height: 1.5;
+  line-break: anywhere;
 
   article {
     margin-top: 8px;
@@ -194,8 +195,8 @@ function PostArea({ postData, history }) {
             </h3>
           </div>
           {/* login.isSignIn && */}
-          {postData.max_phase !== postData.current_phase &&
-          postData.current_join_user == null &&
+          {postData.max_Phase > postData.current_phase &&
+          postData.current_join_user === null &&
           isSignIn ? (
             // -> 클릭했을때 -> current_join_user가 0이면 클릭 가능
             <button
