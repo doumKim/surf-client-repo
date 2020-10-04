@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import { Link, withRouter } from "react-router-dom";
@@ -20,12 +20,7 @@ const HeaderContainer = styled.div`
   display: grid;
   justify-content: center;
   align-items: center;
-  grid-template-columns: repeat(3, 1fr);
-`;
-
-const HomePageLink = styled(Link)`
-  display: flex;
-  width: 100%;
+  grid-template-columns: 2fr 1fr 2fr;
 `;
 
 const HeaderTitle = styled.div`
@@ -131,7 +126,7 @@ const UserMenu = styled.div`
   position: fixed;
   top: 80px;
   float: right;
-  right: 7%;
+  right: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -146,7 +141,7 @@ const UserMenu = styled.div`
 
   box-shadow: #adb5bd 0px 1px 5px;
 
-  @media (max-width: 3000px) {
+  /* @media (max-width: 3000px) {
     right: 5.4%;
   }
   @media (max-width: 2500px) {
@@ -163,7 +158,7 @@ const UserMenu = styled.div`
   }
   @media (max-width: 1400px) {
     right: 10%;
-  }
+  } */
   @media (max-width: 1366px) {
     opacity: 0;
   }
@@ -186,6 +181,7 @@ const MenuLink = styled(Link)`
 const Header = withRouter(({ width, history }) => {
   const { data, isSignIn } = useSelector(state => state.signIn);
   const dispatch = useDispatch();
+  const userModalRef = useRef();
 
   const [modalState, setModalState] = useState({
     // 모달이 현재 보여지고 있는가
@@ -196,11 +192,28 @@ const Header = withRouter(({ width, history }) => {
 
   const [userMenu, setUserMenu] = useState(false);
 
+  const handleUserMenu = useCallback(
+    e => {
+      if (userMenu && e.target !== userModalRef.current) {
+        setUserMenu(false);
+      }
+    },
+    [userMenu]
+  );
+
   useEffect(() => {
     if (isSignIn && !data) {
       dispatch(getUserData());
     }
   }, [isSignIn]);
+
+  useEffect(() => {
+    window.addEventListener("click", handleUserMenu);
+
+    return () => {
+      window.removeEventListener("click", handleUserMenu);
+    };
+  }, [handleUserMenu]);
 
   const showModal = isModalLogin => {
     setModalState(prev => ({ ...prev, isModalVisible: true, isModalLogin }));
@@ -226,12 +239,28 @@ const Header = withRouter(({ width, history }) => {
   return (
     <>
       <HeaderContainer>
-        <HomePageLink to={"/"} style={{ justifyContent: "flex-start" }}>
-          <HeaderTitle>SURF</HeaderTitle>
-        </HomePageLink>
-        <HomePageLink to={"/"} style={{ justifyContent: "center" }}>
-          <HeaderLogo src="/images/surf_logo.png" />
-        </HomePageLink>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Link to={"/"}>
+            <HeaderTitle>SURF</HeaderTitle>
+          </Link>
+        </div>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Link to={"/"}>
+            <HeaderLogo src="/images/surf_logo.png" />
+          </Link>
+        </div>
         {width > 1366 ? (
           <>
             <HeaderFuncs>
@@ -278,20 +307,6 @@ const Header = withRouter(({ width, history }) => {
 
                     <HeaderUserText style={{ color: "#212529" }}>
                       <span>{data.username}</span>
-                    </HeaderUserText>
-                  </HeaderUser>
-                  <HeaderUser>
-                    <HeaderUserText
-                      onClick={() => {
-                        console.log("clicked");
-                        setModalState(prevState => ({
-                          ...prevState,
-                          isModalLogin: true,
-                        }));
-                        dispatch(signOut());
-                      }}
-                    >
-                      Log Out
                     </HeaderUserText>
                   </HeaderUser>
                 </>
@@ -342,14 +357,14 @@ const Header = withRouter(({ width, history }) => {
         )}
       </HeaderContainer>
       {isSignIn && data && (
-        <UserMenu open={userMenu}>
+        <UserMenu open={userMenu} ref={userModalRef}>
           <MenuLink to="/user/mypage">서퍼 정보</MenuLink>
           <MenuLink to="/wave/new">파도 일으키기</MenuLink>
           <MenuLink to="/user/likes">좋아요 목록</MenuLink>
           <MenuLink
             onClick={e => {
               e.preventDefault();
-              dispatch(signOut);
+              dispatch(signOut());
               setModalState(prevState => ({
                 ...prevState,
                 isModalLogin: true,

@@ -45,7 +45,7 @@ export default ({ showModal, hideModal, modalState }) => {
       ) : null}
       {isSignIn && data ? (
         <Modal isOpen={modalState.isModalVisible}>
-          <SideAfterLoginController loginData={data} />
+          <SideAfterLoginController loginData={data} hideModal={hideModal} />
         </Modal>
       ) : (
         <Modal isOpen={modalState.isModalVisible}>
