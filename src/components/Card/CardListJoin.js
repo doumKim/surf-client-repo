@@ -2,17 +2,41 @@ import React from "react";
 import styled from "@emotion/styled";
 // import { deviceSize } from "../../constants/DiviceSize";
 import CardJoin from "./CardJoin";
+import { myPageIconUrl } from "../../constants/SurfIcons";
 
 const CardListContainer = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+`;
+const PageLabel = styled.label`
+  margin: 1rem 1rem 2rem 1rem;
+  font-size: 2rem;
+  font-weight: 600;
+  display: flex;
+  align-items;
+  width: fit-content;
+
+  img {
+    margin-right: 12px;
+    width: 32px;
+    height: 32px;
+  }
 `;
 
 export default ({ allPosts }) => {
   return (
     <CardListContainer length={allPosts.length}>
-      {allPosts.map((data, index) => (
-        <CardJoin key={index} postData={data} />
-      ))}
+      <PageLabel>
+        <img src={myPageIconUrl.surfing} alt="like" />
+        내가 참여한 파도 목록
+      </PageLabel>
+      <div>
+        {allPosts.map((data, index) => (
+          <CardJoin key={index} postData={data} />
+        ))}
+      </div>
     </CardListContainer>
   );
 };

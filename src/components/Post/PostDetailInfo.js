@@ -16,6 +16,11 @@ const PostDetaillWrap = styled.section`
     align-items: start;
     margin-bottom: 1.4rem;
   }
+  @media ${deviceSize.mobile} {
+    padding: 0.8rem;
+    align-items: start;
+    margin-bottom: 1.4rem;
+  }
 `;
 const PostInfoWrap = styled.div`
   display: flex;
@@ -46,12 +51,24 @@ const PostTitle = styled.h2`
     font-size: 2.5rem;
     margin-bottom: 0.8rem;
   }
+  @media ${deviceSize.tablet} {
+    font-size: 2rem;
+  }
+  @media ${deviceSize.mobile} {
+    font-size: 1.5rem;
+  }
 `;
 const PostSynop = styled.article`
   font-size: 1.3rem;
   font-weight: 400;
   line-height: 1.3;
   color: #343a40;
+  @media ${deviceSize.laptop} {
+    font-size: 1.3rem;
+  }
+  @media ${deviceSize.tablet} {
+    font-size: 1rem;
+  }
 `;
 const PostWriterWrap = styled.div`
   display: flex;
@@ -65,7 +82,12 @@ const PostWriterWrap = styled.div`
   }
   @media ${deviceSize.laptop} {
     max-width: 100%;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
+    align-items: start;
+    justify-content: start;
+  }
+  @media ${deviceSize.tablet} {
+    margin-top: 1rem;
     align-items: start;
     justify-content: start;
   }
@@ -118,7 +140,7 @@ const PostFeature = styled.div`
     font-weight: 600;
 
     @media ${deviceSize.mobile} {
-      font-size: 1rem;
+      font-size: 0.8rem;
       display: inline-block;
     }
   }

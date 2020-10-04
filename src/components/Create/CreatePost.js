@@ -335,12 +335,12 @@ export default function CreatePost({ selectPhase, selectDue, sendData }) {
             style={{ height: "400px" }}
           />
         </PostSection>
-        {waveData.synopsis.length !== 0 && waveData.text.length !== 0 ? (
+        {waveData.synopsis.length > 10 && waveData.text.length > 100 ? (
           <CreateWaveButton send="on" onClick={clickSendData}>
             파도 일으키기
           </CreateWaveButton>
         ) : (
-          <CreateWaveButton>파도 일으키기</CreateWaveButton>
+          <CreateWaveButton disabled>파도 일으키기</CreateWaveButton>
         )}
       </CreatePostWrap>
     </>
