@@ -23,11 +23,11 @@ const CardWrap = styled.div`
 const CardContainer = styled.div`
   display: flex;
 
-  @media ${deviceSize.laptop} {
-    height: 80px;
+  @media ${deviceSize.mobile} {
+    height: 100px;
   }
-  @media ${deviceSize.tablet} {
-    height: 80px;
+  @media ${deviceSize.laptop} {
+    height: 120px;
   }
 `;
 
@@ -58,12 +58,8 @@ const Title = styled.h2`
   font-size: 1.7rem;
   font-weight: 700;
 
-  @media ${deviceSize.laptop} {
-    font-size: 1.5rem;
-  }
-
   @media ${deviceSize.tablet} {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 700;
   }
 `;
@@ -80,13 +76,8 @@ const Synopsis = styled.div`
   font-weight: 400;
   font-size: 1rem;
   color: #495057;
-  @media ${deviceSize.tablet} {
-    font-size: 1rem;
-    -webkit-line-clamp: 1;
-  }
   @media ${deviceSize.mobile} {
-    font-size: 1rem;
-    -webkit-line-clamp: 1;
+    font-size: 0.8rem;
   }
 `;
 
@@ -96,17 +87,17 @@ export default ({ postData }) => {
   };
 
   return (
-    <Link style={{ textDecoration: "none" }} to={`post/${postData.id}`}>
+    <Link style={{ textDecoration: "none" }} to={`post/${postData.wave.id}`}>
       <CardWrap>
         <CardContainer>
           <CardHead
-            src={postData.title_image}
-            alt={postData.title}
+            src={postData.wave.title_image}
+            alt={postData.wave.title}
             onError={handleImageLoadFailure}
           />
           <CardBody>
-            <Title>{postData.title}</Title>
-            <Synopsis>{postData.synopsis}</Synopsis>
+            <Title>{postData.wave.title}</Title>
+            <Synopsis>{postData.wave.synopsis}</Synopsis>
           </CardBody>
         </CardContainer>
       </CardWrap>

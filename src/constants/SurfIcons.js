@@ -10,9 +10,9 @@ export const myPageIconUrl = {
   medal1st:
     "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/first-place-medal_1f947.png",
   medal2nd:
-    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/second-place-medal_1f948.png",
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/girl_emoji-modifier-fitzpatrick-type-1-2_1f467-1f3fb_1f3fb.png",
   medal3rd:
-    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/third-place-medal_1f949.png",
+    "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/baby_emoji-modifier-fitzpatrick-type-1-2_1f476-1f3fb_1f3fb.png",
   write:
     "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/320/apple/237/writing-hand_emoji-modifier-fitzpatrick-type-3_270d-1f3fc_1f3fc.png",
   create_at:

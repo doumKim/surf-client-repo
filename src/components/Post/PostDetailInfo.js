@@ -155,6 +155,7 @@ const PostTag = styled.div`
 
 export default function PostDetailInfo({ postData }) {
   // username 받아오기 위해서 userInfo api 필요
+  console.log(postData);
   const username = "test";
   return (
     <PostDetaillWrap>
@@ -168,7 +169,7 @@ export default function PostDetailInfo({ postData }) {
         <PostFeature>
           <img src={myPageIconUrl.write} alt="writer" />
           <h3>메이커 서퍼</h3>
-          <p>{username}</p>
+          <p>{postData.creator_info.username}</p>
         </PostFeature>
         <PostFeature>
           <img src={myPageIconUrl.category} alt="category" />

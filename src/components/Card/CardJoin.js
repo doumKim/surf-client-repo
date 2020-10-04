@@ -124,22 +124,23 @@ export default ({ postData }) => {
     e.target.src = "/images/default_user.png";
   };
   const login = useSelector(state => state.signIn);
+  console.log(postData.wave);
   return (
-    <Link to={`/post/${postData.id}/`}>
+    <Link to={`/post/${postData.wave.id}/`}>
       <CardWrap>
         <CardHead
-          src={postData.title_image}
-          alt={postData.title}
+          src={postData.wave.title_image}
+          alt={postData.wave.title}
           onError={handleImageLoadFailure}
         />
         <CardBody>
-          <Title>{postData.title}</Title>
-          <Synopsis>{postData.synopsis}</Synopsis>
+          <Title>{postData.wave.title}</Title>
+          <Synopsis>{postData.wave.synopsis}</Synopsis>
         </CardBody>
         <CardBottom>
           {/* login.isSignIn && */}
           <CardUser>
-            {postData.creator_info.avartar_url === null ? (
+            {postData.wave.creator_info.avartar_url === null ? (
               <img
                 style={{
                   width: "18px",
@@ -149,7 +150,7 @@ export default ({ postData }) => {
                   backgroundColor: "#dee2e6",
                 }}
                 src={"/images/default_user.png"}
-                alt={postData.creator_info.username}
+                alt={postData.wave.creator_info.username}
                 onError={handleUserImageLoadFailure}
               />
             ) : (
@@ -161,12 +162,12 @@ export default ({ postData }) => {
                   marginRight: "8px",
                   backgroundColor: "#dee2e6",
                 }}
-                src={postData.creator_info.avartar_url}
-                alt={postData.creator_info.username}
+                src={postData.wave.creator_info.avartar_url}
+                alt={postData.wave.creator_info.username}
                 onError={handleUserImageLoadFailure}
               />
             )}
-            <div>{postData.creator_info.username}</div>
+            <div>{postData.wave.creator_info.username}</div>
           </CardUser>
 
           <CardUser style={{ color: "#fa5252" }}>

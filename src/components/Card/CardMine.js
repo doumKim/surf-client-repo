@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { deviceSize } from "../../constants/DiviceSize";
 import { useSelector } from "react-redux";
-import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 
 // Basic Card
 const CardWrap = styled.div`
@@ -20,7 +19,7 @@ const CardWrap = styled.div`
   transition: box-shadow 0.3s, transform 0.3s;
 
   width: 330px;
-  height: 430px;
+  height: 380px;
   margin: 15px;
   border-radius: 5px;
 
@@ -120,10 +119,6 @@ export default ({ postData }) => {
   const handleImageLoadFailure = e => {
     e.target.src = "/images/no_image_indicator.png";
   };
-  const handleUserImageLoadFailure = e => {
-    e.target.src = "/images/default_user.png";
-  };
-  const login = useSelector(state => state.signIn);
   return (
     <Link to={`/post/${postData.id}/`}>
       <CardWrap>
@@ -136,48 +131,6 @@ export default ({ postData }) => {
           <Title>{postData.title}</Title>
           <Synopsis>{postData.synopsis}</Synopsis>
         </CardBody>
-        <CardBottom>
-          {/* login.isSignIn && */}
-          <CardUser>
-            {postData.creator_info.avartar_url === null ? (
-              <img
-                style={{
-                  width: "18px",
-                  height: "18px",
-                  borderRadius: "50%",
-                  marginRight: "8px",
-                  backgroundColor: "#dee2e6",
-                }}
-                src={"/images/default_user.png"}
-                alt={postData.creator_info.username}
-                onError={handleUserImageLoadFailure}
-              />
-            ) : (
-              <img
-                style={{
-                  width: "18px",
-                  height: "18px",
-                  borderRadius: "50%",
-                  marginRight: "8px",
-                  backgroundColor: "#dee2e6",
-                }}
-                src={postData.creator_info.avartar_url}
-                alt={postData.creator_info.username}
-                onError={handleUserImageLoadFailure}
-              />
-            )}
-            <div>{postData.creator_info.username}</div>
-          </CardUser>
-
-          <CardUser style={{ color: "#fa5252" }}>
-            {postData.liked ? (
-              <FcLike style={{ marginRight: "5px" }} />
-            ) : (
-              <FcLikePlaceholder style={{ marginRight: "5px" }} />
-            )}
-            {postData.like}
-          </CardUser>
-        </CardBottom>
       </CardWrap>
     </Link>
   );

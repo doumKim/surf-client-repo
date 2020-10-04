@@ -25,6 +25,7 @@ export default withRouter(({ history }) => {
     try {
       if (isSignIn) {
         const result = await myWavesAPI(sort).then(res => res.json());
+        console.log(result);
         setMyWaveData(result);
       }
     } catch (error) {

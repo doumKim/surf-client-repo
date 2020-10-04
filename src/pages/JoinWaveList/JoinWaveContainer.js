@@ -24,7 +24,6 @@ export default withRouter(({ history }) => {
     try {
       if (isSignIn) {
         const result = await joinWavesAPI().then(res => res.json());
-        console.log(result);
         setJoinData(result);
       }
     } catch (error) {
