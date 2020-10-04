@@ -63,7 +63,7 @@ const LikeButton = styled.button`
   }
 
   svg {
-    color: ${props => (props.like ? "#c92a2a" : "#ffa8a8")};
+    color: ${props => (props.like ? "#c92a2a" : "#f1f3f5")};
     transition: all ease 0.5s;
     &:focus {
       outline: none;
@@ -81,7 +81,8 @@ export default function PostDetailHeader({ postData }) {
   const [like, setLike] = useState(false);
 
   const handleImageLoadFailure = e => {
-    e.target.src = "/images/no_image_indicator.png";
+    e.target.src =
+      "https://s3.ap-northeast-2.amazonaws.com/surfsurf.co.uk/dummyImg/no_image_indicator.png";
   };
 
   const id = postData.id;

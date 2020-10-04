@@ -15,7 +15,6 @@ export default () => {
   const [joinWaveList, setJoinWaveList] = useState(null);
   const [currentSort, setCurrentSort] = useState("like");
   const [mainStart, setMainStart] = useState(0);
-  const [mainHasMore, setMainHasMore] = useState(true);
 
   const getNextAllWaves = async start => {
     const result = await getAllWavesAPI(

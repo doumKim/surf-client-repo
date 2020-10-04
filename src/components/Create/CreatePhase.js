@@ -128,6 +128,7 @@ const LastPhaseArea = styled.article`
   line-height: 1.5;
   border-radius: 3px;
   margin-bottom: 2rem;
+  line-break: anywhere;
 `;
 const CreatePhaseButton = styled.button`
   border: none;
@@ -135,6 +136,7 @@ const CreatePhaseButton = styled.button`
   font-size: 1.2rem;
   font-weight: 600;
   padding: 12px;
+  cursor: pointer;
 
   background-color: ${props => (props.send === "on" ? "#339af0" : "#dee2e6")};
   color: ${props => (props.send === "on" ? "#fff" : "#495057")};
@@ -189,13 +191,17 @@ function CreatePhase({ data, history, match }) {
             </h2>
             <PostLabel>
               소제목 작성<span>[option]</span>
-              <button>
-                {open ? (
+              {/* <button> */}
+              {open ? (
+                <button>
                   <MdKeyboardArrowUp onClick={() => setOpen(false)} />
-                ) : (
+                </button>
+              ) : (
+                <button>
                   <MdKeyboardArrowDown onClick={() => setOpen(true)} />
-                )}
-              </button>
+                </button>
+              )}
+              {/* </button> */}
             </PostLabel>
             {open && (
               <input

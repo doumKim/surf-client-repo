@@ -19,7 +19,7 @@ const CreateWaveWrap = styled.section`
 
   @media (max-width: 1300px) {
     width: 100%;
-    margin: 100px 0 80px 0;
+    margin: 100px 0 0 0;
   }
 `;
 

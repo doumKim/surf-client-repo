@@ -47,6 +47,10 @@ const WaveTitle = styled.section`
       opacity: 0.4;
       font-weight: 600;
     }
+
+    @media (max-width: 600px) {
+      font-size: 1.5rem;
+    }
   }
 
   div {
@@ -56,6 +60,12 @@ const WaveTitle = styled.section`
     background: none;
     margin: 10px 0 0 12px;
     border-bottom: 6px solid #228be6;
+
+    @media (max-width: 600px) {
+      width: 50px;
+      margin: 6px 0 0 10px;
+      border-bottom: 4px solid #228be6;
+    }
   }
 `;
 const WaveSelectLabel = styled.label`
@@ -77,9 +87,8 @@ const WaveSelectWrap = styled.section`
   }
 `;
 const WaveSelect = styled.section`
-  width: 24%;
+  width: 100%;
   height: fit-content;
-  padding: 8px;
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -91,20 +100,57 @@ const WaveSelect = styled.section`
     transition: box-shadow 0.4s ease;
   }
 
-  @media (max-width: 1300px) {
-    width: 88%;
-    flex-direction: row;
-    align-items: center;
-    height: 80px;
+  input {
+    max-width: 220px;
+    overflow: hidden;
+  }
 
+  @media (max-width: 1300px) {
+    width: 100%;
+    height: 80px;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    align-items: center;
+    font-size: 1rem;
     label {
       padding: 0;
-      margin-right: 15px;
     }
   }
-  input {
-    font-size: 1rem;
-    padding: 5px 0;
+  @media (max-width: 1000px) {
+    font-size: 0.8rem;
+  }
+  @media (max-width: 1000px) {
+    font-size: 0.8rem;
+  }
+  @media (max-width: 850px) {
+    grid-template-columns: 1.3fr 3.7fr;
+  }
+  @media (max-width: 850px) {
+    grid-template-columns: 1.3fr 3.7fr;
+  }
+  @media (max-width: 620px) {
+    grid-template-columns: 1.4fr 3.6fr;
+    padding: 0 1rem 0 1rem;
+    height: 60px;
+    label {
+      font-size: 1rem;
+    }
+  }
+  @media (max-width: 500px) {
+    grid-template-columns: 1.8fr 3.2fr;
+    padding: 0 0.5rem;
+    height: 50px;
+    label {
+      font-size: 0.9rem;
+    }
+  }
+  @media (max-width: 380px) {
+    grid-template-columns: 2.5fr 2.5fr;
+    height: 50px;
+
+    label {
+      font-size: 0.9rem;
+    }
   }
 `;
 const CreatePostWrap = styled.section`
@@ -190,8 +236,9 @@ const CreateWaveButton = styled.button`
   font-size: 1.2rem;
   font-weight: 600;
   padding: 12px;
-  float: right;
+  // float: right;
   margin-bottom: 1rem;
+  cursor: pointer;
 
   background-color: ${props => (props.send === "on" ? "#339af0" : "#dee2e6")};
   color: ${props => (props.send === "on" ? "#fff" : "#495057")};
@@ -259,6 +306,9 @@ export default function CreatePost({ selectPhase, selectDue, sendData }) {
             <WaveSelectLabel>카테고리 설정</WaveSelectLabel>
             <Select
               onChange={selectedOption => {
+                if (selectedOption === null) {
+                  selectedOption = [];
+                }
                 setGenre(selectedOption.map(el => el.value));
               }}
               closeMenuOnSelect={false}
@@ -283,6 +333,7 @@ export default function CreatePost({ selectPhase, selectDue, sendData }) {
           <WaveSelect>
             <WaveSelectLabel>총 회차 설정</WaveSelectLabel>
             <Select
+              defaultValue={selectPhase[0]}
               onChange={selectedOption => setMaxPhase(selectedOption)}
               options={selectPhase}
               styles={selectStyle}
@@ -298,13 +349,15 @@ export default function CreatePost({ selectPhase, selectDue, sendData }) {
         <PostSection>
           <PostLabel>
             소제목 입력 <span>[옵션]</span>{" "}
-            <button>
-              {open ? (
+            {open ? (
+              <button>
                 <MdKeyboardArrowUp onClick={() => setOpen(false)} />
-              ) : (
+              </button>
+            ) : (
+              <button>
                 <MdKeyboardArrowDown onClick={() => setOpen(true)} />
-              )}
-            </button>
+              </button>
+            )}
           </PostLabel>
           {open && (
             <input
@@ -327,6 +380,7 @@ export default function CreatePost({ selectPhase, selectDue, sendData }) {
         <PostSection>
           <PostLabel>파도 일으키기</PostLabel>
           <PostArea
+            placeholder="100자 이상 입력해주세요"
             onChange={handleChange}
             name="text"
             value={waveData.text}
@@ -334,7 +388,7 @@ export default function CreatePost({ selectPhase, selectDue, sendData }) {
             style={{ height: "400px" }}
           />
         </PostSection>
-        {waveData.synopsis.length > 10 && waveData.text.length > 100 ? (
+        {waveData.synopsis.length > 5 && waveData.text.length > 100 ? (
           <CreateWaveButton send="on" onClick={clickSendData}>
             파도 일으키기
           </CreateWaveButton>

@@ -5,7 +5,13 @@ import { myPageIconUrl } from "../../constants/SurfIcons";
 
 const MainWrapper = styled.div`
   margin: 140px auto;
-  min-height: calc(100vh - 279px);
+
+  @media (max-width: 768px) {
+    margin: 120px auto;
+  }
+  @media (max-width: 425px) {
+    margin: 100px auto;
+  }
 `;
 
 export default ({ allPosts }) => {

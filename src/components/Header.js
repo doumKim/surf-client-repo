@@ -14,13 +14,22 @@ const HeaderContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 3;
   min-width: 300px;
   background-color: #228be6;
   display: grid;
   justify-content: center;
   align-items: center;
   grid-template-columns: 2fr 1fr 2fr;
+
+  @media (max-width: 768px) {
+    height: 80px;
+    display: flex;
+    justify-content: space between;
+  }
+  @media (max-width: 425px) {
+    height: 60px;
+  }
 `;
 
 const HeaderTitle = styled.div`
@@ -31,11 +40,25 @@ const HeaderTitle = styled.div`
   font-weight: bold;
   color: #a5d8ff;
   margin-left: 32px;
+
+  @media (max-width: 768px) {
+    height: 36px;
+    font-size: 32px;
+    margin-left: 24px;
+  }
+  @media (max-width: 425px) {
+    height: 24px;
+    font-size: 24px;
+    margin-left: 18px;
+  }
 `;
 
 const HeaderLogo = styled.img`
   width: 80px;
   height: 80px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const HeaderFuncs = styled.div`
@@ -76,6 +99,13 @@ const MenuContainer = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   margin-right: 30px;
+
+  @media (max-width: 768px) {
+    margin-right: 20px;
+  }
+  @media (max-width: 425px) {
+    margin-right: 14px;
+  }
 `;
 
 const HambergerIcon = styled.div`
@@ -233,7 +263,8 @@ const Header = withRouter(({ width, history }) => {
     setSearch("");
   };
   const handleImageLoadFailure = e => {
-    e.target.src = "/images/default_user.png";
+    e.target.src =
+      "https://s3.ap-northeast-2.amazonaws.com/surfsurf.co.uk/dummyImg/default_user.png";
   };
 
   return (

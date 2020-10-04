@@ -1,8 +1,8 @@
 export const selectStyle = {
   control: styles => ({
     ...styles,
-    width: "180px",
+    width: "170px",
     fontSize: "1rem",
-    maxWidth: "300px",
+    maxWidth: "200px",
   }),
 };

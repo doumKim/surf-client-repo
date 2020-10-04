@@ -77,7 +77,6 @@ export default function CreatePhaseContainer({ match, history }) {
       {isSignIn && phaseData ? (
         <>
           <CreatePhasePresenter phaseData={phaseData} />
-          <div onClick={() => removeCurrentJoinUser(postId)}>권한해제</div>
         </>
       ) : null}
     </>

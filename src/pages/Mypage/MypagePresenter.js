@@ -15,12 +15,12 @@ const MypageWrap = styled.section`
 
   @media (max-width: ${size.laptop}) {
     width: 100%;
-    margin-right: 0;
+    margin: 140px 0 0 0;
   }
 
   @media (max-width: ${size.tablet}) {
-    margin-right: 0;
     width: 100%;
+    margin: 140px 0 0 0;
   }
 `;
 const MypageLabel = styled.label`
@@ -28,7 +28,7 @@ const MypageLabel = styled.label`
   color: #343a40;
   border-bottom: 3px solid #343a40;
   width: fit-content;
-  padding-bottom: 4px;
+  padding-bottom: 12px;
   font-weight: 600;
   margin-bottom: 2.4rem;
 
@@ -36,7 +36,7 @@ const MypageLabel = styled.label`
     font-size: 1.5rem;
   }
   @media (max-width: ${size.tablet}) {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 1.6rem;
   }
 `;
@@ -48,13 +48,12 @@ const UserInfoWrap = styled.section`
   box-shadow: #dee2e6 0 2px 6px;
   border-radius: 6px;
 
-  // display
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
 
-  @media (max-width: 1300px) {
+  @media (max-width: 1100px) {
     flex-direction: column;
     justify-content: center;
     height: 100%;
@@ -63,14 +62,12 @@ const UserInfoWrap = styled.section`
 
 export default function MypagePresenter({ openModal, userData, myPageData }) {
   return (
-    <>
-      <MypageWrap>
-        <MypageLabel>마이페이지</MypageLabel>
-        <UserInfoWrap>
-          <UserInfo openModal={openModal} userData={userData} />
-          <UserFeatures userData={userData} myPageData={myPageData} />
-        </UserInfoWrap>
-      </MypageWrap>
-    </>
+    <MypageWrap>
+      <MypageLabel>마이페이지</MypageLabel>
+      <UserInfoWrap>
+        <UserInfo openModal={openModal} userData={userData} />
+        <UserFeatures userData={userData} myPageData={myPageData} />
+      </UserInfoWrap>
+    </MypageWrap>
   );
 }
