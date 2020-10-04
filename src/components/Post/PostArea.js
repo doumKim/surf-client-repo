@@ -135,7 +135,7 @@ function PostArea({ postData, history }) {
       alert("로그인이 필요한 기능입니다.");
     } else {
       try {
-        const res = await createCurrentJoinUser(postData.id);
+        await createCurrentJoinUser(postData.id);
         history.push(`/post/${postData.id}/${postData.current_phase + 1}`);
       } catch (error) {
         alert("권한을 받을 수 없습니다.");

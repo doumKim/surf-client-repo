@@ -14,13 +14,11 @@ export default function CreatePhaseContainer({ match, history }) {
     try {
       const result = await getWaveDetail(postId).then(res => res.json());
       if (result.current_join_user !== data.id) {
-        history.push(`/post/${postId}`);
         return false;
       } else {
         return true;
       }
     } catch (error) {
-      history.push(`/post/${postId}`);
       return false;
     }
   };
@@ -47,20 +45,17 @@ export default function CreatePhaseContainer({ match, history }) {
       if (isSignIn) {
         const verified = await verifyPermission();
         if (verified) {
-          window.addEventListener(
-            "beforeunload",
+          window.addEventListener("beforeunload", () =>
             removeCurrentJoinUser(postId)
           );
 
           getPrevPhaseData();
         } else {
           alert("권한이 없습니다.");
-          removeCurrentJoinUser(postId);
           history.push(`/post/${postId}`);
         }
       } else {
         alert("권한이 없습니다.");
-        removeCurrentJoinUser(postId);
         history.push(`/post/${postId}`);
       }
     };
@@ -71,14 +66,19 @@ export default function CreatePhaseContainer({ match, history }) {
   useEffect(() => {
     return () => {
       removeCurrentJoinUser(postId);
-      window.removeEventListener("beforeunload", removeCurrentJoinUser(postId));
+      window.removeEventListener("beforeunload", () =>
+        removeCurrentJoinUser(postId)
+      );
     };
   }, []);
 
   return (
     <>
       {isSignIn && phaseData ? (
-        <CreatePhasePresenter phaseData={phaseData} />
+        <>
+          <CreatePhasePresenter phaseData={phaseData} />
+          <div onClick={() => removeCurrentJoinUser(postId)}>권한해제</div>
+        </>
       ) : null}
     </>
   );

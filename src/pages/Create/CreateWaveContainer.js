@@ -36,9 +36,9 @@ function CreateWaveContainer({ history }) {
     }
     try {
       const res = await createWave(form);
-      console.log(res);
       if (res.status === 201) {
         const { id } = await res.json();
+        console.log(id);
         history.push(`/post/${id}`);
       }
     } catch (error) {
