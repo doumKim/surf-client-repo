@@ -83,7 +83,8 @@ const Synopsis = styled.div`
 
 export default ({ postData }) => {
   const handleImageLoadFailure = e => {
-    e.target.src = "/images/no_image_indicator.png";
+    e.target.src =
+      "https://s3.ap-northeast-2.amazonaws.com/surfsurf.co.uk/dummyImg/no_image_indicator.png";
   };
 
   return (

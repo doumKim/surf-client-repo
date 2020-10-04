@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { withResizeDetector } from "react-resize-detector";
 import { myPageIconUrl } from "../../../constants/SurfIcons";
 import { signOut } from "../../../modules/SignIn";
+import { deviceSize } from "../../../constants/DiviceSize";
 
 const MainContainer = styled.div`
   position: relative;
@@ -34,6 +35,11 @@ const UserInfoBox = styled.section`
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 8rem;
+
+  @media ${deviceSize.mobile} {
+    font-size: 1.5rem;
+    margin-bottom: 5rem;
+  }
 `;
 const Avatar = styled.img`
   width: 40px;
@@ -41,6 +47,12 @@ const Avatar = styled.img`
   margin-right: 2rem;
   border: none;
   border-radius: 50%;
+
+  @media ${deviceSize.mobile} {
+    width: 28px;
+    height: 28px;
+    margin-right: 1.5rem;
+  }
 `;
 const MenuBox = styled.section`
   display: flex;
@@ -65,6 +77,14 @@ const MenuLink = styled(Link)`
     margin: 0;
     font-size: 1.8rem;
     font-weight: 600;
+
+    @media ${deviceSize.mobile} {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media ${deviceSize.mobile} {
+    margin-bottom: 3rem;
   }
 `;
 const MenuIcon = styled.img`
@@ -78,7 +98,8 @@ const SideAfterLoginController = ({ loginData, hideModal }) => {
   const dispatch = useDispatch();
 
   const handleImageLoadFailure = e => {
-    e.target.src = "/images/default_user.png";
+    e.target.src =
+      "https://s3.ap-northeast-2.amazonaws.com/surfsurf.co.uk/dummyImg/default_user.png";
   };
 
   return (

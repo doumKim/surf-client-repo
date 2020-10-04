@@ -9,11 +9,17 @@ const UserFeatureBox = styled.div`
   padding: 2rem;
   height: 640px;
   width: 640px;
-  margin-left: 5rem;
   display: flex;
   flex-direction: column;
-  @media (max-width: ${size.laptop}) {
-    margin-left: 2rem;
+  @media (max-width: ${size.tablet}) {
+    width: 480px;
+    padding: 0;
+    height: 560px;
+  }
+  @media (max-width: ${size.mobile}) {
+    width: 320px;
+    height: 120%;
+    justify-content: center;
   }
 `;
 const UserFeatureItemWrap = styled.section`
@@ -21,7 +27,12 @@ const UserFeatureItemWrap = styled.section`
   flexl-direction: row;
   justify-content: space-around;
   margin-top: 2rem;
-  margin-bottom: 1rem;
+  @media (max-width: ${size.tablet}) {
+    justify-content: space-around;
+  }
+  @media (max-width: ${size.mobile}) {
+    justify-content: space-around;
+  }
 `;
 const UserFeature = styled.div`
   width: 200px;
@@ -36,19 +47,33 @@ const UserFeature = styled.div`
   align-items: start;
 
   div {
+    width: 100%;
     h2 {
       display: block;
-      font-size: 3rem;
+
+      font-size: 2rem;
       font-weight: 600;
       margin-top: 0;
       margin-bottom: 1rem;
-      // text-align: end;
+      @media (max-width: 1100px) {
+        font-size: 1.8rem;
+      }
+      @media (max-width: ${size.tablet}) {
+        font-size: 1.5rem;
+      }
+      @media (max-width: ${size.mobile}) {
+        font-size: 1.2rem;
+      }
     }
+
     h4 {
-      // display: block;
       font-size: 1.2rem;
       font-weight: 400;
       margin: 0 2rem 1rem 0;
+
+      @media (max-width: 1100px) {
+        font-size: 1rem;
+      }
     }
   }
 
@@ -67,6 +92,27 @@ const UserFeature = styled.div`
     width: 80px;
     height: 80px;
     margin-bottom: 2rem;
+    @media (max-width: 1100px) {
+      width: 60px;
+      height: 60px;
+    }
+    @media (max-width: ${size.tablet}) {
+      width: 48px;
+      height: 48px;
+    }
+    @media (max-width: ${size.mobile}) {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  @media (max-width: ${size.tablet}) {
+    width: 180px;
+    height: 180px;
+  }
+  @media (max-width: ${size.tablet}) {
+    width: 160px;
+    height: 150px;
   }
 `;
 
@@ -82,7 +128,7 @@ const UserFeatures = ({ userData, myPageData }) => {
           <UserFeature>
             <img alt="wave" src={myPageIconUrl.wave} />
             <div>
-              <h4>파도 일으키기</h4>
+              <h4>일으킨 목록</h4>
               <h2>{myPageData.countCreateWave}</h2>
             </div>
           </UserFeature>
@@ -94,7 +140,7 @@ const UserFeatures = ({ userData, myPageData }) => {
           <UserFeature>
             <img alt="wave" src={myPageIconUrl.surfing} />
             <div>
-              <h4>파도 이어가기</h4>
+              <h4>어어간 목록</h4>
               <h2>{myPageData.countJoinWave}</h2>
             </div>
           </UserFeature>
@@ -114,7 +160,7 @@ const UserFeatures = ({ userData, myPageData }) => {
           />
           <div>
             <h4>서퍼 등급</h4>
-            <h2 style={{ fontSize: "2rem" }}>
+            <h2>
               {userData.level === 1
                 ? "베이비 서퍼"
                 : userData.level === 2
@@ -130,7 +176,7 @@ const UserFeatures = ({ userData, myPageData }) => {
           <UserFeature>
             <img alt="link" src={myPageIconUrl.like} />
             <div>
-              <h4>좋아요한 파도</h4>
+              <h4>좋아요 목록</h4>
               <h2>{myPageData.countLikeWave}</h2>
             </div>
           </UserFeature>

@@ -26,6 +26,16 @@ const UserInfoBox = styled.div`
       width: 250px;
       height: 250px;
     }
+    @media (max-width: ${size.table}) {
+      margin-left: 0;
+      width: 200px;
+      height: 200px;
+    }
+    @media (max-width: ${size.mobile}) {
+      margin-left: 0;
+      width: 160px;
+      height: 160px;
+    }
   }
 
   @media (max-width: ${size.laptop}) {
@@ -35,7 +45,6 @@ const UserInfoBox = styled.div`
 `;
 const UserDetail = styled.div`
   display: flex;
-  position: relative;
   margin-bottom: 2rem;
   justify-content: center;
   align-items: center;
@@ -43,12 +52,11 @@ const UserDetail = styled.div`
   div {
     font-size: 2rem;
     font-weight: 600;
-
+    @media (max-width: 1100px) {
+      font-size: 2.4rem;
+    }
     @media (max-width: ${size.laptop}) {
-      font-size: 1.5rem;
-      margin-right: 12px;
-      width: 120px;
-      text-align: center;
+      font-size: 3rem;
     }
   }
 
@@ -136,6 +144,7 @@ const CameraButton = styled.button`
   &:focus {
     outline: none;
   }
+
   svg {
     font-size: 2rem;
 
@@ -143,9 +152,15 @@ const CameraButton = styled.button`
       font-size: 1rem;
     }
   }
+
   @media (max-width: ${size.laptop}) {
-    bottom: 100px;
-    left: 65px;
+    bottom: 70px;
+    left: 80px;
+  }
+
+  @media (max-width: ${size.mobile}) {
+    bottom: 60px;
+    left: 60px;
   }
 `;
 
