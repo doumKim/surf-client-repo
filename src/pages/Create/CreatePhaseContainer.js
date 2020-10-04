@@ -45,8 +45,7 @@ export default function CreatePhaseContainer({ match, history }) {
       if (isSignIn) {
         const verified = await verifyPermission();
         if (verified) {
-          window.addEventListener(
-            "beforeunload",
+          window.addEventListener("beforeunload", () =>
             removeCurrentJoinUser(postId)
           );
 
@@ -57,7 +56,6 @@ export default function CreatePhaseContainer({ match, history }) {
         }
       } else {
         alert("권한이 없습니다.");
-        removeCurrentJoinUser(postId);
         history.push(`/post/${postId}`);
       }
     };
@@ -68,7 +66,9 @@ export default function CreatePhaseContainer({ match, history }) {
   useEffect(() => {
     return () => {
       removeCurrentJoinUser(postId);
-      window.removeEventListener("beforeunload", removeCurrentJoinUser(postId));
+      window.removeEventListener("beforeunload", () =>
+        removeCurrentJoinUser(postId)
+      );
     };
   }, []);
 

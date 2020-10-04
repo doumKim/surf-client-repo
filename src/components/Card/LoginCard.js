@@ -9,7 +9,7 @@ const CardWrap = styled.div`
   height: 160px;
   margin-top: 30px;
   overflow: hidden;
-  background-color: #f1f3f5;
+  background-color: white;
   box-shadow: rgba(23, 25, 29, 0.05) 0 4px 10px;
   transform: translateY(0);
   transition: box-shadow 0.3s, transform 0.3s;
